@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AdminClient/AdminClient.iml" filepath="$PROJECT_DIR$/AdminClient/AdminClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Engine/Engine.iml" filepath="$PROJECT_DIR$/Engine/Engine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/PredictionThirdPart.iml" filepath="$PROJECT_DIR$/.idea/PredictionThirdPart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UserClient/UserClient.iml" filepath="$PROJECT_DIR$/UserClient/UserClient.iml" />
+    </modules>
+  </component>
+</project>
