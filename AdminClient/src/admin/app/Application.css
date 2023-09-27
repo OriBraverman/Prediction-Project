@@ -1,0 +1,158 @@
+/* Base button style */
+#TitleRow {
+    -fx-background-color: #003366; /* Blue background color */
+}
+.button {
+    -fx-background-color: #004080; /* Darker blue background color */
+    -fx-text-fill: white; /* Text color */
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px; /* Padding around text */
+    -fx-border-radius: 0; /* No rounded corners */
+    -fx-cursor: hand;
+}
+
+/* Hovered state */
+.button:hover {
+    -fx-background-color: #003366; /* Slightly darker blue on hover */
+}
+
+/* Pressed state */
+.button:pressed {
+    -fx-background-color: #00254D; /* Even darker blue when pressed */
+}
+
+#HeaderLabel {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* Style for the TabPane */
+.tab-pane {
+    -fx-background-color: #0099cc; /* Light blue background color */
+    -fx-border-color: #006699; /* Darker blue border color */
+    -fx-border-width: 1;
+    -fx-background-radius: 0; /* No rounded corners for the TabPane */
+}
+
+/* Style for the tab headers */
+.tab-header-area {
+    -fx-background-color: #006699; /* Dark blue header area background color */
+}
+
+.tab {
+    -fx-background-color: #006699; /* Dark blue tab background color */
+    -fx-background-radius: 0; /* No rounded corners for tabs */
+    -fx-border-color: #004477; /* Slightly darker blue border color for tabs */
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+}
+
+.tab:selected {
+    -fx-background-color: #004477; /* Slightly darker blue background color for selected tab */
+}
+
+.tab-label {
+    /*
+    -fx-background-color: #006699;
+    */
+    -fx-font-size: 14px; /* Tab label font size */
+    -fx-text-fill: #fff; /* White text color for tab labels */
+}
+
+/* Style for the content area */
+.tab-content-area {
+    -fx-background-color: #fff; /* White background color for content area */
+    -fx-background-radius: 0; /* No rounded corners for content area */
+}
+
+/* Default CheckBox Style */
+#animationsCheckBox {
+    -fx-background-color: transparent; /* Transparent background */
+    -fx-text-fill: white; /* White text color */
+}
+
+/* Checked CheckBox Style */
+#animationsCheckBox {
+    -fx-background-color: transparent; /* Transparent background when checked */
+}
+
+/* Hovered CheckBox Style */
+#animationsCheckBox:hover {
+    -fx-background-color: transparent; /* Transparent background on hover */
+    -fx-cursor: hand; /* Hand cursor on hover */
+}
+
+/* Disabled CheckBox Style */
+#animationsCheckBox:disabled {
+    -fx-opacity: 0.5; /* Reduced opacity for disabled checkbox */
+}
+
+/* White Box for the Check Mark */
+#animationsCheckBox > .box {
+    -fx-background-color: white; /* White box for the check mark */
+    -fx-border-color: #cccccc; /* Light gray border color for the box */
+}
+
+/* Check Mark (Tick) Color */
+#animationsCheckBox:selected > .box > .mark {
+    -fx-background-color: #007bff; /* Blue check mark color when selected */
+    -fx-shape: "M2,6 L5,10 L10,0"; /* Custom triangle-shaped check mark */
+}
+
+/* Check Mark (Tick) Size and Position */
+#animationsCheckBox > .box > .mark {
+    -fx-pref-width: 14px; /* Width of the check mark */
+    -fx-pref-height: 14px; /* Height of the check mark */
+    -fx-translate-x: 2px; /* Horizontal position of the check mark */
+    -fx-translate-y: 2px; /* Vertical position of the check mark */
+}
+
+/* Check Mark (Tick) Shape */
+#animationsCheckBox:selected > .box > .mark {
+    -fx-shape: "M0,4 L3,7 L6,0"; /* Custom check mark shape (a simple "V" shape) */
+}
+
+/* Define a style for the MenuButton */
+.menu-button {
+    -fx-background-color: #FFFFFF; /* White background color */
+    -fx-background-radius: 5px; /* Rounded corners */
+    -fx-padding: 5px 10px; /* Padding around the button */
+    -fx-font-size: 14px; /* Font size */
+    -fx-text-fill: #333333; /* Dark gray text color */
+    -fx-border-color: #CCCCCC; /* Light gray border color */
+    -fx-border-radius: 5px; /* Rounded corners for the border */
+    -fx-border-width: 1px; /* Border width */
+}
+
+/* Define a style for the MenuButton when hovered */
+.menu-button:hover {
+    -fx-background-color: #F5F5F5; /* Lighter gray background color on hover */
+}
+
+/* Define a style for the MenuButton when pressed */
+.menu-button:pressed {
+    -fx-background-color: #E0E0E0; /* Even darker gray background color when pressed */
+}
+
+/* Define a style for the arrow icon on the MenuButton */
+.menu-button > .arrow-button {
+    -fx-background-color: transparent; /* Transparent background for the arrow icon */
+    -fx-background-insets: 0; /* No background insets */
+    -fx-padding: 0; /* No padding */
+}
+
+/* Define a style for the arrow icon on the MenuButton when hovered */
+.menu-button:hover > .arrow-button {
+    -fx-background-color: transparent; /* Transparent background for the arrow icon on hover */
+}
+
+/* Define a style for the arrow icon on the MenuButton when pressed */
+.menu-button:pressed > .arrow-button {
+    -fx-background-color: transparent; /* Transparent background for the arrow icon when pressed */
+}
+
+
+
+

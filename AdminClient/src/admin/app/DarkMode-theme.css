@@ -1,0 +1,70 @@
+.label{
+    -fx-text-fill: #4aff00;
+}
+
+/* Base button style */
+.button {
+    -fx-background-color: linear-gradient(to bottom, #1e1e1e, #000000); /* Dark background gradient */
+    -fx-background-radius: 5px; /* Slightly rounded corners */
+    -fx-text-fill: #ffffff; /* White text color */
+    -fx-font-family: "Segoe UI", sans-serif; /* Font family */
+    -fx-font-size: 14px; /* Font size */
+    -fx-padding: 8px 16px; /* Padding around text */
+}
+
+/* Hovered state */
+.button:hover {
+    -fx-background-color: #333333; /* Slightly darker background on hover */
+}
+
+/* Pressed state */
+.button:pressed {
+    -fx-background-color: #000000; /* Even darker background when pressed */
+}
+
+#TitleRow {
+    -fx-background-color: #000000; /* Dark background color */
+}
+
+#HeaderLabel {
+    -fx-font-size: 18px; /* Larger font size */
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff; /* White text color */
+}
+
+/* Style for the TabPane */
+.tab-pane {
+    -fx-background-color: #111111; /* Dark gray background color */
+    -fx-border-color: #333333; /* Lighter gray border color */
+    -fx-border-width: 1;
+    -fx-background-radius: 0; /* No rounded corners for the TabPane */
+}
+
+/* Style for the tab headers */
+.tab-header-area {
+    -fx-background-color: #222222; /* Slightly darker gray header area background color */
+}
+
+.tab {
+    -fx-background-color: #222222; /* Dark gray tab background color */
+    -fx-background-radius: 0; /* No rounded corners for tabs */
+    -fx-border-color: #333333; /* Lighter gray border color for tabs */
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+}
+
+.tab:selected {
+    -fx-background-color: #333333; /* Slightly darker gray background color for selected tab */
+}
+
+.tab-label {
+    -fx-font-size: 16px; /* Tab label font size */
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff; /* White text color for tab labels */
+}
+
+/* Style for the content area */
+.tab-content-area {
+    -fx-background-color: #1e1e1e; /* Darker gray background color for content area */
+    -fx-background-radius: 0; /* No rounded corners for content area */
+}

@@ -1,0 +1,170 @@
+package admin.app;
+
+import admin.AdminApplication;
+import admin.allocations.AllocationsController;
+import admin.executionHistory.ExecutionsHistoryController;
+import admin.management.ManagementController;
+import engine.Engine;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
+
+public class AppController {
+    // FXML design components
+    @FXML private Label HeaderLabel;
+    @FXML private VBox MainVBox;
+    @FXML private GridPane UpperGridPane;
+    @FXML private AnchorPane TitleRow;
+    @FXML private MenuButton SkinsMenuButton;
+
+    // FXML components
+    @FXML private ScrollPane applicationScrollPane;
+    @FXML private TabPane tabPane;
+    @FXML private AnchorPane managementComponent;
+    @FXML private ManagementController managementComponentController;
+    @FXML private AnchorPane allocationComponent;
+    @FXML private AllocationsController allocationComponentController;
+    @FXML private AnchorPane executionsHistoryComponent;
+    @FXML private ExecutionsHistoryController executionsHistoryComponentController;
+
+
+
+    private final Engine engine = new Engine();
+    private final SimpleBooleanProperty isXMLLoaded;
+    private final SimpleBooleanProperty isSimulationExecuted;
+    private static final List<String> cssList =
+            new ArrayList<>(Arrays.asList(
+                    "Application.css", "DarkMode-theme.css",
+                    "HappyMode-theme.css", "OrangeApplication.css",
+                    "GreenApplication.css"));
+
+    public enum Tab {
+        MANAGEMENT, ALLOCATION, EXECUTIONS_HISTORY
+    };
+
+    public AppController() {
+        this.isXMLLoaded = new SimpleBooleanProperty(false);
+        this.isSimulationExecuted = new SimpleBooleanProperty(false);
+    }
+
+    @FXML public void initialize(){
+        setColorThemeComponents();
+        //tabPane.getTabs().get(1).disableProperty().bind(isXMLLoaded.not());
+        //tabPane.getTabs().get(2).disableProperty().bind(isSimulationExecuted.not());
+        Platform.runLater(() -> {
+            // Set applicationScrollPane to be the same size as the window
+            applicationScrollPane.prefWidthProperty().bind(AdminApplication.getStage().widthProperty());
+            applicationScrollPane.prefHeightProperty().bind(AdminApplication.getStage().heightProperty());
+            applicationScrollPane.setFitToWidth(true);
+            applicationScrollPane.setFitToHeight(true);
+
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                engine.deleteInDepthMemoryFolder();
+                engine.stopThreadPool();
+            }));
+        });
+    }
+
+    private void setColorThemeComponents() {
+        // set skins menu button
+        applyDesign("Application.css");
+        SkinsMenuButton.getItems().clear();
+        List<MenuItem> menuItems = new ArrayList<>();
+        MenuItem defaultSkin = new MenuItem("Default");
+        defaultSkin.setOnAction(event -> {
+            switchColorMode("Application.css");
+        });
+        MenuItem darkModeSkin = new MenuItem("Dark Mode");
+        darkModeSkin.setOnAction(event -> {
+            switchColorMode("DarkMode-theme.css");
+        });
+        MenuItem happyModeSkin = new MenuItem("Happy Mode");
+        happyModeSkin.setOnAction(event -> {
+            switchColorMode("HappyMode-theme.css");
+        });
+        MenuItem orangeSkin = new MenuItem("Orange Mode");
+        orangeSkin.setOnAction(event -> {
+            switchColorMode("OrangeApplication.css");
+        });
+        MenuItem greenSkin = new MenuItem("Green Mode");
+        greenSkin.setOnAction(event -> {
+            switchColorMode("GreenApplication.css");
+        });
+        menuItems.add(defaultSkin);
+        menuItems.add(darkModeSkin);
+        menuItems.add(happyModeSkin);
+        menuItems.add(orangeSkin);
+        menuItems.add(greenSkin);
+        SkinsMenuButton.getItems().addAll(menuItems);
+    }
+
+    public void selectTab(Tab tab) {
+        switch (tab) {
+            case MANAGEMENT:
+                tabPane.getSelectionModel().select(0);
+                break;
+            case ALLOCATION:
+                tabPane.getSelectionModel().select(1);
+                break;
+            case EXECUTIONS_HISTORY:
+                tabPane.getSelectionModel().select(2);
+                break;
+        }
+    }
+
+    public TabPane getTabPane(){ return tabPane; }
+
+    public void stopSimulation(int simulationID) {
+        engine.stopSimulation(simulationID);
+    }
+
+    public void pauseSimulation(int simulationID) {
+        engine.pauseSimulation(simulationID);
+    }
+
+    public void resumeSimulation(int simulationID) {
+        engine.resumeSimulation(simulationID);
+    }
+
+    public boolean isSimulationCompleted(int simulationID) {
+        return engine.isSimulationCompleted(simulationID);
+    }
+
+    public void setPreviousTick(int simulationID) {
+        engine.setPreviousTick(simulationID);
+    }
+
+    public void getToNextTick(int simulationID) {
+        engine.getToNextTick(simulationID);
+    }
+
+    private void applyDesign(String cssPath){
+        if (getClass().getResource(cssPath) != null) {
+            MainVBox.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
+            UpperGridPane.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
+        }
+    }
+
+    private void removeDesign(String cssPath){
+        if (getClass().getResource(cssPath) != null) {
+            MainVBox.getStylesheets().remove(getClass().getResource(cssPath).toExternalForm());
+            UpperGridPane.getStylesheets().remove(getClass().getResource(cssPath).toExternalForm());
+        }
+    }
+
+    private void switchColorMode(String cssPath){
+        for (String css : cssList) {
+            if (!css.equals(cssPath)) {
+                removeDesign(css);
+            }
+        }
+        applyDesign(cssPath);
+    }
+
+}

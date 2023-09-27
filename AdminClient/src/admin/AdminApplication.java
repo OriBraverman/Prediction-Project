@@ -1,4 +1,4 @@
-package
+package admin;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,13 +9,13 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class AdminApplication extends Application {
-    private static Window primaryStage;
+    private static Stage primaryStage;
     public static void main(String[] args) {
         launch(args);
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Prediction Application");
+        primaryStage.setTitle("Admin Application");
         Parent load = FXMLLoader.load(getClass().getResource("app/Application.fxml"));
         primaryStage.getIcons().add(
                 new Image(
@@ -25,7 +25,6 @@ public class AdminApplication extends Application {
         primaryStage.show();
         this.primaryStage = primaryStage;
     }
-
     public static Window getStage() {
         return primaryStage;
     }

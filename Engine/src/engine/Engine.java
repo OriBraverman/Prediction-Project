@@ -95,7 +95,7 @@ public class Engine implements Serializable {
         validateMathActionHasNumericArgs(tempWorld.getRules(), tempWorld.getEntities(), (EnvVariableManagerImpl) tempWorld.getEnvironment());
         // if loaded successfully, clear the old engine and set the new one
         this.world = tempWorld;
-        this.simulationExecutionManager = new SimulationExecutionManager(this.world.getThreadCount());
+        this.simulationExecutionManager = new SimulationExecutionManager(5);//TODO: get from user
         this.activeEnvironment = null;
     }
 
@@ -137,7 +137,7 @@ public class Engine implements Serializable {
         return new SimulationIDDTO(simulationId);
     }
 
-    public WorldDTO getWorldDTO() {
+    /*public WorldDTO getWorldDTO() {
         List<PropertyDefinitionDTO> environment = getEnvironmentDTO();
         List<EntityDefinitionDTO> entities = getEntitiesDTO();
         List<RuleDTO> rules = getRulesDTO();
@@ -146,7 +146,7 @@ public class Engine implements Serializable {
         int gridHeight = this.world.getGridDefinition().getHeight();
         int threadCount = this.world.getThreadCount();
         return new WorldDTO(environment, entities, rules, termination, gridWidth, gridHeight, threadCount);
-    }
+    }*/
 
     private List<PropertyDefinitionDTO> getEnvironmentDTO() {
         Collection<PropertyDefinition> envVariables = this.world.getEnvironment().getEnvVariables();
@@ -155,12 +155,12 @@ public class Engine implements Serializable {
         return propertyDefinitionDTOS;
     }
 
-    private TerminationDTO getTerminationDTO() {
+    /*private TerminationDTO getTerminationDTO() {
         boolean isByUser = this.world.getTermination().isByUser();
         int secondsCount = this.world.getTermination().getSecondsCount();
         int ticksCount = this.world.getTermination().getTicksCount();
         return new TerminationDTO(isByUser, secondsCount, ticksCount);
-    }
+    }*/
 
     private List<RuleDTO> getRulesDTO() {
         List<Rule> rules = this.world.getRules();

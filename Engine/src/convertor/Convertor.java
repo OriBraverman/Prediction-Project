@@ -39,10 +39,8 @@ public class Convertor implements Serializable {
         EnvVariablesManager environment = getEnvironment();
         List<EntityDefinition> entities = getEntities();
         List<Rule> rules = getRules(entities);
-        Termination termination = getTermination();
         GridDefinition grid = new GridDefinitionImpl(generatedWorld.getPRDGrid().getRows(), generatedWorld.getPRDGrid().getColumns());
-        int threadCount = generatedWorld.getPRDThreadCount();
-        return new World(environment, entities, grid, rules, termination, threadCount);
+        return new World(environment, entities, grid, rules);
     }
 
     private EnvVariablesManager getEnvironment() {
@@ -315,10 +313,8 @@ public class Convertor implements Serializable {
         return new IncreaseAction(entityDefinition, secondaryEntity, property, byExpression);
     }
 
-    private Termination getTermination() {
+    private Termination getTermination(List<Object> terminationList, Object byUser) {
         Termination termination = new Termination();
-        List<Object> terminationList = generatedWorld.getPRDTermination().getPRDBySecondOrPRDByTicks();
-        Object byUser = generatedWorld.getPRDTermination().getPRDByUser();
         if (byUser != null && terminationList.size() > 0) {
             throw new RuntimeException("ByUser and BySecond/ByTicks cannot be together");
         } else if (byUser != null) {

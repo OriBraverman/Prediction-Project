@@ -89,7 +89,7 @@ public class SimulationRunnerImpl implements Serializable, Runnable, SimulationR
 
     @Override
     public void run() {
-        try {
+        /*try {
             this.simulationED.setStatus("Running");
             runSimulation();
             this.simulationED.setStatus("Finished Successfully");
@@ -104,10 +104,10 @@ public class SimulationRunnerImpl implements Serializable, Runnable, SimulationR
             this.simulationED.setStatus("Failed");
             this.simulationED.setTerminationReason(e.getMessage());
             this.simulationED.setRunning(false);
-        }
+        }*/
     }
 
-    private void runSimulation() {
+    /*private void runSimulation() {
         synchronized (simulationED) {
             simulationED.setPending(false);
             simulationED.setRunning(true);
@@ -212,7 +212,7 @@ public class SimulationRunnerImpl implements Serializable, Runnable, SimulationR
             }
             System.out.println();
         }
-    }
+    }*/
 
     private void printReplacedEntities(List<EntityInstance> entityInstances) {
         for (EntityInstance entityInstance : simulationED.getEntityInstanceManager().getInstances()) {

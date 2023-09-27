@@ -14,16 +14,12 @@ public class World implements Serializable {
     private List<EntityDefinition> entities;
     private GridDefinition grid;
     private List<Rule> rules;
-    private Termination termination;
-    private int threadCount;
 
-    public World(EnvVariablesManager environment, List<EntityDefinition> entities, GridDefinition grid, List<Rule> rules, Termination termination, int threadCount) {
+    public World(EnvVariablesManager environment, List<EntityDefinition> entities, GridDefinition grid, List<Rule> rules) {
         this.environment = environment;
         this.entities = entities;
         this.grid = grid;
         this.rules = rules;
-        this.termination = termination;
-        this.threadCount = threadCount;
     }
 
     public EnvVariablesManager getEnvironment() {
@@ -47,16 +43,8 @@ public class World implements Serializable {
         return rules;
     }
 
-    public Termination getTermination() {
-        return termination;
-    }
-
     public GridDefinition getGridDefinition() {
         return grid;
-    }
-
-    public int getThreadCount() {
-        return threadCount;
     }
 
 }
