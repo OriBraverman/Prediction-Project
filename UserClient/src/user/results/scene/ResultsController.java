@@ -6,7 +6,6 @@ import dtos.world.PropertyDefinitionDTO;
 import dtos.world.WorldDTO;
 import user.app.AppController;
 import user.results.simulation.SimulationController;
-import user.upload.UploadController;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

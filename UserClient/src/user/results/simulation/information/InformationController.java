@@ -142,7 +142,8 @@ public class InformationController {
 
     public void defineEntityChoiceBox() {
         entityChoiceBox.getItems().clear();
-        WorldDTO worldDTO = appController.getWorldDTO();
+        int simulationID = simulationController.getCurrentSimulationID();
+        WorldDTO worldDTO = appController.getWorldDTO(simulationID);
         for (EntityDefinitionDTO entityDefinitionDTO : worldDTO.getEntities()) {
             entityChoiceBox.getItems().add(entityDefinitionDTO.getName());
         }
@@ -150,7 +151,8 @@ public class InformationController {
 
     public void definePropertyChoiceBox(String entityName) {
         propertyChoiceBox.getItems().clear();
-        WorldDTO worldDTO = appController.getWorldDTO();
+        int simulationID = simulationController.getCurrentSimulationID();
+        WorldDTO worldDTO = appController.getWorldDTO(simulationID);
         for (EntityDefinitionDTO entityDefinitionDTO : worldDTO.getEntities()) {
             if (entityDefinitionDTO.getName().equals(entityName)) {
                 for (PropertyDefinitionDTO propertyDefinitionDTO : entityDefinitionDTO.getProperties()) {

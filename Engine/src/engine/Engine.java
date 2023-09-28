@@ -19,11 +19,9 @@ public interface Engine {
 
     void loadXML(Path xmlPath) throws FileNotFoundException;
 
-    WorldInstance createWorldInstance(World world, EnvVariablesValuesDTO envVariablesValuesDTO, EntitiesPopulationDTO entitiesPopulationDTO);
+    SimulationIDDTO activateSimulation(boolean isBonusActivated, int worldID, EnvVariablesValuesDTO envVariablesValuesDTO, EntitiesPopulationDTO entitiesPopulationDTO);
 
-    SimulationIDDTO activateSimulation(boolean isBonusActivated, WorldInstance worldInstance);
-
-    WorldDTO getWorldDTO(int worldID);
+    WorldDTO getWorldDTO(int simulationID);
 
     void validateEnvVariableValue(int worldID, EnvVariableValueDTO envVariableValueDTO);
 

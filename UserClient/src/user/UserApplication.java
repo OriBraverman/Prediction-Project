@@ -15,7 +15,7 @@ public class UserApplication extends Application {
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Admin Application");
+        primaryStage.setTitle("User Application");
         Parent load = FXMLLoader.load(getClass().getResource("app/Application.fxml"));
         primaryStage.getIcons().add(
                 new Image(

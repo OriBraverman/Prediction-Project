@@ -6,7 +6,7 @@ import user.UserApplication;
 import user.app.AppController;
 import user.results.simulation.grid.DynamicGridView;
 import user.results.simulation.grid.GridController;
-import gui.components.main.results.simulation.information.InformationController;
+import user.results.simulation.information.InformationController;
 import gui.components.main.results.simulation.tableView.EntityPopulationTableView;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -118,7 +118,7 @@ public class SimulationController {
 
     @FXML
     void rerunSimulationButtonAction(ActionEvent event) {
-        appController.selectTab(AppController.Tab.NEW_EXECUTION);
+        appController.selectTab(AppController.Tab.EXECUTION);
         appController.updateNewExecutionByPrevSimulation(currentSimulationID.get());
     }
 
@@ -161,7 +161,7 @@ public class SimulationController {
             stage.initModality(Modality.WINDOW_MODAL);
 
             // Set the main stage as the owner of the new stage (adjust the reference as needed)
-            stage.initOwner(PredictionApplication.getStage());
+            stage.initOwner(UserApplication.getStage());
 
             // Show the stage
             stage.show();

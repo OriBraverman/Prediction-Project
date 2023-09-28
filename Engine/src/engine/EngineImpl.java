@@ -102,8 +102,7 @@ public class EngineImpl implements Serializable, Engine {
         this.worldDefinitionManager.addWorld(tempWorld);
     }
 
-    @Override
-    public WorldInstance createWorldInstance(World world, EnvVariablesValuesDTO envVariablesValuesDTO, EntitiesPopulationDTO entitiesPopulationDTO) {
+    private WorldInstance createWorldInstance(World world, EnvVariablesValuesDTO envVariablesValuesDTO, EntitiesPopulationDTO entitiesPopulationDTO) {
         ActiveEnvironment activeEnvironment = createActiveEnvironment(world, envVariablesValuesDTO);
         EntityInstanceManager entityInstanceManager = createEntityInstanceManager(world, entitiesPopulationDTO);
         Termination termination = new Termination();//TODO: add termination
@@ -157,15 +156,17 @@ public class EngineImpl implements Serializable, Engine {
     }
 
     @Override
-    public SimulationIDDTO activateSimulation(boolean isBonusActivated, WorldInstance worldInstance) {
+    public SimulationIDDTO activateSimulation(boolean isBonusActivated, int worldID, EnvVariablesValuesDTO envVariablesValuesDTO, EntitiesPopulationDTO entitiesPopulationDTO) {
+        World world = worldDefinitionManager.getWorldDefinitionById(worldID);
+        WorldInstance worldInstance = createWorldInstance(world, envVariablesValuesDTO, entitiesPopulationDTO);
         int simulationId = this.simulationExecutionManager.createSimulation(worldInstance, isBonusActivated);
         this.simulationExecutionManager.runSimulation(simulationId);
         return new SimulationIDDTO(simulationId);
     }
 
     @Override
-    public WorldDTO getWorldDTO(int worldID) {
-        World world = this.worldDefinitionManager.getWorldDefinitionById(worldID);
+    public WorldDTO getWorldDTO(int simulationID) {
+        World world = this.simulationExecutionManager.getSimulationDetailsByID(simulationID).getWorld();
         List<PropertyDefinitionDTO> environment = getEnvironmentDTO(world);
         List<EntityDefinitionDTO> entities = getEntitiesDTO(world);
         List<RuleDTO> rules = getRulesDTO(world);
@@ -399,8 +400,8 @@ public class EngineImpl implements Serializable, Engine {
     }
 
     @Override
-    public void validateEntitiesPopulation(EntitiesPopulationDTO entitiesPopulationDTO, int id) {
-        World world = worldDefinitionManager.getWorldDefinitionById(id);
+    public void validateEntitiesPopulation(EntitiesPopulationDTO entitiesPopulationDTO, int worldID) {
+        World world = worldDefinitionManager.getWorldDefinitionById(worldID);
         int MaxPopulation = world.getGridDefinition().getHeight() * world.getGridDefinition().getWidth();
         int totalPopulation = 0;
         for (EntityPopulationDTO entityPopulation : entitiesPopulationDTO.getEntitiesPopulation()) {
