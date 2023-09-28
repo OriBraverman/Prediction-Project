@@ -4,7 +4,7 @@ import admin.AdminApplication;
 import admin.allocations.AllocationsController;
 import admin.executionHistory.ExecutionsHistoryController;
 import admin.management.ManagementController;
-import engine.Engine;
+import engine.EngineImpl;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -13,7 +13,6 @@ import javafx.scene.layout.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class AppController {
     // FXML design components
@@ -35,7 +34,7 @@ public class AppController {
 
 
 
-    private final Engine engine = new Engine();
+    private final EngineImpl engineImpl = new EngineImpl();
     private final SimpleBooleanProperty isXMLLoaded;
     private final SimpleBooleanProperty isSimulationExecuted;
     private static final List<String> cssList =
@@ -65,8 +64,8 @@ public class AppController {
             applicationScrollPane.setFitToHeight(true);
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                engine.deleteInDepthMemoryFolder();
-                engine.stopThreadPool();
+                engineImpl.deleteInDepthMemoryFolder();
+                engineImpl.stopThreadPool();
             }));
         });
     }
@@ -121,27 +120,27 @@ public class AppController {
     public TabPane getTabPane(){ return tabPane; }
 
     public void stopSimulation(int simulationID) {
-        engine.stopSimulation(simulationID);
+        engineImpl.stopSimulation(simulationID);
     }
 
     public void pauseSimulation(int simulationID) {
-        engine.pauseSimulation(simulationID);
+        engineImpl.pauseSimulation(simulationID);
     }
 
     public void resumeSimulation(int simulationID) {
-        engine.resumeSimulation(simulationID);
+        engineImpl.resumeSimulation(simulationID);
     }
 
     public boolean isSimulationCompleted(int simulationID) {
-        return engine.isSimulationCompleted(simulationID);
+        return engineImpl.isSimulationCompleted(simulationID);
     }
 
     public void setPreviousTick(int simulationID) {
-        engine.setPreviousTick(simulationID);
+        engineImpl.setPreviousTick(simulationID);
     }
 
     public void getToNextTick(int simulationID) {
-        engine.getToNextTick(simulationID);
+        engineImpl.getToNextTick(simulationID);
     }
 
     private void applyDesign(String cssPath){
@@ -165,6 +164,10 @@ public class AppController {
             }
         }
         applyDesign(cssPath);
+    }
+
+    public void setThreadsCount(String threadsCount) throws NumberFormatException {
+        engineImpl.setThreadsCount(threadsCount);
     }
 
 }

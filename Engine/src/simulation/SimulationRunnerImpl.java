@@ -1,29 +1,13 @@
 package simulation;
 
-import context.ContextImpl;
-import world.World;
-import world.factors.action.api.Action;
-import world.factors.action.api.ActionType;
 import world.factors.entity.definition.EntityDefinition;
 import world.factors.entity.execution.EntityInstance;
-import world.factors.entity.execution.manager.EntityInstanceManager;
-import world.factors.entity.execution.manager.EntityInstanceManagerImpl;
-import world.factors.environment.execution.api.ActiveEnvironment;
-import world.factors.grid.execution.GridInstance;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
-
-import static simulation.SimulationMemorySaver.writeSEDByIdAndTick;
 
 public class SimulationRunnerImpl implements Serializable, Runnable, SimulationRunner {
     private final int id;

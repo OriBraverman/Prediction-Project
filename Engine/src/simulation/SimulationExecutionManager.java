@@ -1,7 +1,8 @@
 package simulation;
 
 import dtos.SimulationIDListDTO;
-import world.World;
+import world.definition.World;
+import world.execution.WorldInstance;
 import world.factors.entity.execution.manager.EntityInstanceManager;
 import world.factors.environment.execution.api.ActiveEnvironment;
 
@@ -10,8 +11,7 @@ import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class SimulationExecutionManager implements Serializable {
     private Map<Integer, SimulationRunner> simulations;
@@ -25,9 +25,9 @@ public class SimulationExecutionManager implements Serializable {
         this.threadExecutor = Executors.newFixedThreadPool(threadCount);
     }
 
-    public int createSimulation(World world, ActiveEnvironment activeEnvironment, EntityInstanceManager entityInstanceManager, boolean isBonusActivated) {
+    public int createSimulation(WorldInstance worldInstance, boolean isBonusActivated) {
         currentSimulationIndex++;
-        SimulationExecutionDetails simulationExecutionDetails = new SimulationExecutionDetails(currentSimulationIndex, activeEnvironment, entityInstanceManager, world);
+        SimulationExecutionDetails simulationExecutionDetails = new SimulationExecutionDetails(currentSimulationIndex, worldInstance);
         SimulationRunner simulationRunner = new SimulationRunnerImpl(currentSimulationIndex, simulationExecutionDetails, isBonusActivated);
         simulations.put(currentSimulationIndex, simulationRunner);
         simulationDetails.put(currentSimulationIndex, simulationExecutionDetails);
@@ -157,5 +157,13 @@ public class SimulationExecutionManager implements Serializable {
         if (threadExecutor != null && !threadExecutor.isShutdown()) {
             threadExecutor.shutdown();
         }
+    }
+
+    public void setThreadPoolSize(int threadsCount){
+        ExecutorService newThreadPoolExecutor = Executors.newFixedThreadPool(threadsCount);
+        for (Runnable task : this.threadExecutor.shutdownNow()) {
+            newThreadPoolExecutor.submit(task);
+        }
+        this.threadExecutor = newThreadPoolExecutor;
     }
 }

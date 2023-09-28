@@ -2,7 +2,7 @@ package convertor;
 
 import resources.schema.generatedWorld.*;
 import value.generator.api.ValueGeneratorFactory;
-import world.World;
+import world.definition.World;
 import world.factors.action.api.AbstractAction;
 import world.factors.action.api.Action;
 import world.factors.action.api.ActionType;
@@ -40,7 +40,7 @@ public class Convertor implements Serializable {
         List<EntityDefinition> entities = getEntities();
         List<Rule> rules = getRules(entities);
         GridDefinition grid = new GridDefinitionImpl(generatedWorld.getPRDGrid().getRows(), generatedWorld.getPRDGrid().getColumns());
-        return new World(environment, entities, grid, rules);
+        return new World(-1, environment, entities, grid, rules);
     }
 
     private EnvVariablesManager getEnvironment() {

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane prefHeight="650.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.components.main.results.simulation.grid.GridController">
+
+    <children>
+        <ScrollPane fx:id="dynamicGrid" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0" />
+
+        <HBox alignment="CENTER" layoutX="900.0" prefHeight="49.0" prefWidth="200.0" spacing="10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="900.0" AnchorPane.rightAnchor="0.0">
+            <Button onAction="#BackwardsButtonAction" text="Backwards" />
+            <Button onAction="#ForwardsButtonAction" text="Forwards" />
+        </HBox>
+
+        <ListView fx:id="listView" prefHeight="350.0" prefWidth="200" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <!-- Add ListView items here -->
+        </ListView>
+    </children>
+</AnchorPane>

@@ -1,6 +1,8 @@
 package simulation;
 
-import world.World;
+import world.definition.World;
+import world.execution.WorldInstance;
+import world.execution.WorldInstanceImpl;
 import world.factors.entity.execution.manager.EntityInstanceManager;
 import world.factors.entityPopulation.EntityPopulation;
 import world.factors.environment.execution.api.ActiveEnvironment;
@@ -19,10 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SimulationExecutionDetails implements Serializable {
     private final int id;
-    private final ActiveEnvironment activeEnvironment;
-    private final GridInstance grid;
-    private final World world;
-    private final EntityInstanceManager entityInstanceManager;
+    private final WorldInstance worldInstance;
     private boolean isTerminatedBySecondsCount = false;
     private boolean isTerminatedByTicksCount = false;
     private AtomicBoolean isPending;
@@ -37,12 +36,9 @@ public class SimulationExecutionDetails implements Serializable {
     private String terminationReason = "";
 
 
-    public SimulationExecutionDetails(int id, ActiveEnvironment activeEnvironment, EntityInstanceManager entityInstanceManager, World world) {
+    public SimulationExecutionDetails(int id, WorldInstance worldInstance) {
         this.id = id;
-        this.activeEnvironment = activeEnvironment;
-        this.grid = new GridInstanceImpl(world.getGridDefinition());
-        this.world = world;
-        this.entityInstanceManager = entityInstanceManager;
+        this.worldInstance = worldInstance;
         this.currStartTime = Instant.now();
         this.durations = new ArrayList<>();
         this.isPending = new AtomicBoolean(true);
@@ -52,9 +48,13 @@ public class SimulationExecutionDetails implements Serializable {
         this.currentTick = new AtomicInteger(0);
     }
 
-    public ActiveEnvironment getActiveEnvironment() { return activeEnvironment; }
+    public ActiveEnvironment getActiveEnvironment() {
+        return worldInstance.getActiveEnvironment();
+    }
 
-    public World getWorld() { return world; }
+    public World getWorld() {
+        return worldInstance.getWorld();
+    }
 
     public int getId(){
         return this.id;
@@ -78,7 +78,9 @@ public class SimulationExecutionDetails implements Serializable {
 
     public void setIsTerminatedByTicksCount(boolean isTerminatedByTicksCount){ this.isTerminatedByTicksCount = isTerminatedByTicksCount; }
 
-    public EntityInstanceManager getEntityInstanceManager() { return this.entityInstanceManager; }
+    public EntityInstanceManager getEntityInstanceManager() {
+        return worldInstance.getEntityInstanceManager();
+    }
 
     public void setStatus(String status) {this.status = status; }
 
@@ -89,7 +91,7 @@ public class SimulationExecutionDetails implements Serializable {
     }
 
     public void incrementCurrentTick() {
-        this.entityPopulationByTicks.put(currentTick.get(), entityInstanceManager.getCurrEntityPopulationList());
+        this.entityPopulationByTicks.put(currentTick.get(), worldInstance.getEntityInstanceManager().getCurrEntityPopulationList());
         this.currentTick.incrementAndGet();
     }
 
@@ -154,7 +156,7 @@ public class SimulationExecutionDetails implements Serializable {
     }
 
     public GridInstance getGridInstance() {
-        return grid;
+        return worldInstance.getGridInstance();
     }
 
     public String getStatus(){return this.status;}
@@ -172,4 +174,6 @@ public class SimulationExecutionDetails implements Serializable {
     public void setDurations(List<Duration> durations) {
         this.durations = durations;
     }
+
+    public WorldInstance getWorldInstance(){return this.worldInstance;}
 }

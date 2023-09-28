@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="232.0" prefWidth="401.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <CheckBox layoutX="64.0" layoutY="185.0" mnemonicParsing="false" text="Want to add value?" />
+      <Label layoutX="68.0" layoutY="52.0" text="Name:" />
+      <TextField layoutX="201.0" layoutY="181.0" />
+      <Label layoutX="137.0" layoutY="52.0" text="Label" />
+      <Label layoutX="137.0" layoutY="85.0" text="Label" />
+      <Label layoutX="72.0" layoutY="85.0" text="Type:" />
+      <Label layoutX="72.0" layoutY="116.0" text="Range:" />
+      <Label layoutX="137.0" layoutY="116.0" text="From" />
+      <Label layoutX="187.0" layoutY="116.0" text="Label" />
+      <Label layoutX="240.0" layoutY="116.0" text="To" />
+      <Label layoutX="286.0" layoutY="116.0" text="Label" />
+   </children>
+</AnchorPane>

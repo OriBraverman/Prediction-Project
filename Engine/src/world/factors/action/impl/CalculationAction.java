@@ -1,7 +1,6 @@
 package world.factors.action.impl;
 
 import context.Context;
-import world.World;
 import world.factors.action.api.AbstractAction;
 import world.factors.action.api.ActionType;
 import world.factors.action.api.SecondaryEntity;
@@ -9,9 +8,6 @@ import world.factors.entity.definition.EntityDefinition;
 import world.factors.environment.definition.impl.EnvVariableManagerImpl;
 import world.factors.expression.api.AbstractExpression;
 import world.factors.expression.api.Expression;
-import world.factors.expression.api.ExpressionType;
-import world.factors.function.api.Function;
-import world.factors.function.api.FunctionType;
 import world.factors.property.definition.api.PropertyType;
 import world.factors.property.execution.PropertyInstance;
 

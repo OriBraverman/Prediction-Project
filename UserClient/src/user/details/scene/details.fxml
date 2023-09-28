@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="429.0" prefWidth="957.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.components.main.details.scene.DetailsController">
+   <children>
+      <TreeView fx:id="detailsTreeView" layoutX="19.0" layoutY="19.0" prefHeight="400.0" prefWidth="314.0" />
+      <TreeView fx:id="fullInfoTree" layoutX="350.0" layoutY="19.0" prefHeight="400.0" prefWidth="569.0" />
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" />
+   </padding>
+</AnchorPane>

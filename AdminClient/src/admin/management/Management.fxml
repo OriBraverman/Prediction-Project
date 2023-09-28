@@ -27,12 +27,12 @@
              <fx:include fx:id="UploadComponent" source="../upload/Upload.fxml" />
             <HBox GridPane.columnIndex="2">
                <children>
-                  <Button fx:id="SetThreadsCountButton" mnemonicParsing="false" onAction="#SetThreadsCountButtonAction" text="Set threads Count">
+                  <Button fx:id="setThreadsCountButton" mnemonicParsing="false" onAction="#setThreadsCountButtonAction" text="Set threads Count">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </Button>
-                  <TextField>
+                  <TextField fx:id="setThreadsCountTextField">
                      <HBox.margin>
                         <Insets right="5.0" top="12.0" />
                      </HBox.margin>

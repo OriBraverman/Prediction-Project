@@ -1,4 +1,4 @@
-package world;
+package world.definition;
 
 import world.factors.entity.definition.EntityDefinition;
 import world.factors.environment.definition.api.EnvVariablesManager;
@@ -10,12 +10,14 @@ import java.io.Serializable;
 import java.util.List;
 
 public class World implements Serializable {
+    private int id;
     private EnvVariablesManager environment;
     private List<EntityDefinition> entities;
     private GridDefinition grid;
     private List<Rule> rules;
 
-    public World(EnvVariablesManager environment, List<EntityDefinition> entities, GridDefinition grid, List<Rule> rules) {
+    public World(int id, EnvVariablesManager environment, List<EntityDefinition> entities, GridDefinition grid, List<Rule> rules) {
+        this.id = id;
         this.environment = environment;
         this.entities = entities;
         this.grid = grid;
@@ -46,5 +48,7 @@ public class World implements Serializable {
     public GridDefinition getGridDefinition() {
         return grid;
     }
+
+    public void setId(int id){ this.id = id; }
 
 }

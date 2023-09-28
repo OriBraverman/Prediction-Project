@@ -1,7 +1,7 @@
 package validator;
 
 import resources.schema.generatedWorld.*;
-import world.World;
+import world.definition.World;
 import world.factors.action.api.Action;
 import world.factors.action.api.ActionType;
 import world.factors.action.impl.CalculationAction;

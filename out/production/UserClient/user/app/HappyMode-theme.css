@@ -1,0 +1,66 @@
+/* Base button style */
+.button {
+    -fx-background-color: linear-gradient(to bottom, #FF69B4, #FF1493); /* Pink background gradient */
+    -fx-background-radius: 20; /* Rounded corners */
+    -fx-text-fill: white; /* White text color */
+    -fx-font-family: "Arial"; /* Font family */
+    -fx-font-size: 16px; /* Font size */
+    -fx-padding: 8 20; /* Padding around text */
+}
+
+/* Hovered state */
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #FF1493, #FF69B4); /* Darker pink on hover */
+}
+
+/* Pressed state */
+.button:pressed {
+    -fx-background-color: #FF69B4; /* Even darker pink when pressed */
+}
+
+#TitleRow {
+    -fx-background-color: #FF69B4; /* Pink background color */
+}
+
+#HeaderLabel {
+    -fx-font-size: 18px; /* Larger font size */
+    -fx-font-weight: bold;
+    -fx-text-fill: white; /* White text color */
+}
+
+/* Style for the TabPane */
+.tab-pane {
+    -fx-background-color: #FFD700; /* Gold background color */
+    -fx-border-color: #FFA500; /* Darker orange border color */
+    -fx-border-width: 1;
+    -fx-background-radius: 0; /* No rounded corners for the TabPane */
+}
+
+/* Style for the tab headers */
+.tab-header-area {
+    -fx-background-color: #FFA500; /* Dark orange header area background color */
+}
+
+.tab {
+    -fx-background-color: #FFA500; /* Dark orange tab background color */
+    -fx-background-radius: 0; /* No rounded corners for tabs */
+    -fx-border-color: #FF8C00; /* Slightly darker orange border color for tabs */
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+}
+
+.tab:selected {
+    -fx-background-color: #FF8C00; /* Slightly darker orange background color for selected tab */
+}
+
+.tab-label {
+    -fx-font-size: 16px; /* Tab label font size */
+    -fx-font-weight: bold;
+    -fx-text-fill: #fff; /* White text color for tab labels */
+}
+
+/* Style for the content area */
+.tab-content-area {
+    -fx-background-color: #fff; /* White background color for content area */
+    -fx-background-radius: 0; /* No rounded corners for content area */
+}
