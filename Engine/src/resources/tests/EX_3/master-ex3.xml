@@ -25,9 +25,18 @@
 					<PRD-range from="0" to="100"/>
 					<PRD-value random-initialize="false" init="0"/>
 				</PRD-property>
+				<PRD-property type="float">
+					<PRD-name>p2</PRD-name>
+					<PRD-range from="0" to="100"/>
+					<PRD-value random-initialize="true"/>
+				</PRD-property>
 				<PRD-property type="boolean">
 					<PRD-name>p3</PRD-name>
 					<PRD-value random-initialize="true"/>
+				</PRD-property>
+				<PRD-property type="string">
+					<PRD-name>p4</PRD-name>
+					<PRD-value random-initialize="false" init="example"/>
 				</PRD-property>
 			</PRD-properties>
 		</PRD-entity>
@@ -70,7 +79,7 @@
 					</PRD-secondary-entity>
 					<PRD-condition singularity="multiple" logical="or">
 						<PRD-condition singularity="single" entity="ent-1" property="ticks(ent-1.p1)" operator="bt" value="4"/>
-						<PRD-condition singularity="single" entity="ent-1" property="p2" operator="lt" value="3"/>
+						<PRD-condition singularity="single" entity="ent-2" property="p2" operator="lt" value="3"/>
 						<PRD-condition singularity="multiple" logical="and">
 							<PRD-condition singularity="single" entity="ent-1" property="p4" operator="!=" value="nothing"/>
 							<PRD-condition singularity="single" entity="ent-1" property="p3" operator="=" value="environment(e2)"/>
@@ -92,7 +101,7 @@
 					<PRD-between source-entity="ent-1" target-entity="ent-2"/>
 					<PRD-env-depth of="1"/>
 					<PRD-actions>
-						<PRD-action type="increase" entity="ent-1" property="p1" by="percent(evalutate(ent-2.p1),environment(e1))"/>
+						<PRD-action type="increase" entity="ent-1" property="p1" by="percent(evaluate(ent-2.p1),environment(e1))"/>
 						<PRD-action type="decrease" entity="ent-2" property="p2" by="evaluate(ent-1.p1)"/>
 						<PRD-action type="replace" kill="ent-1" create="ent-2" mode="scratch"/>
 					</PRD-actions>					

@@ -11,13 +11,15 @@ import java.util.List;
 
 public class World implements Serializable {
     private int id;
+    private String name;
     private EnvVariablesManager environment;
     private List<EntityDefinition> entities;
     private GridDefinition grid;
     private List<Rule> rules;
 
-    public World(int id, EnvVariablesManager environment, List<EntityDefinition> entities, GridDefinition grid, List<Rule> rules) {
+    public World(int id, String name, EnvVariablesManager environment, List<EntityDefinition> entities, GridDefinition grid, List<Rule> rules) {
         this.id = id;
+        this.name = name;
         this.environment = environment;
         this.entities = entities;
         this.grid = grid;
@@ -51,4 +53,7 @@ public class World implements Serializable {
 
     public void setId(int id){ this.id = id; }
 
+    public String getName() {
+        return name;
+    }
 }

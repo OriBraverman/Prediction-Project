@@ -36,11 +36,12 @@ public class Convertor implements Serializable {
     private PRDWorld generatedWorld;
 
     public World convertPRDWorldToWorld() {
+        String name = generatedWorld.getName();
         EnvVariablesManager environment = getEnvironment();
         List<EntityDefinition> entities = getEntities();
         List<Rule> rules = getRules(entities);
         GridDefinition grid = new GridDefinitionImpl(generatedWorld.getPRDGrid().getRows(), generatedWorld.getPRDGrid().getColumns());
-        return new World(-1, environment, entities, grid, rules);
+        return new World(-1, name, environment, entities, grid, rules);
     }
 
     private EnvVariablesManager getEnvironment() {

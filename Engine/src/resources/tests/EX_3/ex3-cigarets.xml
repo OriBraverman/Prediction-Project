@@ -30,7 +30,7 @@
 				</PRD-property>		
 				<PRD-property type="float">
 					<PRD-name>cigarets-per-month</PRD-name>
-					<PRD-range to="0" from="500"/>
+					<PRD-range to="500" from="0"/>
 					<PRD-value random-initialize="true"/>
 				</PRD-property>							
 			</PRD-properties>

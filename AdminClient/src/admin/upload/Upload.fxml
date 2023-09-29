@@ -9,14 +9,14 @@
 
 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="256.0" spacing="15.0" styleClass="container" stylesheets="@../app/Application.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="admin.upload.UploadController">
    <children>
-      <Button id="upload-button" fx:id="LoadFileButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#uploadWorldFromXMLButtonAction" styleClass="config-button" text="Load File">
+      <Button id="upload-button" fx:id="LoadFileButton" alignment="CENTER" contentDisplay="CENTER" minWidth="100.0" mnemonicParsing="false" onAction="#uploadWorldFromXMLButtonAction" styleClass="config-button" text="Load File">
          <HBox.margin>
             <Insets />
          </HBox.margin>
          <padding>
             <Insets bottom="10.0" left="10.0" top="20.0" />
          </padding></Button>
-      <Label fx:id="fileLabel" text="File:">
+      <Label fx:id="fileLabel" minWidth="35.0" text="File:">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>

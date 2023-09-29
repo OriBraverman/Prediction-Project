@@ -2,6 +2,7 @@ package admin.upload;
 
 
 import admin.app.AppController;
+import admin.management.ManagementController;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
@@ -17,7 +18,7 @@ public class UploadController {
     @FXML private Button LoadFileButton;
     @FXML private Label fileChosenLabel;
     @FXML private Label fileLabel;
-    @FXML private AppController appController;
+    private ManagementController management;
     private final SimpleStringProperty fileChosenStringProperty;
     private final SimpleBooleanProperty isXMLLoaded;
 
@@ -46,7 +47,7 @@ public class UploadController {
         if (selectedFile == null) {
             return;
         }
-        //appController.uploadWorldFromXML(selectedFile);
+        management.uploadWorldFromXML(selectedFile);
     }
 
 
@@ -54,7 +55,7 @@ public class UploadController {
         return isXMLLoaded;
     }
 
-    public void setAppController(AppController appController) {
-        this.appController = appController;
+    public void setManagementController(ManagementController management) {
+        this.management = management;
     }
 }

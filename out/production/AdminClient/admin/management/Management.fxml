@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="400.0" stylesheets="@../app/Application.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="admin.management.ManagementController">
+<AnchorPane prefHeight="400.0" prefWidth="1000.0" stylesheets="@../app/Application.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="admin.management.ManagementController">
    <children>
       <GridPane>
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" />
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="700.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
         </columnConstraints>
@@ -24,7 +24,7 @@
           <RowConstraints maxHeight="336.60002746582035" minHeight="10.0" prefHeight="336.60002746582035" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-             <fx:include fx:id="UploadComponent" source="../upload/Upload.fxml" />
+             <fx:include fx:id="uploadComponent" source="../upload/Upload.fxml" />
             <HBox GridPane.columnIndex="2">
                <children>
                   <Button fx:id="setThreadsCountButton" mnemonicParsing="false" onAction="#setThreadsCountButtonAction" text="Set threads Count">

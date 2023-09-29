@@ -2,6 +2,7 @@ package admin.management;
 
 import admin.app.AppController;
 import admin.upload.UploadController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -9,8 +10,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 
+import java.io.File;
+
 public class ManagementController {
-    @FXML private HBox UploadComponent;
+    @FXML private HBox uploadComponent;
     @FXML private UploadController uploadComponentController;
     @FXML private Button setThreadsCountButton;
     @FXML private TextField setThreadsCountTextField;
@@ -18,14 +21,36 @@ public class ManagementController {
     @FXML private ListView availableSimulationsDetailsListView;
 
     private AppController appController;
-    @FXML public void initialize(){
+    @FXML public void initialize() {
         if (uploadComponentController != null) {
-            uploadComponentController.setAppController(appController);
+            uploadComponentController.setManagementController(this);
         }
     }
 
     public void setAppController(AppController appController) {
         this.appController = appController;
+    }
+
+    public void uploadWorldFromXML(File selectedFile) {
+        try {
+            appController.loadXML(selectedFile.toPath());
+            uploadComponentController.setFileChosenStringProperty(selectedFile.toString());
+            uploadComponentController.isXMLLoadedProperty().set(true);
+            updateAvailableSimulationsDetails();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error loading XML file");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+    }
+
+    private void updateAvailableSimulationsDetails() {
+        if (availableSimulationsDetailsListView != null) {
+            availableSimulationsDetailsListView.getItems().clear();
+        }
+
     }
 
     @FXML
@@ -41,5 +66,9 @@ public class ManagementController {
             alert.showAndWait();
         }
 
+    }
+
+    public UploadController getUploadComponentController() {
+        return uploadComponentController;
     }
 }

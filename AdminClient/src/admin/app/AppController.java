@@ -10,6 +10,8 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,8 +29,8 @@ public class AppController {
     @FXML private TabPane tabPane;
     @FXML private AnchorPane managementComponent;
     @FXML private ManagementController managementComponentController;
-    @FXML private AnchorPane allocationComponent;
-    @FXML private AllocationsController allocationComponentController;
+    @FXML private AnchorPane allocationsComponent;
+    @FXML private AllocationsController allocationsComponentController;
     @FXML private AnchorPane executionsHistoryComponent;
     @FXML private ExecutionsHistoryController executionsHistoryComponentController;
 
@@ -54,8 +56,12 @@ public class AppController {
 
     @FXML public void initialize(){
         setColorThemeComponents();
-        //tabPane.getTabs().get(1).disableProperty().bind(isXMLLoaded.not());
-        //tabPane.getTabs().get(2).disableProperty().bind(isSimulationExecuted.not());
+        if (managementComponentController != null && allocationsComponentController != null
+                && executionsHistoryComponentController != null) {
+            managementComponentController.setAppController(this);
+            allocationsComponentController.setAppController(this);
+            executionsHistoryComponentController.setAppController(this);
+        }
         Platform.runLater(() -> {
             // Set applicationScrollPane to be the same size as the window
             applicationScrollPane.prefWidthProperty().bind(AdminApplication.getStage().widthProperty());
@@ -170,4 +176,7 @@ public class AppController {
         engineImpl.setThreadsCount(threadsCount);
     }
 
+    public void loadXML(Path xmlPath) throws Exception {
+        engineImpl.loadXML(xmlPath);
+    }
 }
