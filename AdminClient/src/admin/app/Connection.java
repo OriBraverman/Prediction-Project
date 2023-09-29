@@ -14,7 +14,7 @@ public class Connection {
         } else {
 
 
-            HttpURL.Builder urlBuilder = HttpURL.parse(URLconst.LOAD_XML_URL);
+            //HttpURL.Builder urlBuilder = HttpURL.parse(URLconst.LOAD_XML_URL);
         }
     }
 }
