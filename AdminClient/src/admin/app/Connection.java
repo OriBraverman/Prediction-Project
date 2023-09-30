@@ -7,14 +7,23 @@ import okhttp3.*;
 import java.nio.file.Path;
 
 public class Connection {
-    private SimpleBooleanProperty isEngineLoaded;
+    private OkHttpClient client;
+
+    public Connection() {
+        this.client = new OkHttpClient();
+    }
     public void loadXML(Path xmlPath) throws Exception {
-        if (isEngineLoaded.get()) {
-            throw new Exception("Engine is already loaded");
-        } else {
-
-
-            //HttpURL.Builder urlBuilder = HttpURL.parse(URLconst.LOAD_XML_URL);
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("xmlFile", xmlPath.toString())
+                .build();
+        Request request = new Request.Builder()
+                .url(URLconst.LOAD_XML_URL)
+                .post(requestBody)
+                .build();
+        Response response = client.newCall(request).execute();
+        if (!response.isSuccessful()) {
+            throw new Exception("Error loading XML file");
         }
     }
 }

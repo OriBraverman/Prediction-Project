@@ -37,6 +37,7 @@ public class AppController {
 
 
     private final EngineImpl engineImpl = new EngineImpl();
+    private final Connection connection = new Connection();
     private final SimpleBooleanProperty isXMLLoaded;
     private final SimpleBooleanProperty isSimulationExecuted;
     private static final List<String> cssList =
@@ -177,6 +178,6 @@ public class AppController {
     }
 
     public void loadXML(Path xmlPath) throws Exception {
-        engineImpl.loadXML(xmlPath);
+        connection.loadXML(xmlPath);
     }
 }
