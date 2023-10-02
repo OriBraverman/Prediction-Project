@@ -20,6 +20,8 @@ import static validator.XMLValidator.*;
 
 import simulation.SimulationExecutionDetails;
 import simulation.SimulationExecutionManager;
+import user.manager.UsersManager;
+import user.manager.UsersManagerImpl;
 import world.definition.World;
 import world.definition.manager.WorldDefinitionManager;
 import world.definition.manager.WorldDefinitionManagerImpl;
@@ -63,11 +65,13 @@ public class EngineImpl implements Serializable, Engine {
     private WorldDefinitionManager worldDefinitionManager;
     private WorldInstanceManager worldInstanceManager;
     private SimulationExecutionManager simulationExecutionManager;
+    private UsersManager usersManager;
 
     public EngineImpl() {
         this.worldDefinitionManager = new WorldDefinitionManagerImpl();
         this.worldInstanceManager = new WorldInstanceManagerImpl();
         this.simulationExecutionManager = null;
+        this.usersManager = new UsersManagerImpl();
     }
 
     private static PRDWorld fromXmlFileToObject(Path path) {
@@ -169,12 +173,18 @@ public class EngineImpl implements Serializable, Engine {
     @Override
     public WorldDTO getWorldDTO(int simulationID) {
         World world = this.simulationExecutionManager.getSimulationDetailsByID(simulationID).getWorld();
+        return getWorldDTO(world);
+    }
+
+    @Override
+    public WorldDTO getWorldDTO(World world) {
+        String name = world.getName();
         List<PropertyDefinitionDTO> environment = getEnvironmentDTO(world);
         List<EntityDefinitionDTO> entities = getEntitiesDTO(world);
         List<RuleDTO> rules = getRulesDTO(world);
         int gridWidth = world.getGridDefinition().getWidth();
         int gridHeight = world.getGridDefinition().getHeight();
-        return new WorldDTO(environment, entities, rules, gridWidth, gridHeight);
+        return new WorldDTO(name, environment, entities, rules, gridWidth, gridHeight);
     }
 
     private List<PropertyDefinitionDTO> getEnvironmentDTO(World world) {
@@ -638,6 +648,21 @@ public class EngineImpl implements Serializable, Engine {
             throw new IllegalArgumentException("Threads count must be at least 1");
         }
         this.simulationExecutionManager.setThreadPoolSize(threadsCountInt);
+    }
+
+    @Override
+    public boolean isUserAdmin(String userName){
+        return usersManager.isUserAdmin(userName);
+    }
+
+    @Override
+    public WorldsDTO getWorldsDTO(){
+        List<WorldDTO> worlds = new ArrayList<>();
+        for (int i = 1; i <= this.worldDefinitionManager.getWorldDefinitionsCount(); i++){
+            worlds.add(getWorldDTO(this.worldDefinitionManager.getWorldDefinitionById(i)));
+        }
+
+        return new WorldsDTO(worlds);
     }
 }
 

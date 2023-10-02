@@ -11,7 +11,7 @@ public class WorldDetailsItem extends TreeItem<String> {
     private TreeItem<String> grid;
 
     public WorldDetailsItem(WorldDTO worldDTO) {
-        super("Simulation Details:");
+        super("World name: " + worldDTO.getName());
         this.worldDTO = worldDTO;
         envVariables = new EnvVariablesTreeItem(worldDTO.getEnvironment());
         entities = new EntitiesTreeItem(worldDTO.getEntities());

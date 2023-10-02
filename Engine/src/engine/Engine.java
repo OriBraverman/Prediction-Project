@@ -7,7 +7,9 @@ import dto.result.HistogramDTO;
 import dto.result.PropertyAvaregeValueDTO;
 import dto.result.PropertyConstistencyDTO;
 import dto.world.WorldDTO;
+import dto.world.WorldsDTO;
 import simulation.SimulationExecutionDetails;
+import world.definition.World;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
@@ -20,6 +22,8 @@ public interface Engine {
     SimulationIDDTO activateSimulation(boolean isBonusActivated, int worldID, EnvVariablesValuesDTO envVariablesValuesDTO, EntitiesPopulationDTO entitiesPopulationDTO);
 
     WorldDTO getWorldDTO(int simulationID);
+
+    WorldDTO getWorldDTO(World world);
 
     void validateEnvVariableValue(int worldID, EnvVariableValueDTO envVariableValueDTO);
 
@@ -72,4 +76,8 @@ public interface Engine {
     void stopThreadPool();
 
     void setThreadsCount(String threadsCount) throws NumberFormatException;
+
+    boolean isUserAdmin(String userName);
+
+    WorldsDTO getWorldsDTO();
 }

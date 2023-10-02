@@ -1,13 +1,10 @@
 package user.details.scene;
 
-import dto.*;
-import dto.world.EntityDefinitionDTO;
-import dto.world.RuleDTO;
-import dto.world.TerminationDTO;
 import dto.world.WorldDTO;
+import dto.world.WorldsDTO;
 import user.app.AppController;
 import user.details.tree.OpenableItem;
-import user.details.tree.WorldDetailsItem;
+import user.details.tree.WorldsDetailsItem;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.SelectionMode;
@@ -33,8 +30,14 @@ public class DetailsController {
         this.appController = appController;
     }
 
-    public void updateDetailsTreeView(WorldDTO worldDTO) {
-        TreeItem<String> root = new WorldDetailsItem(worldDTO);
+    public void updateDetailsTreeView(WorldsDTO worldsDTO) {
+        if (detailsTreeView != null && detailsTreeView.getRoot() instanceof WorldsDetailsItem) {
+            WorldsDetailsItem worldsDetailsItem = (WorldsDetailsItem) detailsTreeView.getRoot();
+            if (sameWorlds(worldsDetailsItem.getWorldsDTO(), worldsDTO)) {
+                return;
+            }
+        }
+        TreeItem<String> root = new WorldsDetailsItem(worldsDTO);
         detailsTreeView.setRoot(root);
         detailsTreeView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         detailsTreeView.setCellFactory(param -> new TreeCell<String>() {
@@ -57,5 +60,27 @@ public class DetailsController {
                 });
             }
         });
+    }
+
+    private boolean sameWorlds(WorldsDTO worldsDTO1, WorldsDTO worldsDTO2) {
+        if (worldsDTO1.getWorlds().size() != worldsDTO2.getWorlds().size()) {
+            return false;
+        }
+        if (worldsDTO1.getWorlds().size() == 0 && worldsDTO2.getWorlds().size() == 0) {
+            return true;
+        }
+        for (WorldDTO worldDTO1 : worldsDTO1.getWorlds()) {
+            boolean found = false;
+            for (WorldDTO worldDTO2 : worldsDTO2.getWorlds()) {
+                if (worldDTO1.getName().equals(worldDTO2.getName())) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -13,11 +13,11 @@ public class UsersManagerImpl implements UsersManager{
     }
 
     @Override
-    public void addUser(String username) {
+    public void addUser(String username, boolean isAdmin) {
         if (users.containsKey(username)){
             throw new IllegalArgumentException("Username already exists, please choose another one");
         }
-        users.put(username, new User(username));
+        users.put(username, new User(username, isAdmin));
     }
 
     @Override
@@ -41,6 +41,17 @@ public class UsersManagerImpl implements UsersManager{
         return users;
     }
 
+    @Override
+    public boolean isUserExists(String username) {
+        return users.containsKey(username);
+    }
 
+    @Override
+    public boolean isUserAdmin(String username) {
+        if (!users.containsKey(username)){
+            throw new IllegalArgumentException("Username does not exist");
+        }
+        return users.get(username).isAdmin();
+    }
 
 }

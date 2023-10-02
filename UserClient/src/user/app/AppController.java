@@ -7,6 +7,7 @@ import dto.result.HistogramDTO;
 import dto.result.PropertyAvaregeValueDTO;
 import dto.result.PropertyConstistencyDTO;
 import dto.world.WorldDTO;
+import dto.world.WorldsDTO;
 import user.UserApplication;
 import user.details.scene.DetailsController;
 import user.execution.scene.NewExecutionController;
@@ -20,10 +21,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import user.results.scene.ResultsController;
+import user.tasks.FetchWorldsDetailsTimer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
 
 public class AppController {
     // FXML design components
@@ -45,9 +48,12 @@ public class AppController {
     @FXML private AnchorPane resultsComponent;
     @FXML private ResultsController resultsComponentController;
 
-
+    public final static int REFRESH_RATE = 1000;
+    private Timer fetchWorldsDetailsTimer;
+    private FetchWorldsDetailsTimer fetchWorldsDetailsTimerTask;
 
     private final EngineImpl engineImpl = new EngineImpl();
+    private final Connection connection = new Connection();
     private final SimpleBooleanProperty isXMLLoaded;
     private final SimpleBooleanProperty isSimulationExecuted;
     private static final List<String> cssList =
@@ -67,8 +73,6 @@ public class AppController {
 
     @FXML public void initialize(){
         setColorThemeComponents();
-        tabPane.getTabs().get(1).disableProperty().bind(isXMLLoaded.not());
-        tabPane.getTabs().get(2).disableProperty().bind(isSimulationExecuted.not());
         if (simulationDetailsComponentController != null && requestsComponentController != null
                 && executionComponentController != null && resultsComponentController != null
                 && resultsComponentController.getSimulationComponentController() != null
@@ -80,6 +84,9 @@ public class AppController {
             resultsComponentController.getSimulationComponentController().setAppController(this);
             resultsComponentController.getSimulationComponentController().getInformationComponentController().setAppController(this);
         }
+        this.fetchWorldsDetailsTimer = new Timer();
+        this.fetchWorldsDetailsTimerTask = new FetchWorldsDetailsTimer(this, connection.getClient());
+        this.fetchWorldsDetailsTimer.scheduleAtFixedRate(fetchWorldsDetailsTimerTask, 0, REFRESH_RATE);
         Platform.runLater(() -> {
             // Set applicationScrollPane to be the same size as the window
             applicationScrollPane.prefWidthProperty().bind(UserApplication.getStage().widthProperty());
@@ -255,5 +262,25 @@ public class AppController {
             }
         }
         applyDesign(cssPath);
+    }
+
+    public void setWorldsDetails(WorldsDTO worldsDTO) {
+        simulationDetailsComponentController.updateDetailsTreeView(worldsDTO);
+    }
+
+    public void showAlert(StatusDTO statusDTO) {
+        if (statusDTO.isSuccessful()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText("Success");
+            alert.setContentText(statusDTO.getMessage());
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error");
+            alert.setContentText(statusDTO.getMessage());
+            alert.showAndWait();
+        }
     }
 }

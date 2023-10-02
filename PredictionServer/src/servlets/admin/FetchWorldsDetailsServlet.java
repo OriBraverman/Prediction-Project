@@ -1,9 +1,12 @@
 package servlets.admin;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dto.StatusDTO;
+import dto.world.WorldsDTO;
+import dto.world.action.AbstructActionDTO;
+import dto.world.action.AbstructActionDTOSerializer;
 import engine.Engine;
-import http.url.Constants;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,26 +16,30 @@ import jakarta.servlet.http.HttpServletResponse;
 import utils.SessionUtils;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.nio.file.Path;
 
+import static http.url.URLconst.FETCH_WORLDS_DETAILS_SRC;
 import static utils.ServletUtils.getEngine;
 
-@WebServlet(name="loadXMLServlet", urlPatterns = "/loadXML")
-public class loadXMLServlet extends HttpServlet {
+@WebServlet(name="fetchWorldsDetailsServlet", urlPatterns = FETCH_WORLDS_DETAILS_SRC)
+public class FetchWorldsDetailsServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Gson gson = new Gson();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(AbstructActionDTO.class, new AbstructActionDTOSerializer())
+                .create();
         String usernameFromSession = SessionUtils.getUsername(request);
         //todo: check permissions
         ServletContext servletContext = getServletContext();
+        /*if (ServletUtils.getEngine(servletContext).isUserAdmin(usernameFromSession)) {
+            throw new ServletException("User is not admin");
+        }*/
         Engine engine = getEngine(servletContext);
-        String xmlPath = gson.fromJson(request.getReader(), String.class);
         try {
-            engine.loadXML(xmlPath);
+            WorldsDTO worldsDTO = engine.getWorldsDTO();
             response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().println(gson.toJson(new StatusDTO(true, "XML file loaded successfully.")));
+            response.getWriter().println(gson.toJson(worldsDTO));
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().println(gson.toJson(new StatusDTO(false, e.getMessage())));
