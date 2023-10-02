@@ -1,15 +1,15 @@
 package user.results.simulation.information;
 
-import dtos.EntitiesPopulationDTO;
-import dtos.EntityPopulationDTO;
-import dtos.result.EntityPopulationByTicksDTO;
-import dtos.result.HistogramDTO;
-import dtos.result.PropertyAvaregeValueDTO;
-import dtos.result.PropertyConstistencyDTO;
-import dtos.SimulationExecutionDetailsDTO;
-import dtos.world.EntityDefinitionDTO;
-import dtos.world.PropertyDefinitionDTO;
-import dtos.world.WorldDTO;
+import dto.EntitiesPopulationDTO;
+import dto.EntityPopulationDTO;
+import dto.result.EntityPopulationByTicksDTO;
+import dto.result.HistogramDTO;
+import dto.result.PropertyAvaregeValueDTO;
+import dto.result.PropertyConstistencyDTO;
+import dto.SimulationExecutionDetailsDTO;
+import dto.world.EntityDefinitionDTO;
+import dto.world.PropertyDefinitionDTO;
+import dto.world.WorldDTO;
 import user.app.AppController;
 import user.results.simulation.SimulationController;
 import javafx.beans.property.SimpleBooleanProperty;

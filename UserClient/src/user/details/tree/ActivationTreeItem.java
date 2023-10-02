@@ -1,6 +1,6 @@
 package user.details.tree;
 
-import dtos.ActivationDTO;
+import dto.ActivationDTO;
 import javafx.scene.control.TreeItem;
 
 public class ActivationTreeItem extends TreeItem<String> implements OpenableItem{

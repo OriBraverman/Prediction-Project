@@ -1,7 +1,7 @@
 package user.details.tree;
 
 
-import dtos.world.PropertyDefinitionDTO;
+import dto.world.PropertyDefinitionDTO;
 import javafx.scene.control.TreeItem;
 
 import java.util.List;

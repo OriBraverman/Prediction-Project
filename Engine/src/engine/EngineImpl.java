@@ -1,15 +1,15 @@
 package engine;
 
 import convertor.Convertor;
-import dtos.*;
-import dtos.gridView.EntityInstanceDTO;
-import dtos.gridView.GridViewDTO;
-import dtos.result.EntityPopulationByTicksDTO;
-import dtos.result.HistogramDTO;
-import dtos.result.PropertyAvaregeValueDTO;
-import dtos.result.PropertyConstistencyDTO;
-import dtos.world.*;
-import dtos.world.action.*;
+import dto.*;
+import dto.gridView.EntityInstanceDTO;
+import dto.gridView.GridViewDTO;
+import dto.result.EntityPopulationByTicksDTO;
+import dto.result.HistogramDTO;
+import dto.result.PropertyAvaregeValueDTO;
+import dto.result.PropertyConstistencyDTO;
+import dto.world.*;
+import dto.world.action.*;
 import resources.schema.generatedWorld.PRDWorld;
 
 import static java.util.Arrays.stream;

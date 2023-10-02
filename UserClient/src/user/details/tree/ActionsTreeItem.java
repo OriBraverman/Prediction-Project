@@ -1,6 +1,6 @@
 package user.details.tree;
 
-import dtos.world.action.AbstructActionDTO;
+import dto.world.action.AbstructActionDTO;
 import javafx.scene.control.TreeItem;
 
 import java.util.List;

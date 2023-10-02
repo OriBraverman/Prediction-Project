@@ -1,13 +1,12 @@
 package admin.app;
 
 import http.url.URLconst;
-import javafx.beans.property.SimpleBooleanProperty;
 import okhttp3.*;
 
 import java.nio.file.Path;
 
 public class Connection {
-    private OkHttpClient client;
+    private static OkHttpClient client;
 
     public Connection() {
         this.client = new OkHttpClient();

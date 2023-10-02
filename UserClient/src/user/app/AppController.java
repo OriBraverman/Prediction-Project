@@ -1,12 +1,12 @@
 package user.app;
 
-import dtos.*;
-import dtos.gridView.GridViewDTO;
-import dtos.result.EntityPopulationByTicksDTO;
-import dtos.result.HistogramDTO;
-import dtos.result.PropertyAvaregeValueDTO;
-import dtos.result.PropertyConstistencyDTO;
-import dtos.world.WorldDTO;
+import dto.*;
+import dto.gridView.GridViewDTO;
+import dto.result.EntityPopulationByTicksDTO;
+import dto.result.HistogramDTO;
+import dto.result.PropertyAvaregeValueDTO;
+import dto.result.PropertyConstistencyDTO;
+import dto.world.WorldDTO;
 import user.UserApplication;
 import user.details.scene.DetailsController;
 import user.execution.scene.NewExecutionController;
@@ -21,12 +21,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import user.results.scene.ResultsController;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class AppController {
     // FXML design components

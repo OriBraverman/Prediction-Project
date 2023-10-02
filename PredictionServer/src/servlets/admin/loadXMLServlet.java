@@ -1,6 +1,7 @@
 package servlets.admin;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import engine.Engine;
 import http.url.Constants;
 import jakarta.servlet.ServletContext;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import utils.SessionUtils;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.file.Path;
 
 @WebServlet(name="loadXMLServlet", urlPatterns = "/loadXML")
@@ -24,7 +26,7 @@ public class loadXMLServlet extends HttpServlet {
         //todo: check permissions
         ServletContext servletContext = getServletContext();
         Engine engine = (Engine) servletContext.getAttribute(Constants.ENGINE);
-        Path xmlPath = (Path) request.getAttribute(???)
+        Path xmlPath = gson.fromJson(request.getReader(), Path.class);
         try {
             engine.loadXML(xmlPath);
             response.setStatus(HttpServletResponse.SC_OK);

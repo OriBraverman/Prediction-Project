@@ -1,15 +1,13 @@
 package engine;
 
-import dtos.*;
-import dtos.gridView.GridViewDTO;
-import dtos.result.EntityPopulationByTicksDTO;
-import dtos.result.HistogramDTO;
-import dtos.result.PropertyAvaregeValueDTO;
-import dtos.result.PropertyConstistencyDTO;
-import dtos.world.WorldDTO;
+import dto.*;
+import dto.gridView.GridViewDTO;
+import dto.result.EntityPopulationByTicksDTO;
+import dto.result.HistogramDTO;
+import dto.result.PropertyAvaregeValueDTO;
+import dto.result.PropertyConstistencyDTO;
+import dto.world.WorldDTO;
 import simulation.SimulationExecutionDetails;
-import world.definition.World;
-import world.execution.WorldInstance;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Path;

@@ -1,16 +1,15 @@
 package user.details.scene;
 
-import dtos.*;
-import dtos.world.EntityDefinitionDTO;
-import dtos.world.RuleDTO;
-import dtos.world.TerminationDTO;
-import dtos.world.WorldDTO;
+import dto.*;
+import dto.world.EntityDefinitionDTO;
+import dto.world.RuleDTO;
+import dto.world.TerminationDTO;
+import dto.world.WorldDTO;
 import user.app.AppController;
 import user.details.tree.OpenableItem;
 import user.details.tree.WorldDetailsItem;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;

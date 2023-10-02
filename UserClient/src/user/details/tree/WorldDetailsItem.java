@@ -1,6 +1,6 @@
 package user.details.tree;
 
-import dtos.world.WorldDTO;
+import dto.world.WorldDTO;
 import javafx.scene.control.TreeItem;
 
 public class WorldDetailsItem extends TreeItem<String> {

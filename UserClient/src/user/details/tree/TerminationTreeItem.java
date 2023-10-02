@@ -1,8 +1,7 @@
 package user.details.tree;
 
-import dtos.world.TerminationDTO;
+import dto.world.TerminationDTO;
 import javafx.scene.control.TreeItem;
-import world.factors.termination.Termination;
 
 public class TerminationTreeItem extends TreeItem<String> implements OpenableItem {
     private TerminationDTO termination;

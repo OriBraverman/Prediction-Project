@@ -1,17 +1,13 @@
 package simulation;
 
-import dtos.SimulationIDListDTO;
-import world.definition.World;
+import dto.SimulationIDListDTO;
 import world.execution.WorldInstance;
-import world.factors.entity.execution.manager.EntityInstanceManager;
-import world.factors.environment.execution.api.ActiveEnvironment;
 
 import java.io.Serializable;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class SimulationExecutionManager implements Serializable {
     private Map<Integer, SimulationRunner> simulations;

@@ -1,10 +1,7 @@
 package user.results.simulation.grid;
 
-import dtos.gridView.EntityInstanceDTO;
-import dtos.gridView.GridViewDTO;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import dto.gridView.EntityInstanceDTO;
+import dto.gridView.GridViewDTO;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;

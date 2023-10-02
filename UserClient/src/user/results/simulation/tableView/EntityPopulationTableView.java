@@ -1,17 +1,12 @@
 package gui.components.main.results.simulation.tableView;
 
-import dtos.EntityPopulationDTO;
-import dtos.SimulationExecutionDetailsDTO;
+import dto.EntityPopulationDTO;
+import dto.SimulationExecutionDetailsDTO;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.HBox;
 
 import java.util.List;
-import java.util.Observable;
 import java.util.stream.Collectors;
 
 public class EntityPopulationTableView {

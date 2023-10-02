@@ -1,9 +1,7 @@
 package user.details.tree;
 
-import dtos.world.RuleDTO;
+import dto.world.RuleDTO;
 import javafx.scene.control.TreeItem;
-
-import java.util.List;
 
 public class RuleTreeItem extends TreeItem<String> {
     private RuleDTO rule;

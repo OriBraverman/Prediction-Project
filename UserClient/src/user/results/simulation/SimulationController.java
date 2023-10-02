@@ -1,10 +1,9 @@
 package user.results.simulation;
 
-import dtos.SimulationExecutionDetailsDTO;
-import dtos.gridView.GridViewDTO;
+import dto.SimulationExecutionDetailsDTO;
+import dto.gridView.GridViewDTO;
 import user.UserApplication;
 import user.app.AppController;
-import user.results.simulation.grid.DynamicGridView;
 import user.results.simulation.grid.GridController;
 import user.results.simulation.information.InformationController;
 import gui.components.main.results.simulation.tableView.EntityPopulationTableView;

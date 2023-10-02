@@ -1,12 +1,10 @@
 package user.execution.scene;
 
-import dtos.*;
-import dtos.world.EntityDefinitionDTO;
-import dtos.world.PropertyDefinitionDTO;
+import dto.*;
+import dto.world.EntityDefinitionDTO;
+import dto.world.PropertyDefinitionDTO;
 import user.app.AppController;
-import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -14,9 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public class NewExecutionController {
     @FXML private Accordion envVariablesAccordion;

@@ -1,23 +1,19 @@
 package user.results.scene;
 
-import dtos.*;
-import dtos.world.EntityDefinitionDTO;
-import dtos.world.PropertyDefinitionDTO;
-import dtos.world.WorldDTO;
+import dto.*;
+import dto.world.EntityDefinitionDTO;
+import dto.world.PropertyDefinitionDTO;
+import dto.world.WorldDTO;
 import user.app.AppController;
 import user.results.simulation.SimulationController;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.chart.BarChart;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
-import simulation.SimulationExecutionDetails;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

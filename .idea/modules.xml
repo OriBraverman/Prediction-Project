@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AdminClient/AdminClient.iml" filepath="$PROJECT_DIR$/AdminClient/AdminClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DTO/DTO.iml" filepath="$PROJECT_DIR$/DTO/DTO.iml" />
       <module fileurl="file://$PROJECT_DIR$/Engine/Engine.iml" filepath="$PROJECT_DIR$/Engine/Engine.iml" />
       <module fileurl="file://$PROJECT_DIR$/PredictionServer/PredictionServer.iml" filepath="$PROJECT_DIR$/PredictionServer/PredictionServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/PredictionThirdPart.iml" filepath="$PROJECT_DIR$/.idea/PredictionThirdPart.iml" />
