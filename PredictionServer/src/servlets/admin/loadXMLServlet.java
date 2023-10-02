@@ -1,7 +1,7 @@
 package servlets.admin;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import dto.StatusDTO;
 import engine.Engine;
 import http.url.Constants;
 import jakarta.servlet.ServletContext;
@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
 
+import static utils.ServletUtils.getEngine;
+
 @WebServlet(name="loadXMLServlet", urlPatterns = "/loadXML")
 public class loadXMLServlet extends HttpServlet {
 
@@ -25,15 +27,15 @@ public class loadXMLServlet extends HttpServlet {
         String usernameFromSession = SessionUtils.getUsername(request);
         //todo: check permissions
         ServletContext servletContext = getServletContext();
-        Engine engine = (Engine) servletContext.getAttribute(Constants.ENGINE);
-        Path xmlPath = gson.fromJson(request.getReader(), Path.class);
+        Engine engine = getEngine(servletContext);
+        String xmlPath = gson.fromJson(request.getReader(), String.class);
         try {
             engine.loadXML(xmlPath);
             response.setStatus(HttpServletResponse.SC_OK);
-            //response.getWriter().println(gson.toJson(new statusDTO(true, Problem.SUCCESS)));
+            response.getWriter().println(gson.toJson(new StatusDTO(true, "XML file loaded successfully.")));
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            //response.getWriter().println(gson.toJson(new statusDTO(false, Problem.INTERNAL_SERVER_ERROR)));
+            response.getWriter().println(gson.toJson(new StatusDTO(false, e.getMessage())));
         }
     }
 }

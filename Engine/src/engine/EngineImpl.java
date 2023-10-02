@@ -54,6 +54,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -86,10 +87,11 @@ public class EngineImpl implements Serializable, Engine {
     }
 
     @Override
-    public void loadXML(Path xmlPath) throws FileNotFoundException {
-        validateFileExists(xmlPath);
-        validateFileIsXML(xmlPath);
-        PRDWorld generatedWorld = fromXmlFileToObject(xmlPath);
+    public void loadXML(String xmlPath) throws FileNotFoundException {
+        Path path = Paths.get(xmlPath);
+        validateFileExists(path);
+        validateFileIsXML(path);
+        PRDWorld generatedWorld = fromXmlFileToObject(path);
         validateXMLContent(generatedWorld);
         Convertor convertor = new Convertor();
         convertor.setGeneratedWorld(generatedWorld);

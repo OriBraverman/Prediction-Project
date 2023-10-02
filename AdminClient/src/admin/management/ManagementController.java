@@ -33,7 +33,7 @@ public class ManagementController {
 
     public void uploadWorldFromXML(File selectedFile) {
         try {
-            appController.loadXML(selectedFile.toPath());
+            appController.loadXML(selectedFile.getPath());
             uploadComponentController.setFileChosenStringProperty(selectedFile.toString());
             uploadComponentController.isXMLLoadedProperty().set(true);
             updateAvailableSimulationsDetails();

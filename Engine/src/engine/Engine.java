@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface Engine {
 
-    void loadXML(Path xmlPath) throws FileNotFoundException;
+    void loadXML(String xmlPath) throws FileNotFoundException;
 
     SimulationIDDTO activateSimulation(boolean isBonusActivated, int worldID, EnvVariablesValuesDTO envVariablesValuesDTO, EntitiesPopulationDTO entitiesPopulationDTO);
 

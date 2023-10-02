@@ -1,9 +1,12 @@
 <component name="libraryTable">
   <library name="okhttp-4.9.1">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/PredictionUtility/src/util/okHTTP/okhttp-4.9.1.jar!/" />
+      <root url="file://$PROJECT_DIR$/PredictionUtility/src/util/okHTTP" />
+      <root url="file://$PROJECT_DIR$/PredictionUtility/src/util/okHTTP" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/PredictionUtility/src/util/okHTTP" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/PredictionUtility/src/util/okHTTP" recursive="false" />
   </library>
 </component>

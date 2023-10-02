@@ -177,7 +177,7 @@ public class AppController {
         engineImpl.setThreadsCount(threadsCount);
     }
 
-    public void loadXML(Path xmlPath) throws Exception {
+    public void loadXML(String xmlPath) throws Exception {
         connection.loadXML(xmlPath);
     }
 }

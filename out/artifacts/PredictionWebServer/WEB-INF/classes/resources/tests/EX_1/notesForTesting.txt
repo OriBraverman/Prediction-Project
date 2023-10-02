@@ -1,0 +1,23 @@
+C:\src\github.com\OriBraverman\PredictionSecondPart\Engine\src\resources\tests\EX_1\ex1-cigarets.xml
+
+C:\src\github.com\OriBraverman\PredictionSecondPart\Engine\src\resources\tests\EX_1\ex1-error-1.xml
+Error loading XML file: ex1-error-1.xml file not found.
+
+C:\src\github.com\OriBraverman\PredictionSecondPart\Engine\src\resources\tests\EX_1\ex1-error-2.xml
+Error loading XML file: Environment name is not unique
+
+C:\src\github.com\OriBraverman\PredictionSecondPart\Engine\src\resources\tests\EX_1\ex1-error-3.xml
+Error loading XML file: Entity property name is not unique
+
+C:\src\github.com\OriBraverman\PredictionSecondPart\Engine\src\resources\tests\EX_1\ex1-error-4.xml
+Error loading XML file: Action refers to non-existing entity
+
+C:\src\github.com\OriBraverman\PredictionSecondPart\Engine\src\resources\tests\EX_1\ex1-error-5.xml
+Error loading XML file: 5. Action avrum refers to non-existing entity property
+
+C:\src\github.com\OriBraverman\PredictionSecondPart\Engine\src\resources\tests\EX_1\ex1-error-6.xml
+Error loading XML file: 6. Condition action has non-numeric argument
+
+C:\src\github.com\OriBraverman\PredictionSecondPart\Engine\src\resources\tests\EX_1\master-ex1.xml
+
+C:\src\github.com\OriBraverman\PredictionSecondPart\Prediction.dat

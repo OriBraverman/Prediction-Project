@@ -6,6 +6,13 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="PredictionServer" />
+          <element id="module-output" name="PredictionUtility" />
+          <element id="module-output" name="Engine" />
+          <element id="module-output" name="DTO" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="okhttp-4.9.1" />
+          <element id="library" level="project" name="gson" />
         </element>
       </element>
     </root>
