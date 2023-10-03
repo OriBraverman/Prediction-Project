@@ -1,28 +1,29 @@
-package user.tasks;
+package admin.tasks;
 
+import admin.management.ManagementController;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.StatusDTO;
 import dto.world.WorldsDTO;
-import dto.world.action.AbstructActionDTODeserializer;
 import dto.world.action.AbstructActionDTO;
+import dto.world.action.AbstructActionDTODeserializer;
 import javafx.application.Platform;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
-import user.app.AppController;
+import admin.app.AppController;
 
 import java.io.IOException;
 import java.util.TimerTask;
 
-import static http.url.URLconst.FETCH_WORLDS_DETAILS_URL;
 import static http.url.Constants.CONTENT_TYPE;
+import static http.url.URLconst.FETCH_WORLDS_DETAILS_URL;
 
 public class FetchWorldsDetailsTimer extends TimerTask {
     private OkHttpClient client;
-    private final AppController appController;
+    private final ManagementController managementController;
 
-    public FetchWorldsDetailsTimer(AppController appController, OkHttpClient client) {
-        this.appController = appController;
+    public FetchWorldsDetailsTimer(ManagementController managementController, OkHttpClient client) {
+        this.managementController = managementController;
         this.client = client;
     }
 
@@ -43,7 +44,7 @@ public class FetchWorldsDetailsTimer extends TimerTask {
                         .create();
                 if (response.code() == 200) {
                     WorldsDTO worldsDTO = gson.fromJson(responseBody, WorldsDTO.class);
-                    Platform.runLater(() -> appController.setWorldsDetails(worldsDTO));
+                    //Platform.runLater(() -> managementController.setWorldsDetails(worldsDTO));
                 } else {
                     StatusDTO statusDTO = gson.fromJson(responseBody, StatusDTO.class);
                     Platform.runLater(() -> {});
@@ -53,7 +54,7 @@ public class FetchWorldsDetailsTimer extends TimerTask {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 //System.out.println("FetchWorldsDetailsTimer: onFailure");
-                Platform.runLater(() -> appController.showAlert(new StatusDTO(false, e.getMessage())));
+                //Platform.runLater(() -> managementController.showAlert(new StatusDTO(false, e.getMessage())));
             }
         });
     }

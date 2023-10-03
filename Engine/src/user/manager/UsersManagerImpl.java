@@ -5,19 +5,21 @@ import user.User;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UsersManagerImpl implements UsersManager{
+public class UsersManagerImpl implements UsersManager {
+    private Boolean isAdminLoggedIn;
     private Map<String, User> users;
 
     public UsersManagerImpl() {
+        this.isAdminLoggedIn = false;
         this.users = new HashMap<>();
     }
 
     @Override
-    public void addUser(String username, boolean isAdmin) {
+    public void addUser(String username) {
         if (users.containsKey(username)){
             throw new IllegalArgumentException("Username already exists, please choose another one");
         }
-        users.put(username, new User(username, isAdmin));
+        users.put(username, new User(username));
     }
 
     @Override
@@ -47,11 +49,12 @@ public class UsersManagerImpl implements UsersManager{
     }
 
     @Override
-    public boolean isUserAdmin(String username) {
-        if (!users.containsKey(username)){
-            throw new IllegalArgumentException("Username does not exist");
-        }
-        return users.get(username).isAdmin();
+    public boolean isAdminLoggedIn() {
+        return isAdminLoggedIn;
     }
 
+    @Override
+    public void setAdminLoggedIn(boolean adminLoggedIn) {
+        isAdminLoggedIn = adminLoggedIn;
+    }
 }

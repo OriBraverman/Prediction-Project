@@ -651,11 +651,6 @@ public class EngineImpl implements Serializable, Engine {
     }
 
     @Override
-    public boolean isUserAdmin(String userName){
-        return usersManager.isUserAdmin(userName);
-    }
-
-    @Override
     public WorldsDTO getWorldsDTO(){
         List<WorldDTO> worlds = new ArrayList<>();
         for (int i = 1; i <= this.worldDefinitionManager.getWorldDefinitionsCount(); i++){

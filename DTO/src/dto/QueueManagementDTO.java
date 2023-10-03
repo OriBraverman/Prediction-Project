@@ -22,4 +22,13 @@ public class QueueManagementDTO {
     public int getCompleted() {
         return completed;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof QueueManagementDTO) {
+            QueueManagementDTO other = (QueueManagementDTO) obj;
+            return this.pending == other.pending && this.active == other.active && this.completed == other.completed;
+        }
+        return false;
+    }
 }

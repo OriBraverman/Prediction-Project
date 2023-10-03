@@ -2,7 +2,7 @@ package http.url;
 
 public enum Client {
     USER, ADMIN, UNAUTHORIZED;
-    public static Client fromString(String str) {
+    public static Client getClientTypeFromString(String str) {
         if (str == null) {
             return UNAUTHORIZED;
         }

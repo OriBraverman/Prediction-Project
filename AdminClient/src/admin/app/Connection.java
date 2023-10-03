@@ -34,8 +34,38 @@ public class Connection {
 
             // Handle the response as needed
             String responseBody = response.body().string();
-            // You can parse the response JSON if needed
-            // YourResponseClass responseObj = gson.fromJson(responseBody, YourResponseClass.class);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+
+    public OkHttpClient getClient() {
+        return client;
+    }
+
+    public void setThreadsCount(String threadsCount) {
+        // Create a JSON request body containing the Path object
+        String jsonRequest = gson.toJson(threadsCount);
+        RequestBody body = RequestBody.create(jsonRequest,
+                MediaType.parse("application/json"));
+
+        // Create the request
+        Request request = new Request.Builder()
+                .url(URLconst.SET_THREADS_COUNT_URL)
+                .post(body)
+                .build();
+
+        // Send the request
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new Exception("Error setting threads count");
+            }
+
+            // Handle the response as needed
+            String responseBody = response.body().string();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

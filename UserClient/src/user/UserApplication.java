@@ -16,7 +16,7 @@ public class UserApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("User Application");
-        Parent load = FXMLLoader.load(getClass().getResource("app/Application.fxml"));
+        Parent load = FXMLLoader.load(getClass().getResource("login/login.fxml"));
         primaryStage.getIcons().add(
                 new Image(
                         UserApplication.class.getResourceAsStream( "app/prediction-icon.png")));

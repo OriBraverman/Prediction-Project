@@ -4,12 +4,14 @@ import admin.AdminApplication;
 import admin.allocations.AllocationsController;
 import admin.executionHistory.ExecutionsHistoryController;
 import admin.management.ManagementController;
+import dto.StatusDTO;
 import engine.EngineImpl;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import okhttp3.OkHttpClient;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -174,10 +176,30 @@ public class AppController {
     }
 
     public void setThreadsCount(String threadsCount) throws NumberFormatException {
-        engineImpl.setThreadsCount(threadsCount);
+        connection.setThreadsCount(threadsCount);
     }
 
     public void loadXML(String xmlPath) throws Exception {
         connection.loadXML(xmlPath);
+    }
+
+    public OkHttpClient getClient() {
+        return connection.getClient();
+    }
+
+    public void showAlert(StatusDTO statusDTO) {
+        if (statusDTO.isSuccessful()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText("Success");
+            alert.setContentText(statusDTO.getMessage());
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error");
+            alert.setContentText(statusDTO.getMessage());
+            alert.showAndWait();
+        }
     }
 }

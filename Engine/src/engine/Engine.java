@@ -77,7 +77,5 @@ public interface Engine {
 
     void setThreadsCount(String threadsCount) throws NumberFormatException;
 
-    boolean isUserAdmin(String userName);
-
     WorldsDTO getWorldsDTO();
 }

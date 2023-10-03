@@ -8,6 +8,7 @@ import dto.result.PropertyAvaregeValueDTO;
 import dto.result.PropertyConstistencyDTO;
 import dto.world.WorldDTO;
 import dto.world.WorldsDTO;
+import okhttp3.OkHttpClient;
 import user.UserApplication;
 import user.details.scene.DetailsController;
 import user.execution.scene.NewExecutionController;
@@ -56,15 +57,16 @@ public class AppController {
     private final Connection connection = new Connection();
     private final SimpleBooleanProperty isXMLLoaded;
     private final SimpleBooleanProperty isSimulationExecuted;
+
+    public enum Tab {
+        SIMULATION_DETAILS, REQUESTS, EXECUTION, RESULTS
+    };
     private static final List<String> cssList =
             new ArrayList<>(Arrays.asList(
                     "Application.css", "DarkMode-theme.css",
                     "HappyMode-theme.css", "OrangeApplication.css",
                     "GreenApplication.css"));
 
-    public enum Tab {
-        SIMULATION_DETAILS, REQUESTS, EXECUTION, RESULTS
-    };
 
     public AppController() {
         this.isXMLLoaded = new SimpleBooleanProperty(false);
@@ -84,15 +86,16 @@ public class AppController {
             resultsComponentController.getSimulationComponentController().setAppController(this);
             resultsComponentController.getSimulationComponentController().getInformationComponentController().setAppController(this);
         }
-        this.fetchWorldsDetailsTimer = new Timer();
-        this.fetchWorldsDetailsTimerTask = new FetchWorldsDetailsTimer(this, connection.getClient());
-        this.fetchWorldsDetailsTimer.scheduleAtFixedRate(fetchWorldsDetailsTimerTask, 0, REFRESH_RATE);
         Platform.runLater(() -> {
             // Set applicationScrollPane to be the same size as the window
             applicationScrollPane.prefWidthProperty().bind(UserApplication.getStage().widthProperty());
             applicationScrollPane.prefHeightProperty().bind(UserApplication.getStage().heightProperty());
             applicationScrollPane.setFitToWidth(true);
             applicationScrollPane.setFitToHeight(true);
+
+            this.fetchWorldsDetailsTimer = new Timer();
+            this.fetchWorldsDetailsTimerTask = new FetchWorldsDetailsTimer(this, connection.getClient());
+            this.fetchWorldsDetailsTimer.scheduleAtFixedRate(fetchWorldsDetailsTimerTask, 0, REFRESH_RATE);
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 engineImpl.deleteInDepthMemoryFolder();
@@ -282,5 +285,13 @@ public class AppController {
             alert.setContentText(statusDTO.getMessage());
             alert.showAndWait();
         }
+    }
+
+    public void setOkHttpClient(OkHttpClient client) {
+        connection.setClient(client);
+    }
+
+    public void setUserName(String text) {
+
     }
 }

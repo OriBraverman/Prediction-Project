@@ -6,7 +6,7 @@ import java.util.Map;
 
 public interface UsersManager {
 
-    void addUser(String username, boolean isAdmin);
+    void addUser(String username);
 
     void removeUser(String username);
 
@@ -16,6 +16,7 @@ public interface UsersManager {
 
     boolean isUserExists(String username);
 
-    boolean isUserAdmin(String username);
+    boolean isAdminLoggedIn();
 
+    void setAdminLoggedIn(boolean adminLoggedIn);
 }

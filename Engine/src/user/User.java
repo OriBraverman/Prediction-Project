@@ -9,11 +9,9 @@ import java.util.stream.Collectors;
 
 public class User {
     private String username;
-    private boolean isAdmin;
     private Map<Integer, UserRequest> requests;
 
-    public User(String username, boolean isAdmin) {
-        this.isAdmin = isAdmin;
+    public User(String username) {
         this.username = username;
         this.requests = new HashMap<>();
     }
@@ -54,13 +52,5 @@ public class User {
                 .stream()
                 .filter(request -> !request.isApproved())
                 .collect(Collectors.toList());
-    }
-
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
     }
 }
