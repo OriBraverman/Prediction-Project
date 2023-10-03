@@ -7,6 +7,7 @@ import dto.world.WorldsDTO;
 import dto.world.action.AbstructActionDTO;
 import dto.world.action.AbstructActionDTOSerializer;
 import engine.Engine;
+import http.url.Client;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -30,11 +31,12 @@ public class FetchWorldsDetailsServlet extends HttpServlet {
                 .registerTypeAdapter(AbstructActionDTO.class, new AbstructActionDTOSerializer())
                 .create();
         String usernameFromSession = SessionUtils.getUsername(request);
-        //todo: check permissions
         ServletContext servletContext = getServletContext();
-        /*if (ServletUtils.getEngine(servletContext).isUserAdmin(usernameFromSession)) {
-            throw new ServletException("User is not admin");
-        }*/
+        if (SessionUtils.getTypeOfClient(request).equals(Client.UNAUTHORIZED)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().println(gson.toJson(new StatusDTO(false, "unauthorized client type")));
+            return;
+        }
         Engine engine = getEngine(servletContext);
         try {
             WorldsDTO worldsDTO = engine.getWorldsDTO();

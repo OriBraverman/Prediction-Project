@@ -5,11 +5,17 @@ import com.google.gson.GsonBuilder;
 import dto.QueueManagementDTO;
 import dto.StatusDTO;
 import engine.Engine;
+import http.url.Client;
+import http.url.Constants;
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import utils.SessionUtils;
+
+import java.io.IOException;
 
 import static http.url.URLconst.FETCH_QUEUE_MANAGEMENT_SRC;
 import static utils.ServletUtils.getEngine;
@@ -17,14 +23,15 @@ import static utils.ServletUtils.getEngine;
 @WebServlet(name="fetchQueueManagementServlet", urlPatterns = FETCH_QUEUE_MANAGEMENT_SRC)
 public class FetchQueueManagementServlet extends HttpServlet {
     @Override
-    protected void doGet(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response) throws jakarta.servlet.ServletException, java.io.IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Gson gson = new GsonBuilder().create();
         String usernameFromSession = SessionUtils.getUsername(request);
-        //todo: check permissions
         ServletContext servletContext = getServletContext();
-        /*if (ServletUtils.getEngine(servletContext).isUserAdmin(usernameFromSession)) {
-            throw new ServletException("User is not admin");
-        }*/
+        if (SessionUtils.getTypeOfClient(request) != Client.ADMIN) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().println(gson.toJson(new StatusDTO(false, "unauthorized client type")));
+            return;
+        }
         Engine engine = getEngine(servletContext);
         try {
             QueueManagementDTO queueManagementDTO = engine.getQueueManagementDTO();

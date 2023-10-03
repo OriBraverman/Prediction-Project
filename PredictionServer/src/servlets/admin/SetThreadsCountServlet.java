@@ -18,11 +18,12 @@ public class SetThreadsCountServlet extends HttpServlet {
     protected void doPost(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response) throws jakarta.servlet.ServletException, java.io.IOException {
         Gson gson = new Gson();
         String usernameFromSession = SessionUtils.getUsername(request);
-        //todo: check permissions
         ServletContext servletContext = getServletContext();
-        /*if (ServletUtils.getEngine(servletContext).isUserAdmin(usernameFromSession)){
-            throw new ServletException("User is not admin");
-        }*/
+        if (SessionUtils.getTypeOfClient(request) != http.url.Client.ADMIN) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().println(gson.toJson(new StatusDTO(false, "unauthorized client type")));
+            return;
+        }
         Engine engine = getEngine(servletContext);
         String threadsCount = gson.fromJson(request.getReader(), String.class);
         try {

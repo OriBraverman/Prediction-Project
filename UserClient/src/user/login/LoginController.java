@@ -1,8 +1,10 @@
 package user.login;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import user.UserApplication;
 import user.app.AppController;
 import com.google.gson.Gson;
@@ -93,6 +95,16 @@ public class LoginController {
                     Scene appScene = new Scene(app);
                     Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     primaryStage.setScene(appScene);
+
+                    // Calculate the center of the screen
+                    Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+                    double centerX = screenBounds.getWidth() / 2;
+                    double centerY = screenBounds.getHeight() / 2;
+
+                    // Set the app window to be in the center of the screen
+                    primaryStage.setX(centerX - primaryStage.getWidth() / 2);
+                    primaryStage.setY(centerY - primaryStage.getHeight() / 2);
+                    
                     primaryStage.show();
                 });
             }

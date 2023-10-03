@@ -1,11 +1,17 @@
 package utils;
 
+import com.google.gson.Gson;
+import dto.StatusDTO;
 import engine.Engine;
 import engine.EngineImpl;
+import http.url.Client;
 import http.url.Constants;
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletResponse;
 import user.manager.UsersManager;
 import user.manager.UsersManagerImpl;
+
+import java.io.IOException;
 
 public class ServletUtils {
     private static final String USER_MANAGER_ATTRIBUTE_NAME = "userManager";
@@ -17,6 +23,7 @@ public class ServletUtils {
     private static final Object userManagerLock = new Object();
     private static final Object adminManagerLock = new Object();
     private static final Object engineLock = new Object();
+
 
     public static UsersManager getUserManager(ServletContext servletContext) {
         synchronized (userManagerLock) {
