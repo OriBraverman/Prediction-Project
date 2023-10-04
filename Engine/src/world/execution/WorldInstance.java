@@ -1,5 +1,6 @@
 package world.execution;
 
+import requests.UserRequest;
 import world.definition.World;
 import world.factors.entity.execution.manager.EntityInstanceManager;
 import world.factors.environment.execution.api.ActiveEnvironment;
@@ -18,4 +19,6 @@ public interface WorldInstance {
     GridInstance getGridInstance();
 
     Termination getTermination();
+
+    UserRequest getUserRequest();
 }

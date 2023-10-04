@@ -1,6 +1,6 @@
 package admin.tasks;
 
-import admin.management.ManagementController;
+import admin.management.scene.ManagementController;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.StatusDTO;
@@ -10,7 +10,6 @@ import dto.world.action.AbstructActionDTODeserializer;
 import javafx.application.Platform;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
-import admin.app.AppController;
 
 import java.io.IOException;
 import java.util.TimerTask;
@@ -44,7 +43,7 @@ public class FetchWorldsDetailsTimer extends TimerTask {
                         .create();
                 if (response.code() == 200) {
                     WorldsDTO worldsDTO = gson.fromJson(responseBody, WorldsDTO.class);
-                    //Platform.runLater(() -> managementController.setWorldsDetails(worldsDTO));
+                    Platform.runLater(() -> managementController.updateDetailsTreeView(worldsDTO));
                 } else {
                     StatusDTO statusDTO = gson.fromJson(responseBody, StatusDTO.class);
                     Platform.runLater(() -> {});

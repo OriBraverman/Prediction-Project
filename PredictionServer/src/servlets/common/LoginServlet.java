@@ -1,4 +1,4 @@
-package servlets.user;
+package servlets.common;
 
 import com.google.gson.Gson;
 import dto.StatusDTO;
@@ -26,7 +26,7 @@ public class LoginServlet extends HttpServlet {
         Gson gson = new Gson();
         String usernameFromSession = SessionUtils.getUsername(request);
         Client typeOfClient = Client.getClientTypeFromString(request.getParameter(Constants.CLIENT_TYPE));
-        UsersManager userManager = ServletUtils.getUserManager(getServletContext());
+        UsersManager userManager = ServletUtils.getUsersManager(getServletContext());
 
         if (typeOfClient.equals(Client.UNAUTHORIZED)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

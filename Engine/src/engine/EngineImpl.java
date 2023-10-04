@@ -65,13 +65,11 @@ public class EngineImpl implements Serializable, Engine {
     private WorldDefinitionManager worldDefinitionManager;
     private WorldInstanceManager worldInstanceManager;
     private SimulationExecutionManager simulationExecutionManager;
-    private UsersManager usersManager;
 
     public EngineImpl() {
         this.worldDefinitionManager = new WorldDefinitionManagerImpl();
         this.worldInstanceManager = new WorldInstanceManagerImpl();
         this.simulationExecutionManager = null;
-        this.usersManager = new UsersManagerImpl();
     }
 
     private static PRDWorld fromXmlFileToObject(Path path) {
@@ -499,12 +497,13 @@ public class EngineImpl implements Serializable, Engine {
     @Override
     public QueueManagementDTO getQueueManagementDTO() {
         if (this.simulationExecutionManager == null) {
-            return new QueueManagementDTO(0, 0, 0);
+            return new QueueManagementDTO(0, 0, 0, 0);
         }
+        int capacity = this.simulationExecutionManager.getThreadsCount();
         int pendingSimulations = this.simulationExecutionManager.getPendingSimulationsCount();
         int activeSimulations = this.simulationExecutionManager.getActiveSimulationsCount();
         int completedSimulations = this.simulationExecutionManager.getCompletedSimulationsCount();
-        return new QueueManagementDTO(pendingSimulations, activeSimulations, completedSimulations);
+        return new QueueManagementDTO(capacity, pendingSimulations, activeSimulations, completedSimulations);
     }
 
     @Override

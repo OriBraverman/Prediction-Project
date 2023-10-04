@@ -56,7 +56,7 @@
               <tabs>
                 <Tab text="Management">
                      <content>
-                         <fx:include fx:id="managementComponent" source="../management/Management.fxml"/>
+                         <fx:include fx:id="managementComponent" source="../management/scene/Management.fxml"/>
                      </content>
                 </Tab>
                 <Tab text="Allocations">

@@ -1,13 +1,10 @@
 package admin.tasks;
 
-import admin.management.ManagementController;
+import admin.management.scene.ManagementController;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.QueueManagementDTO;
 import dto.StatusDTO;
-import dto.world.WorldsDTO;
-import dto.world.action.AbstructActionDTO;
-import dto.world.action.AbstructActionDTODeserializer;
 import javafx.application.Platform;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +14,6 @@ import java.util.TimerTask;
 
 import static http.url.Constants.CONTENT_TYPE;
 import static http.url.URLconst.FETCH_QUEUE_MANAGEMENT_URL;
-import static http.url.URLconst.FETCH_WORLDS_DETAILS_URL;
 
 public class FetchQueueManagementTimer extends TimerTask {
     private final OkHttpClient client;

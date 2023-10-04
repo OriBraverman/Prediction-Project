@@ -17,7 +17,7 @@ public class AbstructActionDTOSerializer implements JsonSerializer<AbstructActio
     @Override
     public JsonElement serialize(AbstructActionDTO src, Type typeOfSrc, JsonSerializationContext context) {
         JsonElement jsonElement = context.serialize(src);
-        jsonElement.getAsJsonObject().addProperty("type", src.getClass().getSimpleName());
+        jsonElement.getAsJsonObject().addProperty("type", src.getType());
         return jsonElement;
     }
 }

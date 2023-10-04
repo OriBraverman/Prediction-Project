@@ -10,23 +10,23 @@ public class AbstructActionDTODeserializer implements JsonDeserializer<AbstructA
         JsonObject jsonObject = json.getAsJsonObject();
         // Parse the JSON and create an appropriate subclass of AbstructActionDTO
         // Example: Assuming there's a field named "type" in the JSON to determine the actual subclass to create
-        String type = jsonObject.get("type").getAsString();
+        String type = jsonObject.get("type").getAsString().toLowerCase();
         switch (type) {
-            case "IncreaseActionDTO":
+            case "increase":
                 return context.deserialize(jsonObject, IncreaseActionDTO.class);
-            case "DecreaseActionDTO":
+            case "decrease":
                 return context.deserialize(jsonObject, DecreaseActionDTO.class);
-            case "CalculationActionDTO":
+            case "calculation":
                 return context.deserialize(jsonObject, CalculationActionDTO.class);
-            case "ConditionActionDTO":
+            case "condition":
                 return context.deserialize(jsonObject, ConditionActionDTO.class);
-            case "SetActionDTO":
+            case "set":
                 return context.deserialize(jsonObject, SetActionDTO.class);
-            case "KillActionDTO":
+            case "kill":
                 return context.deserialize(jsonObject, KillActionDTO.class);
-            case "ReplaceActionDTO":
+            case "replace":
                 return context.deserialize(jsonObject, ReplaceActionDTO.class);
-            case "ProximityActionDTO":
+            case "proximity":
                 return context.deserialize(jsonObject, ProximityActionDTO.class);
             default:
                     throw new JsonParseException("Unknown type: " + type);

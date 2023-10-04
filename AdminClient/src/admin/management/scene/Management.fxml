@@ -4,17 +4,19 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="400.0" prefWidth="1000.0" stylesheets="@../app/Application.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="admin.management.ManagementController">
+<AnchorPane prefHeight="400.0" prefWidth="1000.0" stylesheets="@../../app/Application.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="admin.management.scene.ManagementController">
    <children>
       <GridPane>
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" prefWidth="700.0" />
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="350.0" />
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="350.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
         </columnConstraints>
@@ -24,8 +26,8 @@
           <RowConstraints maxHeight="336.60002746582035" minHeight="10.0" prefHeight="336.60002746582035" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-             <fx:include fx:id="uploadComponent" source="../upload/Upload.fxml" />
-            <HBox GridPane.columnIndex="2">
+             <fx:include fx:id="uploadComponent" source="../../upload/Upload.fxml" GridPane.columnSpan="2" />
+            <HBox GridPane.columnIndex="3">
                <children>
                   <Button fx:id="setThreadsCountButton" mnemonicParsing="false" onAction="#setThreadsCountButtonAction" text="Set threads Count">
                      <HBox.margin>
@@ -39,8 +41,9 @@
                   </TextField>
                </children>
             </HBox>
-            <ListView fx:id="threadPoolManagementListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <ListView fx:id="availableSimulationsDetailsListView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
+            <TreeView fx:id="detailsTreeView" layoutX="19.0" layoutY="19.0" prefHeight="400.0" prefWidth="314.0" GridPane.rowIndex="2" />
+            <TreeView fx:id="fullInfoTree" layoutX="350.0" layoutY="19.0" prefHeight="400.0" prefWidth="569.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ListView fx:id="threadPoolManagementListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>

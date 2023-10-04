@@ -1,6 +1,8 @@
 package requests.manager;
 
+import requests.RequestStatus;
 import requests.UserRequest;
+import world.factors.termination.Termination;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,15 +16,15 @@ public class RequestsMangaerImpl implements RequestsManager {
     }
 
     @Override
-    public int addRequest(String simulationName, int executionsCount) {
+    public int addRequest(String simulationName, int executionsCount, Termination termination) {
         nextId++;
-        requests.put(nextId, new UserRequest(nextId, simulationName, executionsCount, false));
+        requests.put(nextId, new UserRequest(nextId, simulationName, termination, executionsCount));
         return nextId;
     }
 
     @Override
-    public void setRequestStatus(int id, boolean approved) {
-        requests.get(id).setApproved(approved);
+    public void setRequestStatus(int id, RequestStatus status) {
+        requests.get(id).setRequestStatus(status);
     }
 
     @Override

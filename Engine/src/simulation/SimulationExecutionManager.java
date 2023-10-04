@@ -13,11 +13,14 @@ public class SimulationExecutionManager implements Serializable {
     private Map<Integer, SimulationRunner> simulations;
     private Map<Integer, SimulationExecutionDetails> simulationDetails;
     private int currentSimulationIndex;
+    private int threadsCount;
+
     ExecutorService threadExecutor;
     public SimulationExecutionManager(int threadCount) {
         this.simulations = new HashMap<>();
         this.simulationDetails = new HashMap<>();
         this.currentSimulationIndex = 0;
+        this.threadsCount = threadCount;
         this.threadExecutor = Executors.newFixedThreadPool(threadCount);
     }
 
@@ -157,9 +160,14 @@ public class SimulationExecutionManager implements Serializable {
 
     public void setThreadPoolSize(int threadsCount){
         ExecutorService newThreadPoolExecutor = Executors.newFixedThreadPool(threadsCount);
+        this.threadsCount = threadsCount;
         for (Runnable task : this.threadExecutor.shutdownNow()) {
             newThreadPoolExecutor.submit(task);
         }
         this.threadExecutor = newThreadPoolExecutor;
+    }
+
+    public int getThreadsCount(){
+        return this.threadsCount;
     }
 }

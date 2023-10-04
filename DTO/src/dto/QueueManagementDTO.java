@@ -4,11 +4,13 @@ public class QueueManagementDTO {
     private int pending;
     private int active;
     private int completed;
+    private int capacity;
 
-    public QueueManagementDTO(int pending, int active, int completed) {
+    public QueueManagementDTO(int capacity, int pending, int active, int completed) {
         this.pending = pending;
         this.active = active;
         this.completed = completed;
+        this.capacity = capacity;
     }
 
     public int getPending() {
@@ -23,6 +25,8 @@ public class QueueManagementDTO {
         return completed;
     }
 
+    public int getCapacity(){ return this.capacity; }
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof QueueManagementDTO) {
@@ -31,4 +35,5 @@ public class QueueManagementDTO {
         }
         return false;
     }
+
 }

@@ -54,7 +54,7 @@ public class AppController {
     private FetchWorldsDetailsTimer fetchWorldsDetailsTimerTask;
 
     private final EngineImpl engineImpl = new EngineImpl();
-    private final Connection connection = new Connection();
+    private final Connection connection = new Connection(this);
     private final SimpleBooleanProperty isXMLLoaded;
     private final SimpleBooleanProperty isSimulationExecuted;
 
@@ -101,6 +101,7 @@ public class AppController {
                 engineImpl.deleteInDepthMemoryFolder();
                 resultsComponentController.stopExecutorService();
                 engineImpl.stopThreadPool();
+                connection.sendLogOut();
             }));
         });
     }

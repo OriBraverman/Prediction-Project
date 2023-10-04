@@ -3,7 +3,7 @@ package admin.app;
 import admin.AdminApplication;
 import admin.allocations.AllocationsController;
 import admin.executionHistory.ExecutionsHistoryController;
-import admin.management.ManagementController;
+import admin.management.scene.ManagementController;
 import dto.StatusDTO;
 import engine.EngineImpl;
 import javafx.application.Platform;
@@ -13,7 +13,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import okhttp3.OkHttpClient;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +38,7 @@ public class AppController {
 
 
     private final EngineImpl engineImpl = new EngineImpl();
-    private final Connection connection = new Connection();
+    private final Connection connection = new Connection(this);
     private final SimpleBooleanProperty isXMLLoaded;
     private final SimpleBooleanProperty isSimulationExecuted;
     private static final List<String> cssList =
@@ -58,6 +57,7 @@ public class AppController {
     }
 
     @FXML public void initialize(){
+        connection.sendLogIn();
         setColorThemeComponents();
         if (managementComponentController != null && allocationsComponentController != null
                 && executionsHistoryComponentController != null) {
@@ -75,6 +75,7 @@ public class AppController {
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 engineImpl.deleteInDepthMemoryFolder();
                 engineImpl.stopThreadPool();
+                connection.sendLogOut();
             }));
         });
     }

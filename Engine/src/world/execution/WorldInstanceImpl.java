@@ -1,5 +1,6 @@
 package world.execution;
 
+import requests.UserRequest;
 import world.definition.World;
 import world.factors.entity.execution.manager.EntityInstanceManager;
 import world.factors.environment.execution.api.ActiveEnvironment;
@@ -14,14 +15,16 @@ public class WorldInstanceImpl implements WorldInstance {
     private EntityInstanceManager entityInstanceManager;
     private GridInstance gridInstance;
     private Termination termination;
+    private UserRequest userRequest;
 
-    public WorldInstanceImpl(World world, int id, ActiveEnvironment activeEnvironment, EntityInstanceManager entityInstanceManager, Termination termination) {
+    public WorldInstanceImpl(World world, int id, ActiveEnvironment activeEnvironment, EntityInstanceManager entityInstanceManager, Termination termination, UserRequest userRequest) {
         this.world = world;
         this.id = id;
         this.activeEnvironment = activeEnvironment;
         this.entityInstanceManager = entityInstanceManager;
         this.gridInstance = new GridInstanceImpl(world.getGridDefinition());
         this.termination = termination;
+        this.userRequest = userRequest;
     }
 
     @Override
@@ -51,4 +54,9 @@ public class WorldInstanceImpl implements WorldInstance {
 
     @Override
     public Termination getTermination() {return this.termination; }
+
+    @Override
+    public UserRequest getUserRequest() {
+        return userRequest;
+    }
 }

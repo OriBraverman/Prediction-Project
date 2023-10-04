@@ -1,8 +1,7 @@
 package admin.upload;
 
 
-import admin.app.AppController;
-import admin.management.ManagementController;
+import admin.management.scene.ManagementController;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;

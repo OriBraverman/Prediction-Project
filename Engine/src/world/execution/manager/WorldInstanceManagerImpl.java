@@ -1,5 +1,6 @@
 package world.execution.manager;
 
+import requests.UserRequest;
 import world.definition.World;
 import world.execution.WorldInstance;
 import world.execution.WorldInstanceImpl;
@@ -20,9 +21,9 @@ public class WorldInstanceManagerImpl implements WorldInstanceManager {
     }
 
     @Override
-    public WorldInstance create(World world, ActiveEnvironment activeEnvironment, EntityInstanceManager entityInstanceManager, Termination termination) {
+    public WorldInstance create(World world, ActiveEnvironment activeEnvironment, EntityInstanceManager entityInstanceManager, Termination termination, UserRequest userRequest) {
         nextId++;
-        WorldInstance newWorldInstance = new WorldInstanceImpl(world, nextId, activeEnvironment, entityInstanceManager, termination);
+        WorldInstance newWorldInstance = new WorldInstanceImpl(world, nextId, activeEnvironment, entityInstanceManager, termination, userRequest);
         worldInstances.put(nextId, newWorldInstance);
         return newWorldInstance;
     }
