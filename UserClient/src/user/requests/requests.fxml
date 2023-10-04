@@ -38,7 +38,7 @@
                         <Insets right="10.0" />
                      </padding>
                   </Label>
-                  <TextField>
+                  <TextField fx:id="simulationNameLabel">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
@@ -48,20 +48,20 @@
                         <Insets right="10.0" />
                      </padding>
                   </Label>
-                  <TextField />
+                  <TextField fx:id="amountLabel" />
                </children>
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </HBox>
-            <Button mnemonicParsing="false" text="Submit!" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-            <TableView prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
+            <Button fx:id="submitRequestButton" mnemonicParsing="false" onAction="#submitRequestButtonAction" text="Submit!" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <TableView fx:id="RequestsTableView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
               <columns>
                 <TableColumn prefWidth="75.0" text="C1" />
                 <TableColumn prefWidth="75.0" text="C2" />
               </columns>
             </TableView>
-            <Button mnemonicParsing="false" text="Execute!" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+            <Button fx:id="executeRequestButton" mnemonicParsing="false" onAction="#executeRequestButtonAction" text="Execute!" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
             <HBox GridPane.rowIndex="1">
                <children>
                   <Label text="Termination User:">
@@ -69,7 +69,7 @@
                         <Insets right="10.0" />
                      </padding>
                   </Label>
-                  <CheckBox mnemonicParsing="false">
+                  <CheckBox fx:id="terminationUserCheckBox" mnemonicParsing="false">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
@@ -79,7 +79,7 @@
                         <Insets right="10.0" />
                      </padding>
                   </Label>
-                  <TextField>
+                  <TextField fx:id="terminationBySecondsLabel">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
@@ -89,7 +89,7 @@
                         <Insets right="10.0" />
                      </padding>
                   </Label>
-                  <TextField>
+                  <TextField fx:id="terminationByTicksLabel">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>

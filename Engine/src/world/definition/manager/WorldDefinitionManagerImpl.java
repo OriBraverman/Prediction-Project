@@ -10,29 +10,29 @@ import world.factors.environment.execution.api.ActiveEnvironment;
 import world.factors.grid.api.GridDefinition;
 import world.factors.rule.Rule;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class WorldDefinitionManagerImpl implements WorldDefinitionManager{
-    private int nextId;
-    private Map<Integer, World> worldDefinitions;
+    private Map<String, World> worldDefinitions;
 
     public WorldDefinitionManagerImpl(){
-        this.nextId = 0 ;
         this.worldDefinitions = new HashMap<>();
     }
 
     @Override
     public void addWorld(World world) {
-        nextId++;
-        world.setId(nextId);
-        worldDefinitions.put(nextId, world);
+        if (worldDefinitions.containsKey(world.getName())) {
+            throw new IllegalArgumentException("World with name " + world.getName() + " already exists");
+        }
+        worldDefinitions.put(world.getName(), world);
     }
 
     @Override
-    public World getWorldDefinitionById(int id){
-        return worldDefinitions.get(id);
+    public World getWorldDefinitionByName(String name) {
+        return worldDefinitions.get(name);
     }
 
     @Override
@@ -40,4 +40,8 @@ public class WorldDefinitionManagerImpl implements WorldDefinitionManager{
         return worldDefinitions.size();
     }
 
+    @Override
+    public List<World> getWorldDefinitions() {
+        return new ArrayList<>(worldDefinitions.values());
+    }
 }

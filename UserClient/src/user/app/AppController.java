@@ -9,6 +9,7 @@ import dto.result.PropertyConstistencyDTO;
 import dto.world.WorldDTO;
 import dto.world.WorldsDTO;
 import okhttp3.OkHttpClient;
+import requests.UserRequest;
 import user.UserApplication;
 import user.details.scene.DetailsController;
 import user.execution.scene.NewExecutionController;
@@ -139,17 +140,17 @@ public class AppController {
         SkinsMenuButton.getItems().addAll(menuItems);
     }
 
-    public void validateEnvVariableValue(int worldID, EnvVariableValueDTO envVariableValueDTO) throws IllegalArgumentException {
-        engineImpl.validateEnvVariableValue(worldID, envVariableValueDTO);
+    public void validateEnvVariableValue(String worldName, EnvVariableValueDTO envVariableValueDTO) throws IllegalArgumentException {
+        engineImpl.validateEnvVariableValue(worldName, envVariableValueDTO);
     }
 
-    public void activateSimulation(int worldID, EnvVariablesValuesDTO envVariablesValuesDTO, EntitiesPopulationDTO entityPopulationDTO, boolean isBonusActivated) {
+    /*public void activateSimulation(UserRequest userRequest, EnvVariablesValuesDTO envVariablesValuesDTO, EntitiesPopulationDTO entityPopulationDTO, boolean isBonusActivated) {
         isSimulationExecuted.set(true);
         SimulationIDDTO simulationIDDTO = engineImpl.activateSimulation(isBonusActivated, worldID, envVariablesValuesDTO, entityPopulationDTO);
         resultsComponentController.addSimulationToExecutionList(simulationIDDTO);
         resultsComponentController.setIsActive(true);
 
-    }
+    }*/
 
     public void selectTab(Tab tab) {
         switch (tab) {
@@ -193,8 +194,8 @@ public class AppController {
         return engineImpl.getHistogramDTO(simulationID, entityName, propertyName);
     }
 
-    public void validateEntitiesPopulation(int worldID, EntitiesPopulationDTO entityPopulationDTOS) throws IllegalArgumentException{
-        engineImpl.validateEntitiesPopulation(entityPopulationDTOS, worldID);
+    public void validateEntitiesPopulation(String worldName, EntitiesPopulationDTO entityPopulationDTOS) throws IllegalArgumentException{
+        engineImpl.validateEntitiesPopulation(entityPopulationDTOS, worldName);
     }
 
     public SimulationExecutionDetailsDTO getSimulationExecutionDetailsDTO(int simulationID) {

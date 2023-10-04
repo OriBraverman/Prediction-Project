@@ -9,7 +9,7 @@ import world.factors.termination.Termination;
 
 public interface WorldInstanceManager {
 
-    WorldInstance create(World world, ActiveEnvironment activeEnvironment, EntityInstanceManager entityInstanceManager, Termination termination, UserRequest userRequest);
+    WorldInstance create(UserRequest userRequest, World world, ActiveEnvironment activeEnvironment, EntityInstanceManager entityInstanceManager);
 
     WorldInstance getWorldInstanceById(int id);
 }

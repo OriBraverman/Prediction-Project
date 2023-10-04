@@ -68,4 +68,12 @@ public class UserRequest {
     public boolean isApproved() {
         return this.requestStatus == RequestStatus.ACCEPTED;
     }
+
+    public String getWorldName() {
+        return worldName;
+    }
+
+    public Termination getTermination() {
+        return termination;
+    }
 }

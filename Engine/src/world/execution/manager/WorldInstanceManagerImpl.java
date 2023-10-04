@@ -6,7 +6,6 @@ import world.execution.WorldInstance;
 import world.execution.WorldInstanceImpl;
 import world.factors.entity.execution.manager.EntityInstanceManager;
 import world.factors.environment.execution.api.ActiveEnvironment;
-import world.factors.termination.Termination;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,9 +20,9 @@ public class WorldInstanceManagerImpl implements WorldInstanceManager {
     }
 
     @Override
-    public WorldInstance create(World world, ActiveEnvironment activeEnvironment, EntityInstanceManager entityInstanceManager, Termination termination, UserRequest userRequest) {
+    public WorldInstance create(UserRequest userRequest, World world, ActiveEnvironment activeEnvironment, EntityInstanceManager entityInstanceManager) {
         nextId++;
-        WorldInstance newWorldInstance = new WorldInstanceImpl(world, nextId, activeEnvironment, entityInstanceManager, termination, userRequest);
+        WorldInstance newWorldInstance = new WorldInstanceImpl(world, nextId, activeEnvironment, entityInstanceManager, userRequest.getTermination(), userRequest);
         worldInstances.put(nextId, newWorldInstance);
         return newWorldInstance;
     }

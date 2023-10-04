@@ -25,7 +25,7 @@ public interface Engine {
 
     WorldDTO getWorldDTO(World world);
 
-    void validateEnvVariableValue(int worldID, EnvVariableValueDTO envVariableValueDTO);
+    void validateEnvVariableValue(String worldName, EnvVariableValueDTO envVariableValueDTO);
 
     SimulationIDListDTO getSimulationListDTO();
 
@@ -37,9 +37,9 @@ public interface Engine {
 
     boolean isXMLLoaded();
 
-    NewExecutionInputDTO getNewExecutionInputDTO(int worldID);
+    NewExecutionInputDTO getNewExecutionInputDTO(String worldName);
 
-    void validateEntitiesPopulation(EntitiesPopulationDTO entitiesPopulationDTO, int id);
+    void validateEntitiesPopulation(EntitiesPopulationDTO entitiesPopulationDTO, String worldName);
 
     SimulationExecutionDetailsDTO getSimulationExecutionDetailsDTO(int simulationID);
 

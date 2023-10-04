@@ -149,7 +149,7 @@ public class NewExecutionController {
         return titledPane;
     }
 
-    @FXML
+    /*@FXML
     void startSimulationAction(ActionEvent event) {
         int worldID = getWorldID();
         EnvVariablesValuesDTO envVariablesValuesDTO = getEnvVariablesDTOS(worldID);
@@ -159,13 +159,13 @@ public class NewExecutionController {
         }
         appController.activateSimulation(worldID, envVariablesValuesDTO, entityPopulationDTO, isBonusActivated.get());
         appController.selectTab(AppController.Tab.RESULTS);
-    }
+    }*/
 
     private int getWorldID() {
         return 0;//todo: get world id from somewhere
     }
 
-    private EntitiesPopulationDTO getEntityPopulationDTOS(int worldID) {
+    private EntitiesPopulationDTO getEntityPopulationDTOS(String worldName) {
         List<EntityPopulationDTO> entityPopulationDTOS = new ArrayList<>();
         for (Object item : entityPopulationListView.getItems()) {
             HBox itemContainer = (HBox) item;
@@ -180,7 +180,7 @@ public class NewExecutionController {
         }
         EntitiesPopulationDTO entitiesPopulationDTO = new EntitiesPopulationDTO(entityPopulationDTOS);
         try {
-            appController.validateEntitiesPopulation(worldID, entitiesPopulationDTO);
+            appController.validateEntitiesPopulation(worldName, entitiesPopulationDTO);
         } catch (IllegalArgumentException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -192,7 +192,7 @@ public class NewExecutionController {
         return new EntitiesPopulationDTO(entityPopulationDTOS);
     }
 
-    private EnvVariablesValuesDTO getEnvVariablesDTOS(int worldID) {
+    private EnvVariablesValuesDTO getEnvVariablesDTOS(String worldName) {
         EnvVariableValueDTO[] envVariablesDTOS = new EnvVariableValueDTO[envVariablesAccordion.getPanes().size()];
         for (int i = 0; i < envVariablesAccordion.getPanes().size(); i++) {
             TitledPane titledPane = envVariablesAccordion.getPanes().get(i);
@@ -203,7 +203,7 @@ public class NewExecutionController {
                 TextField textField = (TextField) anchorPane.getChildren().get(2);
                 envVariableValueDTO = new EnvVariableValueDTO(titledPane.getText(), textField.getText(), true);
                 try {
-                    appController.validateEnvVariableValue(worldID, envVariableValueDTO);
+                    appController.validateEnvVariableValue(worldName, envVariableValueDTO);
                 } catch (IllegalArgumentException e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");

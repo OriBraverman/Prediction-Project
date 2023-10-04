@@ -10,6 +10,7 @@ import dto.result.PropertyAvaregeValueDTO;
 import dto.result.PropertyConstistencyDTO;
 import dto.world.*;
 import dto.world.action.*;
+import requests.UserRequest;
 import resources.schema.generatedWorld.PRDWorld;
 
 import static java.util.Arrays.stream;
@@ -106,11 +107,10 @@ public class EngineImpl implements Serializable, Engine {
         this.worldDefinitionManager.addWorld(tempWorld);
     }
 
-    private WorldInstance createWorldInstance(World world, EnvVariablesValuesDTO envVariablesValuesDTO, EntitiesPopulationDTO entitiesPopulationDTO) {
+    private WorldInstance createWorldInstance(UserRequest userRequest, World world, EnvVariablesValuesDTO envVariablesValuesDTO, EntitiesPopulationDTO entitiesPopulationDTO) {
         ActiveEnvironment activeEnvironment = createActiveEnvironment(world, envVariablesValuesDTO);
         EntityInstanceManager entityInstanceManager = createEntityInstanceManager(world, entitiesPopulationDTO);
-        Termination termination = new Termination();//TODO: add termination
-        return worldInstanceManager.create(world, activeEnvironment, entityInstanceManager, termination);
+        return worldInstanceManager.create(userRequest, world, activeEnvironment, entityInstanceManager);
     }
 
     private ActiveEnvironment createActiveEnvironment(World world, EnvVariablesValuesDTO envVariablesValuesDTO) {
@@ -161,11 +161,12 @@ public class EngineImpl implements Serializable, Engine {
 
     @Override
     public SimulationIDDTO activateSimulation(boolean isBonusActivated, int worldID, EnvVariablesValuesDTO envVariablesValuesDTO, EntitiesPopulationDTO entitiesPopulationDTO) {
-        World world = worldDefinitionManager.getWorldDefinitionById(worldID);
+        /*World world = worldDefinitionManager.getWorldDefinitionById;
         WorldInstance worldInstance = createWorldInstance(world, envVariablesValuesDTO, entitiesPopulationDTO);
         int simulationId = this.simulationExecutionManager.createSimulation(worldInstance, isBonusActivated);
         this.simulationExecutionManager.runSimulation(simulationId);
-        return new SimulationIDDTO(simulationId);
+        return new SimulationIDDTO(simulationId);*/
+        return null;
     }
 
     @Override
@@ -323,8 +324,8 @@ public class EngineImpl implements Serializable, Engine {
     }
 
     @Override
-    public void validateEnvVariableValue(int worldID, EnvVariableValueDTO envVariableValueDTO) {
-        World world = this.worldDefinitionManager.getWorldDefinitionById(worldID);
+    public void validateEnvVariableValue(String worldName, EnvVariableValueDTO envVariableValueDTO) {
+        World world = this.worldDefinitionManager.getWorldDefinitionByName(worldName);
         PropertyDefinition propertyDefinition = world.getEnvironment().getPropertyDefinitionByName(envVariableValueDTO.getName());
         if (propertyDefinition instanceof IntegerPropertyDefinition) {
             IntegerPropertyDefinition property = (IntegerPropertyDefinition) propertyDefinition;
@@ -402,16 +403,16 @@ public class EngineImpl implements Serializable, Engine {
     }
 
     @Override
-    public NewExecutionInputDTO getNewExecutionInputDTO(int worldID) {
-        World world = worldDefinitionManager.getWorldDefinitionById(worldID);
+    public NewExecutionInputDTO getNewExecutionInputDTO(String worldName) {
+        World world = worldDefinitionManager.getWorldDefinitionByName(worldName);
         List<PropertyDefinitionDTO> envVariables = getEnvironmentDTO(world);
         List<EntityDefinitionDTO> entityDefinitionDTOS = getEntitiesDTO(world);
         return new NewExecutionInputDTO(envVariables, entityDefinitionDTOS);
     }
 
     @Override
-    public void validateEntitiesPopulation(EntitiesPopulationDTO entitiesPopulationDTO, int worldID) {
-        World world = worldDefinitionManager.getWorldDefinitionById(worldID);
+    public void validateEntitiesPopulation(EntitiesPopulationDTO entitiesPopulationDTO, String worldName) {
+        World world = worldDefinitionManager.getWorldDefinitionByName(worldName);
         int MaxPopulation = world.getGridDefinition().getHeight() * world.getGridDefinition().getWidth();
         int totalPopulation = 0;
         for (EntityPopulationDTO entityPopulation : entitiesPopulationDTO.getEntitiesPopulation()) {
@@ -652,8 +653,8 @@ public class EngineImpl implements Serializable, Engine {
     @Override
     public WorldsDTO getWorldsDTO(){
         List<WorldDTO> worlds = new ArrayList<>();
-        for (int i = 1; i <= this.worldDefinitionManager.getWorldDefinitionsCount(); i++){
-            worlds.add(getWorldDTO(this.worldDefinitionManager.getWorldDefinitionById(i)));
+        for (World world : this.worldDefinitionManager.getWorldDefinitions()){
+            worlds.add(getWorldDTO(world));
         }
 
         return new WorldsDTO(worlds);

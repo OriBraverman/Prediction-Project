@@ -11,5 +11,7 @@ import java.util.List;
 public interface WorldDefinitionManager {
     void addWorld(World world);
     int getWorldDefinitionsCount();
-    World getWorldDefinitionById(int id);
+    World getWorldDefinitionByName(String name);
+
+    List<World> getWorldDefinitions();
 }
