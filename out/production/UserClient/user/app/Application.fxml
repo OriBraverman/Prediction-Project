@@ -31,7 +31,7 @@
                <children>
                   <AnchorPane fx:id="TitleRow" prefWidth="200.0" GridPane.columnSpan="2147483647">
                      <children>
-                        <Label fx:id="HeaderLabel" text="Predictions - User">
+                        <Label fx:id="HeaderLabel" styleClass="Header" text="Predictions - User">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -39,7 +39,7 @@
                               <Insets bottom="15.0" left="10.0" top="20.0" />
                            </padding>
                         </Label>
-                        <MenuButton fx:id="SkinsMenuButton" layoutX="808.0" layoutY="7.0" mnemonicParsing="false" text="Skins">
+                        <MenuButton fx:id="SkinsMenuButton" layoutX="635.0" layoutY="7.0" mnemonicParsing="false" text="Skins">
                           <items>
                             <MenuItem mnemonicParsing="false" text="Action 1" />
                             <MenuItem mnemonicParsing="false" text="Action 2" />
@@ -48,6 +48,22 @@
                               <Insets right="20.0" />
                            </padding>
                         </MenuButton>
+                        <Label layoutX="733.0" styleClass="Header" text="Name:">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets bottom="15.0" left="10.0" top="20.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="usernameLabel" layoutX="806.0" styleClass="Header" text="name">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets bottom="15.0" left="10.0" top="20.0" />
+                           </padding>
+                        </Label>
                      </children></AnchorPane>
                </children>
             </GridPane>

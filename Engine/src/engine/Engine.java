@@ -8,7 +8,9 @@ import dto.result.PropertyAvaregeValueDTO;
 import dto.result.PropertyConstistencyDTO;
 import dto.world.WorldDTO;
 import dto.world.WorldsDTO;
+import http.url.Client;
 import simulation.SimulationExecutionDetails;
+import user.manager.UsersManager;
 import world.definition.World;
 
 import java.io.FileNotFoundException;
@@ -78,4 +80,8 @@ public interface Engine {
     void setThreadsCount(String threadsCount) throws NumberFormatException;
 
     WorldsDTO getWorldsDTO();
+
+    RequestsDTO getRequestsDTO(String usernameFromSession, Client typeOfClient);
+
+    void submitRequest(RequestDTO requestDTO);
 }

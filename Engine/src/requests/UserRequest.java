@@ -4,6 +4,7 @@ import world.factors.termination.Termination;
 
 public class UserRequest {
     private int id;
+    private String username;
     private String worldName;
     private Termination termination;
     private int executionsCount;
@@ -11,8 +12,9 @@ public class UserRequest {
     private int runningExecutionsCount;
     private int completedExecutionsCount;
 
-    public UserRequest(int id, String worldName, Termination termination, int executionsCount) {
+    public UserRequest(int id,String username, String worldName, Termination termination, int executionsCount) {
         this.id = id;
+        this.username = username;
         this.worldName = worldName;
         this.termination = termination;
         this.executionsCount = executionsCount;
@@ -23,6 +25,10 @@ public class UserRequest {
 
     public int getId() {
         return id;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String getSimulationName() {

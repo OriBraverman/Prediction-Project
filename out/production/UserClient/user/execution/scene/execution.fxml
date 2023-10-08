@@ -14,8 +14,8 @@
             <Accordion fx:id="envVariablesAccordion" prefHeight="379.0" prefWidth="392.0" />
          </content>
       </ScrollPane>
-      <Button fx:id="startSimulationButton" layoutX="893.0" layoutY="407.0" mnemonicParsing="false" onAction="#startSimulationAction" text="Start" />
-      <Button fx:id="clearSimulationButton" layoutX="37.0" layoutY="407.0" mnemonicParsing="false" onAction="#clearSimulationButtonAction" text="Clear" />
+      <Button fx:id="startSimulationButton" layoutX="893.0" layoutY="407.0" mnemonicParsing="false" text="Start" />
+      <Button fx:id="clearSimulationButton" layoutX="37.0" layoutY="407.0" mnemonicParsing="false" text="Clear" />
       <ScrollPane layoutX="19.0" layoutY="14.0">
          <content>
             <ListView fx:id="entityPopulationListView" prefHeight="377.0" prefWidth="316.0" />

@@ -17,7 +17,6 @@ public class SetThreadsCountServlet extends HttpServlet {
     @Override
     protected void doPost(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response) throws jakarta.servlet.ServletException, java.io.IOException {
         Gson gson = new Gson();
-        String usernameFromSession = SessionUtils.getUsername(request);
         ServletContext servletContext = getServletContext();
         if (SessionUtils.getTypeOfClient(request) != http.url.Client.ADMIN) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

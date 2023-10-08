@@ -1,7 +1,10 @@
 package user.manager;
 
+import http.url.Client;
+import requests.UserRequest;
 import user.User;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UsersManager {

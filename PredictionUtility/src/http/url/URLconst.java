@@ -14,4 +14,8 @@ public class URLconst {
     public static final String FETCH_QUEUE_MANAGEMENT_URL = BASE_URL + FETCH_QUEUE_MANAGEMENT_SRC;
     public static final String SET_THREADS_COUNT_SRC = "/setThreadsCount";
     public static final String SET_THREADS_COUNT_URL = BASE_URL + SET_THREADS_COUNT_SRC;
+    public static final String FETCH_REQUESTS_SRC = "/fetchRequests";
+    public static final String FETCH_REQUESTS_URL = BASE_URL + FETCH_REQUESTS_SRC;
+    public static final String SUBMIT_REQUEST_SRC = "/submitRequest";
+    public static final String SUBMIT_REQUEST_URL = BASE_URL + SUBMIT_REQUEST_SRC;
 }

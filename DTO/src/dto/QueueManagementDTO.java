@@ -31,7 +31,7 @@ public class QueueManagementDTO {
     public boolean equals(Object obj) {
         if (obj instanceof QueueManagementDTO) {
             QueueManagementDTO other = (QueueManagementDTO) obj;
-            return this.pending == other.pending && this.active == other.active && this.completed == other.completed;
+            return this.pending == other.pending && this.active == other.active && this.completed == other.completed && this.capacity == other.capacity;
         }
         return false;
     }

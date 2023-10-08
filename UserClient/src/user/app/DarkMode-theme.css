@@ -26,7 +26,7 @@
     -fx-background-color: #000000; /* Dark background color */
 }
 
-#HeaderLabel {
+.Header {
     -fx-font-size: 18px; /* Larger font size */
     -fx-font-weight: bold;
     -fx-text-fill: #ffffff; /* White text color */

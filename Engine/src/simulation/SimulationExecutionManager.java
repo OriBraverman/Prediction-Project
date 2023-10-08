@@ -16,12 +16,12 @@ public class SimulationExecutionManager implements Serializable {
     private int threadsCount;
 
     ExecutorService threadExecutor;
-    public SimulationExecutionManager(int threadCount) {
+    public SimulationExecutionManager() {
         this.simulations = new HashMap<>();
         this.simulationDetails = new HashMap<>();
         this.currentSimulationIndex = 0;
-        this.threadsCount = threadCount;
-        this.threadExecutor = Executors.newFixedThreadPool(threadCount);
+        this.threadsCount = 1;//todo: check system behavior by aviad
+        this.threadExecutor = Executors.newFixedThreadPool(1);
     }
 
     public int createSimulation(WorldInstance worldInstance, boolean isBonusActivated) {

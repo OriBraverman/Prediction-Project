@@ -2,11 +2,16 @@ package user.app;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dto.RequestDTO;
 import dto.StatusDTO;
+import dto.world.TerminationDTO;
 import http.url.Constants;
+import http.url.URLconst;
+import javafx.application.Platform;
 import javafx.beans.property.StringProperty;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
+import world.factors.termination.Termination;
 
 import java.io.IOException;
 
@@ -16,7 +21,6 @@ import static http.url.URLconst.LOGIN_URL;
 
 public class Connection {
     private OkHttpClient client;
-    private StringProperty usernameProperty;
     private Gson gson;
     private AppController appController;
 
@@ -32,19 +36,46 @@ public class Connection {
     public void setClient(OkHttpClient client) {
         this.client = client;
     }
-
-    public StringProperty getUsernameProperty() {
-        return usernameProperty;
-    }
     public void sendLogOut() {
         String body = "";
         HttpUrl.Builder urlBuilder = HttpUrl.parse(LOGIN_URL).newBuilder();
-        urlBuilder.addQueryParameter(Constants.USER_NAME, usernameProperty.getValue());
+        urlBuilder.addQueryParameter(Constants.USER_NAME, appController.getUsername());
         urlBuilder.addQueryParameter(Constants.CLIENT_TYPE, USER.getClientType());
         Request request = new Request.Builder()
                 .url(urlBuilder.build())
                 .addHeader(CONTENT_TYPE, "text/plain")
                 .post(RequestBody.create(body.getBytes()))
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("Oops... something went wrong..." + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String dtoAsStr = response.body().string();
+                System.out.println("logout response Code: " + response.code() + " " + dtoAsStr);
+
+                if (response.code() != 200) {
+                    Gson gson = new Gson();
+                    StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                    appController.showAlert(loginStatus);
+                }
+            }
+        });
+    }
+
+    public void submitRequest(String simulationName, int amount, int terminationByTicks, int terminationBySeconds, boolean isTerminationByUser) {
+        TerminationDTO terminationDTO = new TerminationDTO(isTerminationByUser, terminationBySeconds, terminationByTicks);
+        String username = appController.getUsername();
+        RequestDTO requestDTO = new RequestDTO(username, simulationName, amount, terminationDTO);
+        String jsonRequest = gson.toJson(requestDTO);
+        Request request = new Request.Builder()
+                .url(URLconst.SUBMIT_REQUEST_URL)
+                .addHeader(CONTENT_TYPE, "application/json")
+                .post(RequestBody.create(jsonRequest, MediaType.parse("application/json")))
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override

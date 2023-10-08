@@ -8,6 +8,10 @@ import dto.result.PropertyAvaregeValueDTO;
 import dto.result.PropertyConstistencyDTO;
 import dto.world.WorldDTO;
 import dto.world.WorldsDTO;
+import engine.Engine;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import okhttp3.OkHttpClient;
 import requests.UserRequest;
 import user.UserApplication;
@@ -49,6 +53,7 @@ public class AppController {
     @FXML private NewExecutionController executionComponentController;
     @FXML private AnchorPane resultsComponent;
     @FXML private ResultsController resultsComponentController;
+    @FXML private Label usernameLabel;
 
     public final static int REFRESH_RATE = 1000;
     private Timer fetchWorldsDetailsTimer;
@@ -58,6 +63,7 @@ public class AppController {
     private final Connection connection = new Connection(this);
     private final SimpleBooleanProperty isXMLLoaded;
     private final SimpleBooleanProperty isSimulationExecuted;
+    private final SimpleStringProperty username;
 
     public enum Tab {
         SIMULATION_DETAILS, REQUESTS, EXECUTION, RESULTS
@@ -72,6 +78,7 @@ public class AppController {
     public AppController() {
         this.isXMLLoaded = new SimpleBooleanProperty(false);
         this.isSimulationExecuted = new SimpleBooleanProperty(false);
+        this.username = new SimpleStringProperty("");
     }
 
     @FXML public void initialize(){
@@ -87,6 +94,7 @@ public class AppController {
             resultsComponentController.getSimulationComponentController().setAppController(this);
             resultsComponentController.getSimulationComponentController().getInformationComponentController().setAppController(this);
         }
+        usernameLabel.textProperty().bind(username);
         Platform.runLater(() -> {
             // Set applicationScrollPane to be the same size as the window
             applicationScrollPane.prefWidthProperty().bind(UserApplication.getStage().widthProperty());
@@ -294,6 +302,14 @@ public class AppController {
     }
 
     public void setUserName(String text) {
+        this.username.set(text);
+    }
 
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public String getUsername() {
+        return username.get();
     }
 }

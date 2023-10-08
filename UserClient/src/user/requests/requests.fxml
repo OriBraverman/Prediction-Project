@@ -56,10 +56,18 @@
             </HBox>
             <Button fx:id="submitRequestButton" mnemonicParsing="false" onAction="#submitRequestButtonAction" text="Submit!" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
             <TableView fx:id="RequestsTableView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
-              <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
-              </columns>
+                <columns>
+                    <TableColumn prefWidth="100.0" text="Approve Status " />
+                    <TableColumn prefWidth="75.0" text="Request ID" />
+                    <TableColumn prefWidth="75.0" text="User Name" />
+                    <TableColumn prefWidth="110.0" text="Simulation Name" />
+                    <TableColumn prefWidth="120.0" text="Threads Requested" />
+                    <TableColumn prefWidth="130.0" text="Termination Seconds" />
+                    <TableColumn prefWidth="120.0" text="Termination Count" />
+                    <TableColumn prefWidth="103.2000732421875" text="Termination User" />
+                    <TableColumn prefWidth="75.0" text="Running" />
+                    <TableColumn prefWidth="75.0" text="Completed" />
+                </columns>
             </TableView>
             <Button fx:id="executeRequestButton" mnemonicParsing="false" onAction="#executeRequestButtonAction" text="Execute!" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
             <HBox GridPane.rowIndex="1">

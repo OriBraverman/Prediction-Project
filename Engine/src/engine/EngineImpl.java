@@ -10,7 +10,10 @@ import dto.result.PropertyAvaregeValueDTO;
 import dto.result.PropertyConstistencyDTO;
 import dto.world.*;
 import dto.world.action.*;
+import http.url.Client;
 import requests.UserRequest;
+import requests.manager.RequestsManager;
+import requests.manager.RequestsManagerImpl;
 import resources.schema.generatedWorld.PRDWorld;
 
 import static java.util.Arrays.stream;
@@ -66,11 +69,13 @@ public class EngineImpl implements Serializable, Engine {
     private WorldDefinitionManager worldDefinitionManager;
     private WorldInstanceManager worldInstanceManager;
     private SimulationExecutionManager simulationExecutionManager;
+    private RequestsManager requestsManager;
 
     public EngineImpl() {
         this.worldDefinitionManager = new WorldDefinitionManagerImpl();
         this.worldInstanceManager = new WorldInstanceManagerImpl();
-        this.simulationExecutionManager = null;
+        this.simulationExecutionManager = new SimulationExecutionManager();
+        this.requestsManager = new RequestsManagerImpl();
     }
 
     private static PRDWorld fromXmlFileToObject(Path path) {
@@ -195,6 +200,10 @@ public class EngineImpl implements Serializable, Engine {
 
     private TerminationDTO getTerminationDTO(SimulationExecutionDetails simulationExecutionDetails) {
         Termination termination = simulationExecutionDetails.getWorldInstance().getTermination();
+        return getTerminationDTO(termination);
+    }
+
+    private TerminationDTO getTerminationDTO(Termination termination) {
         boolean isByUser = termination.isByUser();
         int secondsCount = termination.getSecondsCount();
         int ticksCount = termination.getTicksCount();
@@ -658,6 +667,33 @@ public class EngineImpl implements Serializable, Engine {
         }
 
         return new WorldsDTO(worlds);
+    }
+
+    @Override
+    public RequestsDTO getRequestsDTO(String usernameFromSession, Client typeOfClient) {
+        List<UserRequest> userRequests = this.requestsManager.getRequests(usernameFromSession, typeOfClient);
+        List<RequestDTO> requestDTOS = new ArrayList<>();
+        for (UserRequest userRequest : userRequests) {
+            String status = userRequest.getRequestStatus().toString();
+            int id = userRequest.getId();
+            String userName = userRequest.getUsername();
+            String worldName = userRequest.getWorldName();
+            int numberOfExecutions = userRequest.getExecutionsCount();
+            TerminationDTO termination = getTerminationDTO(userRequest.getTermination());
+            int runningExecutions = userRequest.getRunningExecutionsCount();
+            int completedExecutions = userRequest.getCompletedExecutionsCount();
+            requestDTOS.add(new RequestDTO(status, id, userName, worldName, numberOfExecutions, termination, runningExecutions, completedExecutions));
+        }
+        return new RequestsDTO(requestDTOS);
+    }
+
+    @Override
+    public void submitRequest(RequestDTO requestDTO) {
+        String username = requestDTO.getUserName();
+        String worldName = requestDTO.getWorldName();
+        int numberOfExecutions = requestDTO.getNumberOfExecutions();
+        Termination termination = new Termination();
+        this.requestsManager.addRequest(username, worldName, numberOfExecutions, termination);
     }
 }
 

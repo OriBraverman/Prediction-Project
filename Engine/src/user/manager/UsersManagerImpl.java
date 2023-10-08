@@ -1,9 +1,13 @@
 package user.manager;
 
+import http.url.Client;
+import requests.UserRequest;
 import user.User;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class UsersManagerImpl implements UsersManager {
     private Boolean isAdminLoggedIn;
