@@ -84,4 +84,6 @@ public interface Engine {
     RequestsDTO getRequestsDTO(String usernameFromSession, Client typeOfClient);
 
     void submitRequest(RequestDTO requestDTO);
+
+    void updateRequestStatus(int requestIDInt, String status);
 }

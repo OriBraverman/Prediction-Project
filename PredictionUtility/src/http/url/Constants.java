@@ -8,4 +8,6 @@ public class Constants {
     public static final String ADMIN_LOGGED_IN = "adminLoggedIn";
     public static final String SIMULATION_ID = "simulationId";
     public static final String ADMIN = "admin";
+    public static final String REQUEST_ID = "requestID";
+    public static final String STATUS = "status";
 }

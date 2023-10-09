@@ -10,13 +10,16 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.HBox;
 
 import java.util.Timer;
 
 public class AllocationsController {
     @FXML private TableView<RequestDTO> AllocationsTableView;
+    @FXML private TableColumn<RequestDTO, HBox> buttonsColumn;
     @FXML private TableColumn<RequestDTO, String> statusColumn;
     @FXML private TableColumn<RequestDTO, Integer> requestIdColumn;
     @FXML private TableColumn<RequestDTO, String> userNameColumn;
@@ -37,6 +40,21 @@ public class AllocationsController {
 
     @FXML
     public void initialize() {
+        buttonsColumn.setCellValueFactory(cellData -> {
+            HBox hBox = new HBox();
+            Button approveButton = new Button("Approve");
+            approveButton.setOnAction(event -> {
+                int requestID = cellData.getValue().getId();
+                appController.updateRequestStatus(requestID, "ACCEPTED");
+            });
+            Button rejectButton = new Button("Reject");
+            rejectButton.setOnAction(event -> {
+                int requestID = cellData.getValue().getId();
+                appController.updateRequestStatus(requestID, "REJECTED");
+            });
+            hBox.getChildren().addAll(approveButton, rejectButton);
+            return Bindings.createObjectBinding(() -> hBox);
+        });
         statusColumn.setCellValueFactory(cellData -> {
             String status = cellData.getValue().getStatus();
             return Bindings.createObjectBinding(() -> status);

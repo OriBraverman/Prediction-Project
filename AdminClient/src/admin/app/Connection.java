@@ -2,6 +2,7 @@ package admin.app;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dto.RequestDTO;
 import dto.StatusDTO;
 import http.cookie.SimpleCookieManager;
 import http.url.Constants;
@@ -12,8 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 import static http.url.Client.ADMIN;
+import static http.url.Client.USER;
 import static http.url.Constants.CONTENT_TYPE;
-import static http.url.URLconst.LOGIN_URL;
+import static http.url.URLconst.*;
 
 public class Connection {
     private OkHttpClient client;
@@ -113,7 +115,7 @@ public class Connection {
 
     public void sendLogOut() {
         String body = "";
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(LOGIN_URL).newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(LOGOUT_URL).newBuilder();
         urlBuilder.addQueryParameter(Constants.USER_NAME, Constants.ADMIN);
         urlBuilder.addQueryParameter(Constants.CLIENT_TYPE, ADMIN.getClientType());
         Request request = new Request.Builder()
@@ -131,6 +133,40 @@ public class Connection {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String dtoAsStr = response.body().string();
                 System.out.println("logout response Code: " + response.code() + " " + dtoAsStr);
+
+                if (response.code() != 200) {
+                    Gson gson = new Gson();
+                    StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                    appController.showAlert(loginStatus);
+                }
+            }
+        });
+    }
+
+    public void approveRequest(RequestDTO requestDTO) {
+    }
+
+    public void updateRequestStatus(int requestID, String status) {
+        String body = "";
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(UPDATE_REQUEST_STATUS_URL).newBuilder();
+        urlBuilder.addQueryParameter(Constants.REQUEST_ID, String.valueOf(requestID));
+        urlBuilder.addQueryParameter(Constants.STATUS, status);
+        Request request = new Request.Builder()
+                .url(urlBuilder.build())
+                .addHeader(CONTENT_TYPE, "text/plain")
+                .post(RequestBody.create(body.getBytes()))
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("Oops... something went wrong..." + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String dtoAsStr = response.body().string();
+                System.out.println("updateRequestStatus response Code: " + response.code() + " " + dtoAsStr);
 
                 if (response.code() != 200) {
                     Gson gson = new Gson();

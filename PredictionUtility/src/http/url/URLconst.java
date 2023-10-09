@@ -18,4 +18,6 @@ public class URLconst {
     public static final String FETCH_REQUESTS_URL = BASE_URL + FETCH_REQUESTS_SRC;
     public static final String SUBMIT_REQUEST_SRC = "/submitRequest";
     public static final String SUBMIT_REQUEST_URL = BASE_URL + SUBMIT_REQUEST_SRC;
+    public static final String UPDATE_REQUEST_STATUS_SRC = "/updateRequestStatus";
+    public static final String UPDATE_REQUEST_STATUS_URL = BASE_URL + UPDATE_REQUEST_STATUS_SRC;
 }

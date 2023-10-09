@@ -696,6 +696,11 @@ public class EngineImpl implements Serializable, Engine {
         Termination termination = new Termination(requestDTO.getTermination().isByUser(), requestDTO.getTermination().getSecondsCount(), requestDTO.getTermination().getTicksCount());
         this.requestsManager.addRequest(username, worldName, numberOfExecutions, termination);
     }
+
+    @Override
+    public void updateRequestStatus(int requestID, String status) {
+        this.requestsManager.updateRequestStatus(requestID, status);
+    }
 }
 
 

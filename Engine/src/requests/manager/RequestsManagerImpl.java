@@ -45,4 +45,9 @@ public class RequestsManagerImpl implements RequestsManager {
                     .collect(Collectors.toList());
         }
     }
+
+    @Override
+    public void updateRequestStatus(int requestID, String status) {
+        requests.get(requestID).setRequestStatus(RequestStatus.valueOf(status));
+    }
 }

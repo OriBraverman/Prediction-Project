@@ -16,4 +16,6 @@ public interface RequestsManager {
     UserRequest getRequest(int id);
 
     List<UserRequest> getRequests(String usernameFromSession, Client typeOfClient);
+
+    void updateRequestStatus(int requestID, String status);
 }
