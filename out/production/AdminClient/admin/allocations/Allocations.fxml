@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="admin.allocations.AllocationsController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="admin.allocations.AllocationsController">
+   <children>
+      <TableView fx:id="AllocationsTableView">
+        <columns>
+            <TableColumn fx:id="buttonsColumn" prefWidth="85.0" />
+            <TableColumn fx:id="statusColumn" prefWidth="120.0" text="Approve Status" />
+            <TableColumn fx:id="requestIdColumn" prefWidth="85.0" text="Request ID" />
+            <TableColumn fx:id="userNameColumn" prefWidth="85.0" text="User Name" />
+            <TableColumn fx:id="simulationNameColumn" prefWidth="130.0" text="Simulation Name" />
+            <TableColumn fx:id="threadsRequestedColumn" prefWidth="140.0" text="Threads Requested" />
+            <TableColumn fx:id="terminationSecondsColumn" prefWidth="160.0" text="Termination Seconds" />
+            <TableColumn fx:id="terminationTicksColumn" prefWidth="140.0" text="Termination Ticks" />
+            <TableColumn fx:id="terminationUserColumn" prefWidth="130.0" text="Termination User" />
+            <TableColumn fx:id="runningColumn" prefWidth="75.0" text="Running" />
+            <TableColumn fx:id="completedColumn" prefWidth="85.0" text="Completed" />
+        </columns>
+      </TableView>
+   </children>
 </AnchorPane>

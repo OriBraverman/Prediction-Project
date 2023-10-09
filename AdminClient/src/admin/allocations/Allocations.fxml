@@ -4,22 +4,21 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="admin.allocations.AllocationsController">
    <children>
       <TableView fx:id="AllocationsTableView">
         <columns>
-          <TableColumn prefWidth="75.0" />
-          <TableColumn prefWidth="100.0" text="Approve Status " />
-            <TableColumn prefWidth="75.0" text="Request ID" />
-            <TableColumn prefWidth="75.0" text="User Name" />
-            <TableColumn prefWidth="110.0" text="Simulation Name" />
-            <TableColumn prefWidth="120.0" text="Threads Requested" />
-            <TableColumn prefWidth="130.0" text="Termination Seconds" />
-            <TableColumn prefWidth="120.0" text="Termination Count" />
-            <TableColumn prefWidth="103.2000732421875" text="Termination User" />
-            <TableColumn prefWidth="75.0" text="Running" />
-            <TableColumn prefWidth="75.0" text="Completed" />
+            <TableColumn fx:id="buttonsColumn" prefWidth="85.0" />
+            <TableColumn fx:id="statusColumn" prefWidth="120.0" text="Approve Status" />
+            <TableColumn fx:id="requestIdColumn" prefWidth="85.0" text="Request ID" />
+            <TableColumn fx:id="userNameColumn" prefWidth="85.0" text="User Name" />
+            <TableColumn fx:id="simulationNameColumn" prefWidth="130.0" text="Simulation Name" />
+            <TableColumn fx:id="threadsRequestedColumn" prefWidth="140.0" text="Threads Requested" />
+            <TableColumn fx:id="terminationSecondsColumn" prefWidth="160.0" text="Termination Seconds" />
+            <TableColumn fx:id="terminationTicksColumn" prefWidth="140.0" text="Termination Ticks" />
+            <TableColumn fx:id="terminationUserColumn" prefWidth="130.0" text="Termination User" />
+            <TableColumn fx:id="runningColumn" prefWidth="75.0" text="Running" />
+            <TableColumn fx:id="completedColumn" prefWidth="85.0" text="Completed" />
         </columns>
       </TableView>
    </children>

@@ -1,5 +1,6 @@
 package engine;
 
+import com.sun.istack.internal.NotNull;
 import convertor.Convertor;
 import dto.*;
 import dto.gridView.EntityInstanceDTO;
@@ -688,11 +689,11 @@ public class EngineImpl implements Serializable, Engine {
     }
 
     @Override
-    public void submitRequest(RequestDTO requestDTO) {
+    public void submitRequest(@NotNull RequestDTO requestDTO) {
         String username = requestDTO.getUserName();
         String worldName = requestDTO.getWorldName();
         int numberOfExecutions = requestDTO.getNumberOfExecutions();
-        Termination termination = new Termination();
+        Termination termination = new Termination(requestDTO.getTermination().isByUser(), requestDTO.getTermination().getSecondsCount(), requestDTO.getTermination().getTicksCount());
         this.requestsManager.addRequest(username, worldName, numberOfExecutions, termination);
     }
 }

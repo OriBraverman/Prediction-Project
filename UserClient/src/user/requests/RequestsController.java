@@ -1,18 +1,34 @@
 package user.requests;
 
+import dto.RequestDTO;
+import dto.RequestsDTO;
 import dto.StatusDTO;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.*;
 import user.app.AppController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import user.tasks.FetchRequestsTimer;
+
+import java.util.Timer;
 
 public class RequestsController {
-    @FXML private TableView<?> RequestsTableView;
+    @FXML private TableView<RequestDTO> RequestsTableView;
+    @FXML private TableColumn<RequestDTO, String> statusColumn;
+    @FXML private TableColumn<RequestDTO, Integer> requestIdColumn;
+    @FXML private TableColumn<RequestDTO, String> userNameColumn;
+    @FXML private TableColumn<RequestDTO, String> simulationNameColumn;
+    @FXML private TableColumn<RequestDTO, Integer> threadsRequestedColumn;
+    @FXML private TableColumn<RequestDTO, String> terminationSecondsColumn;
+    @FXML private TableColumn<RequestDTO, String> terminationTicksColumn;
+    @FXML private TableColumn<RequestDTO, String> terminationUserColumn;
+    @FXML private TableColumn<RequestDTO, Integer> runningColumn;
+    @FXML private TableColumn<RequestDTO, Integer> completedColumn;
     @FXML private TextField amountLabel;
     @FXML private Button executeRequestButton;
     @FXML private TextField simulationNameLabel;
@@ -24,6 +40,10 @@ public class RequestsController {
     private AppController appController;
 
     private SimpleBooleanProperty isTerminationByUser;
+    public final static int REFRESH_RATE = 1000;
+    private Timer fetchRequestsTimer;
+    private FetchRequestsTimer fetchRequestsTimerTask;
+    private RequestsDTO savedRequestsDTO;
 
     public RequestsController() {
         isTerminationByUser = new SimpleBooleanProperty(false);
@@ -31,9 +51,54 @@ public class RequestsController {
 
     @FXML
     public void initialize() {
+        statusColumn.setCellValueFactory(cellData -> {
+            String status = cellData.getValue().getStatus();
+            return Bindings.createObjectBinding(() -> status);
+        });
+        requestIdColumn.setCellValueFactory(cellData -> {
+            int requestId = cellData.getValue().getId();
+            return Bindings.createObjectBinding(() -> requestId);
+        });
+        userNameColumn.setCellValueFactory(cellData -> {
+            String userName = cellData.getValue().getUserName();
+            return Bindings.createObjectBinding(() -> userName);
+        });
+        simulationNameColumn.setCellValueFactory(cellData -> {
+            String simulationName = cellData.getValue().getWorldName();
+            return Bindings.createObjectBinding(() -> simulationName);
+        });
+        threadsRequestedColumn.setCellValueFactory(cellData -> {
+            int threadsRequested = cellData.getValue().getNumberOfExecutions();
+            return Bindings.createObjectBinding(() -> threadsRequested);
+        });
+        terminationSecondsColumn.setCellValueFactory(cellData -> {
+            String terminationSeconds = cellData.getValue().getTermination().getSecondsCount() == -1 ? "N/E" : String.valueOf(cellData.getValue().getTermination().getSecondsCount());
+            return Bindings.createObjectBinding(() -> terminationSeconds);
+        });
+        terminationTicksColumn.setCellValueFactory(cellData -> {
+            String terminationTicks = cellData.getValue().getTermination().getTicksCount() == -1 ? "N/E" : String.valueOf(cellData.getValue().getTermination().getTicksCount());
+            return Bindings.createObjectBinding(() -> terminationTicks);
+        });
+        terminationUserColumn.setCellValueFactory(cellData -> {
+            String terminationUser = cellData.getValue().getTermination().isByUser() ? "Yes" : "No";
+            return Bindings.createObjectBinding(() -> terminationUser);
+        });
+        runningColumn.setCellValueFactory(cellData -> {
+            int running = cellData.getValue().getRunningExecutions();
+            return Bindings.createObjectBinding(() -> running);
+        });
+        completedColumn.setCellValueFactory(cellData -> {
+            int completed = cellData.getValue().getCompletedExecutions();
+            return Bindings.createObjectBinding(() -> completed);
+        });
         terminationUserCheckBox.selectedProperty().bindBidirectional(isTerminationByUser);
         terminationBySecondsLabel.disableProperty().bind(isTerminationByUser);
         terminationByTicksLabel.disableProperty().bind(isTerminationByUser);
+        Platform.runLater(() -> {
+            fetchRequestsTimer = new Timer();
+            fetchRequestsTimerTask = new FetchRequestsTimer(appController.getConnection().getClient(), this);
+            fetchRequestsTimer.scheduleAtFixedRate(fetchRequestsTimerTask, 0, REFRESH_RATE);
+        });
     }
 
     @FXML
@@ -65,5 +130,16 @@ public class RequestsController {
 
     public void setAppController(AppController appController) {
         this.appController = appController;
+    }
+
+    public void updateRequests(RequestsDTO requestsDTO) {
+        savedRequestsDTO = requestsDTO;
+        ObservableList<RequestDTO> requests = FXCollections.observableArrayList();
+        requests.addAll(requestsDTO.getRequests());
+        RequestsTableView.setItems(requests);
+    }
+
+    public void showAlert(StatusDTO statusDTO) {
+        appController.showAlert(statusDTO);
     }
 }

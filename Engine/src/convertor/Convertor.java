@@ -314,28 +314,6 @@ public class Convertor implements Serializable {
         return new IncreaseAction(entityDefinition, secondaryEntity, property, byExpression);
     }
 
-    private Termination getTermination(List<Object> terminationList, Object byUser) {
-        Termination termination = new Termination();
-        if (byUser != null && terminationList.size() > 0) {
-            throw new RuntimeException("ByUser and BySecond/ByTicks cannot be together");
-        } else if (byUser != null) {
-            termination.setByUser(true);
-            return termination;
-        } else if (terminationList.size() > 2 || terminationList.size() == 0) {
-            throw new RuntimeException("Termination must have exactly 1 or 2 termination types");
-        }
-        for (Object terminationObject: terminationList) {
-            if (terminationObject instanceof PRDByTicks) {
-                termination.setTicksCount(((PRDByTicks) terminationObject).getCount());
-            } else if (terminationObject instanceof PRDBySecond) {
-                termination.setSecondsCount(((PRDBySecond) terminationObject).getCount());
-            } else {
-                throw new RuntimeException("Unknown termination type: " + terminationObject.getClass());
-            }
-        }
-        return termination;
-    }
-
     public void setGeneratedWorld(PRDWorld generatedWorld) {
         this.generatedWorld = generatedWorld;
     }

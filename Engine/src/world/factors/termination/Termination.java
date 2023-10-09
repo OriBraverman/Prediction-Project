@@ -8,6 +8,11 @@ public class Termination implements Serializable {
     private int ticksCount = -1;
     private boolean terminatedByUser = false;
 
+    public Termination(boolean isByUser, int secondsCount, int ticksCount) {
+        this.isByUser = isByUser;
+        this.secondsCount = secondsCount;
+        this.ticksCount = ticksCount;
+    }
 
     public int getSecondsCount() {
         return secondsCount;
