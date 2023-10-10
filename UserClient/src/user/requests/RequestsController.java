@@ -51,6 +51,7 @@ public class RequestsController {
 
     @FXML
     public void initialize() {
+        RequestsTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         statusColumn.setCellValueFactory(cellData -> {
             String status = cellData.getValue().getStatus();
             return Bindings.createObjectBinding(() -> status);
@@ -103,7 +104,13 @@ public class RequestsController {
 
     @FXML
     void executeRequestButtonAction(ActionEvent event) {
-
+        RequestDTO requestDTO = RequestsTableView.getSelectionModel().getSelectedItem();
+        if (requestDTO == null) {
+            appController.showAlert(new StatusDTO(false, "Please select a request"));
+            return;
+        }
+        appController.getConnection().executeRequest(requestDTO.getId());
+        appController.selectTab(AppController.Tab.EXECUTION);
     }
 
     @FXML
@@ -133,10 +140,14 @@ public class RequestsController {
     }
 
     public void updateRequests(RequestsDTO requestsDTO) {
+        // save the last req selected
+        int selectedRequestID = RequestsTableView.getSelectionModel().getSelectedIndex();
         savedRequestsDTO = requestsDTO;
         ObservableList<RequestDTO> requests = FXCollections.observableArrayList();
         requests.addAll(requestsDTO.getRequests());
         RequestsTableView.setItems(requests);
+        // select the last req selected
+        RequestsTableView.getSelectionModel().select(selectedRequestID);
     }
 
     public void showAlert(StatusDTO statusDTO) {

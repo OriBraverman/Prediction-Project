@@ -1,26 +1,28 @@
 package simulation;
 
+import context.ContextImpl;
+import world.factors.action.api.Action;
 import world.factors.entity.definition.EntityDefinition;
 import world.factors.entity.execution.EntityInstance;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 public class SimulationRunnerImpl implements Serializable, Runnable, SimulationRunner {
     private final int id;
-    private final boolean isBonusActivated;
     private SimulationExecutionDetails simulationED;
     private AtomicBoolean isTravelForward = new AtomicBoolean(false);
     private final Semaphore travelForwardSemaphore = new Semaphore(1);
     private final Semaphore pauseSemaphore = new Semaphore(1);
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy | hh.mm.ss");
-    public SimulationRunnerImpl(int id, SimulationExecutionDetails simulationExecutionDetails, boolean isBonusActivated) {
+    public SimulationRunnerImpl(int id, SimulationExecutionDetails simulationExecutionDetails) {
         this.id = id;
         this.simulationED = simulationExecutionDetails;
-        this.isBonusActivated = isBonusActivated;
     }
 
     public AtomicBoolean getIsTravelForward() {
@@ -73,7 +75,7 @@ public class SimulationRunnerImpl implements Serializable, Runnable, SimulationR
 
     @Override
     public void run() {
-        /*try {
+        try {
             this.simulationED.setStatus("Running");
             runSimulation();
             this.simulationED.setStatus("Finished Successfully");
@@ -88,10 +90,10 @@ public class SimulationRunnerImpl implements Serializable, Runnable, SimulationR
             this.simulationED.setStatus("Failed");
             this.simulationED.setTerminationReason(e.getMessage());
             this.simulationED.setRunning(false);
-        }*/
+        }
     }
 
-    /*private void runSimulation() {
+    private void runSimulation() {
         synchronized (simulationED) {
             simulationED.setPending(false);
             simulationED.setRunning(true);
@@ -100,7 +102,7 @@ public class SimulationRunnerImpl implements Serializable, Runnable, SimulationR
         this.simulationED.setFormattedStartTime(this.dateFormat.format(date));
 
         initEntityInstancesArray();
-        while (!simulationED.getWorld().getTermination().isTerminated(simulationED.getCurrentTick(), simulationED.getSimulationSeconds()) && simulationED.isRunning()) {
+        while (!simulationED.getWorldInstance().getTermination().isTerminated(simulationED.getCurrentTick(), simulationED.getSimulationSeconds()) && simulationED.isRunning()) {
             while (this.isTravelForward.get()) {
                 try {
                     travelForwardSemaphore.acquire();
@@ -110,9 +112,9 @@ public class SimulationRunnerImpl implements Serializable, Runnable, SimulationR
             }
             travelForwardSemaphore.release();
 
-            if (isBonusActivated) {
+            /*if (isBonusActivated) {
                 writeSEDByIdAndTick(id, simulationED.getCurrentTick(), simulationED);
-            }
+            }*/
             while (this.simulationED.isPaused()) {
                 try {
                     pauseSemaphore.acquire();
@@ -169,11 +171,11 @@ public class SimulationRunnerImpl implements Serializable, Runnable, SimulationR
                 }
             }
         }
-        simulationED.setIsTerminatedBySecondsCount(simulationED.getWorld().getTermination().isTerminatedBySecondsCount(simulationED.getSimulationSeconds()));
-        simulationED.setIsTerminatedByTicksCount(simulationED.getWorld().getTermination().isTerminatedByTicksCount(simulationED.getCurrentTick()));
+        simulationED.setIsTerminatedBySecondsCount(simulationED.getWorldInstance().getTermination().isTerminatedBySecondsCount(simulationED.getSimulationSeconds()));
+        simulationED.setIsTerminatedByTicksCount(simulationED.getWorldInstance().getTermination().isTerminatedByTicksCount(simulationED.getCurrentTick()));
         simulationED.setRunning(false);
     }
-    public void printDebug(List<EntityInstance> instances) {
+    /*public void printDebug(List<EntityInstance> instances) {
         GridInstance gridInstance = simulationED.getGridInstance();
         for (int y = 0; y < gridInstance.getHeight(); y++) {
             for (int x = 0; x < gridInstance.getWidth(); x++) {

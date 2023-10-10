@@ -1,23 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="232.0" prefWidth="401.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <CheckBox layoutX="64.0" layoutY="185.0" mnemonicParsing="false" text="Want to add value?" />
-      <Label layoutX="68.0" layoutY="52.0" text="Name:" />
-      <TextField layoutX="201.0" layoutY="181.0" />
-      <Label layoutX="137.0" layoutY="52.0" text="Label" />
-      <Label layoutX="137.0" layoutY="85.0" text="Label" />
-      <Label layoutX="72.0" layoutY="85.0" text="Type:" />
-      <Label layoutX="72.0" layoutY="116.0" text="Range:" />
-      <Label layoutX="137.0" layoutY="116.0" text="From" />
-      <Label layoutX="187.0" layoutY="116.0" text="Label" />
-      <Label layoutX="240.0" layoutY="116.0" text="To" />
-      <Label layoutX="286.0" layoutY="116.0" text="Label" />
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints vgrow="SOMETIMES" />
+          <RowConstraints vgrow="SOMETIMES" />
+          <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Name:" />
+            <Label text="Label" GridPane.columnIndex="1" />
+            <Label text="Type:" GridPane.rowIndex="1" />
+            <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Range:" GridPane.rowIndex="2" />
+            <Label text="From" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Label" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Label text="To" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <Label text="Label" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <CheckBox mnemonicParsing="false" text="Want to add value?" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+            <TextField GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </TextField>
+         </children>
+      </GridPane>
    </children>
 </AnchorPane>

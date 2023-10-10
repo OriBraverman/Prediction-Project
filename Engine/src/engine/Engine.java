@@ -9,6 +9,7 @@ import dto.result.PropertyConstistencyDTO;
 import dto.world.WorldDTO;
 import dto.world.WorldsDTO;
 import http.url.Client;
+import requests.UserRequest;
 import simulation.SimulationExecutionDetails;
 import user.manager.UsersManager;
 import world.definition.World;
@@ -21,13 +22,13 @@ public interface Engine {
 
     void loadXML(String xmlPath) throws FileNotFoundException;
 
-    SimulationIDDTO activateSimulation(boolean isBonusActivated, int worldID, EnvVariablesValuesDTO envVariablesValuesDTO, EntitiesPopulationDTO entitiesPopulationDTO);
+    SimulationIDDTO activateSimulation(ActivateSimulationDTO activateSimulationDTO);
 
     WorldDTO getWorldDTO(int simulationID);
 
     WorldDTO getWorldDTO(World world);
 
-    void validateEnvVariableValue(String worldName, EnvVariableValueDTO envVariableValueDTO);
+    void validateEnvVariablesValues(String worldName, EnvVariablesValuesDTO envVariablesValuesDTO);
 
     SimulationIDListDTO getSimulationListDTO();
 
@@ -39,7 +40,7 @@ public interface Engine {
 
     boolean isXMLLoaded();
 
-    NewExecutionInputDTO getNewExecutionInputDTO(String worldName);
+    NewExecutionInputDTO getNewExecutionInputDTO(int requestID);
 
     void validateEntitiesPopulation(EntitiesPopulationDTO entitiesPopulationDTO, String worldName);
 
@@ -82,6 +83,8 @@ public interface Engine {
     WorldsDTO getWorldsDTO();
 
     RequestsDTO getRequestsDTO(String usernameFromSession, Client typeOfClient);
+
+    RequestDTO getRequestDTO(UserRequest userRequest);
 
     void submitRequest(RequestDTO requestDTO);
 

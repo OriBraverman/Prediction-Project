@@ -43,15 +43,23 @@ public class AllocationsController {
         buttonsColumn.setCellValueFactory(cellData -> {
             HBox hBox = new HBox();
             Button approveButton = new Button("Approve");
+            Button rejectButton = new Button("Reject");
             approveButton.setOnAction(event -> {
                 int requestID = cellData.getValue().getId();
                 appController.updateRequestStatus(requestID, "ACCEPTED");
             });
-            Button rejectButton = new Button("Reject");
             rejectButton.setOnAction(event -> {
                 int requestID = cellData.getValue().getId();
                 appController.updateRequestStatus(requestID, "REJECTED");
             });
+            approveButton.visibleProperty().bind(Bindings.createBooleanBinding(() -> {
+                String status = cellData.getValue().getStatus();
+                return status.equals("PENDING");
+            }));
+            rejectButton.visibleProperty().bind(Bindings.createBooleanBinding(() -> {
+                String status = cellData.getValue().getStatus();
+                return status.equals("PENDING");
+            }));
             hBox.getChildren().addAll(approveButton, rejectButton);
             return Bindings.createObjectBinding(() -> hBox);
         });

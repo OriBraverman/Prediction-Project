@@ -20,4 +20,9 @@ public class URLconst {
     public static final String SUBMIT_REQUEST_URL = BASE_URL + SUBMIT_REQUEST_SRC;
     public static final String UPDATE_REQUEST_STATUS_SRC = "/updateRequestStatus";
     public static final String UPDATE_REQUEST_STATUS_URL = BASE_URL + UPDATE_REQUEST_STATUS_SRC;
+    public static final String EXECUTE_REQUEST_SRC = "/executeRequest";
+    public static final String EXECUTE_REQUEST_URL = BASE_URL + EXECUTE_REQUEST_SRC;
+    public static final String ACTIVATE_SIMULATION_SRC = "/activateSimulation";
+    public static final String ACTIVATE_SIMULATION_URL = BASE_URL + ACTIVATE_SIMULATION_SRC;
+
 }

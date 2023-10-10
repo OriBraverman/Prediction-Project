@@ -1,13 +1,22 @@
 package dto;
 
-public class EnvVariablesValuesDTO {
-    EnvVariableValueDTO[] envVariablesValues;
+import java.util.List;
 
-    public EnvVariablesValuesDTO(EnvVariableValueDTO[] envVariablesValues) {
+public class EnvVariablesValuesDTO {
+    List<EnvVariableValueDTO> envVariablesValues;
+
+    public EnvVariablesValuesDTO(List<EnvVariableValueDTO> envVariablesValues) {
         this.envVariablesValues = envVariablesValues;
     }
 
-    public EnvVariableValueDTO[] getEnvVariablesValues() {
+    public List<EnvVariableValueDTO> getEnvVariablesValues() {
         return envVariablesValues;
+    }
+
+    public EnvVariableValueDTO getEnvVariableValueByName(String name) {
+        return envVariablesValues.stream()
+                .filter(envVariableValueDTO -> envVariableValueDTO.getName().equals(name))
+                .findFirst()
+                .orElse(null);
     }
 }

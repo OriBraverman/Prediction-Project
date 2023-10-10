@@ -148,8 +148,8 @@ public class AppController {
         SkinsMenuButton.getItems().addAll(menuItems);
     }
 
-    public void validateEnvVariableValue(String worldName, EnvVariableValueDTO envVariableValueDTO) throws IllegalArgumentException {
-        engineImpl.validateEnvVariableValue(worldName, envVariableValueDTO);
+    public void validateEnvVariablesValues(String worldName, EnvVariablesValuesDTO envVariablesValuesDTO) throws IllegalArgumentException {
+        engineImpl.validateEnvVariablesValues(worldName, envVariablesValuesDTO);
     }
 
     /*public void activateSimulation(UserRequest userRequest, EnvVariablesValuesDTO envVariablesValuesDTO, EntitiesPopulationDTO entityPopulationDTO, boolean isBonusActivated) {
@@ -173,6 +173,23 @@ public class AppController {
                 break;
             case RESULTS:
                 tabPane.getSelectionModel().select(3);
+                break;
+        }
+    }
+
+    public void tabActivation(Tab tab, boolean isActivated) {
+        switch (tab) {
+            case SIMULATION_DETAILS:
+                tabPane.getTabs().get(0).setDisable(!isActivated);
+                break;
+            case REQUESTS:
+                tabPane.getTabs().get(1).setDisable(!isActivated);
+                break;
+            case EXECUTION:
+                tabPane.getTabs().get(2).setDisable(!isActivated);
+                break;
+            case RESULTS:
+                tabPane.getTabs().get(3).setDisable(!isActivated);
                 break;
         }
     }
@@ -311,5 +328,9 @@ public class AppController {
 
     public String getUsername() {
         return username.get();
+    }
+
+    public NewExecutionController getExecutionController() {
+        return executionComponentController;
     }
 }

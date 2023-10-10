@@ -25,8 +25,6 @@ import static validator.XMLValidator.*;
 
 import simulation.SimulationExecutionDetails;
 import simulation.SimulationExecutionManager;
-import user.manager.UsersManager;
-import user.manager.UsersManagerImpl;
 import world.definition.World;
 import world.definition.manager.WorldDefinitionManager;
 import world.definition.manager.WorldDefinitionManagerImpl;
@@ -121,8 +119,7 @@ public class EngineImpl implements Serializable, Engine {
 
     private ActiveEnvironment createActiveEnvironment(World world, EnvVariablesValuesDTO envVariablesValuesDTO) {
         ActiveEnvironment activeEnvironment = world.getEnvironment().createActiveEnvironment();
-        for (int i = 0; i < envVariablesValuesDTO.getEnvVariablesValues().length; i++) {
-            EnvVariableValueDTO envVariableValueDTO = envVariablesValuesDTO.getEnvVariablesValues()[i];
+        for (EnvVariableValueDTO envVariableValueDTO : envVariablesValuesDTO.getEnvVariablesValues()) {
             String value = envVariableValueDTO.getValue();
             PropertyDefinition propertyDefinition = world.getEnvironment().getPropertyDefinitionByName(envVariableValueDTO.getName());
             PropertyInstance propertyInstance;
@@ -133,7 +130,6 @@ public class EngineImpl implements Serializable, Engine {
                 propertyInstance = new PropertyInstanceImpl(propertyDefinition, getPropertyFromString(value, propertyDefinition));
             }
             activeEnvironment.addPropertyInstance(propertyInstance);
-            envVariablesValuesDTO.getEnvVariablesValues()[i] = new EnvVariableValueDTO(envVariableValueDTO.getName(), value.toString(), true);
         }
         return activeEnvironment;
     }
@@ -166,13 +162,13 @@ public class EngineImpl implements Serializable, Engine {
     }
 
     @Override
-    public SimulationIDDTO activateSimulation(boolean isBonusActivated, int worldID, EnvVariablesValuesDTO envVariablesValuesDTO, EntitiesPopulationDTO entitiesPopulationDTO) {
-        /*World world = worldDefinitionManager.getWorldDefinitionById;
-        WorldInstance worldInstance = createWorldInstance(world, envVariablesValuesDTO, entitiesPopulationDTO);
-        int simulationId = this.simulationExecutionManager.createSimulation(worldInstance, isBonusActivated);
+    public SimulationIDDTO activateSimulation(ActivateSimulationDTO activateSimulationDTO) {
+        UserRequest userRequest = this.requestsManager.getRequest(activateSimulationDTO.getRequestID());
+        World world = this.worldDefinitionManager.getWorldDefinitionByName(userRequest.getSimulationName());
+        WorldInstance worldInstance = createWorldInstance(userRequest, world, activateSimulationDTO.getEnvVariablesValuesDTO(), activateSimulationDTO.getEntityPopulationDTO());
+        int simulationId = this.simulationExecutionManager.createSimulation(worldInstance);
         this.simulationExecutionManager.runSimulation(simulationId);
-        return new SimulationIDDTO(simulationId);*/
-        return null;
+        return new SimulationIDDTO(simulationId);
     }
 
     @Override
@@ -334,6 +330,12 @@ public class EngineImpl implements Serializable, Engine {
     }
 
     @Override
+    public void validateEnvVariablesValues(String worldName, EnvVariablesValuesDTO envVariablesValuesDTO) {
+        World world = this.worldDefinitionManager.getWorldDefinitionByName(worldName);
+        for (EnvVariableValueDTO envVariableValueDTO : envVariablesValuesDTO.getEnvVariablesValues()) {
+            validateEnvVariableValue(worldName, envVariableValueDTO);
+        }
+    }
     public void validateEnvVariableValue(String worldName, EnvVariableValueDTO envVariableValueDTO) {
         World world = this.worldDefinitionManager.getWorldDefinitionByName(worldName);
         PropertyDefinition propertyDefinition = world.getEnvironment().getPropertyDefinitionByName(envVariableValueDTO.getName());
@@ -413,11 +415,15 @@ public class EngineImpl implements Serializable, Engine {
     }
 
     @Override
-    public NewExecutionInputDTO getNewExecutionInputDTO(String worldName) {
-        World world = worldDefinitionManager.getWorldDefinitionByName(worldName);
+    public NewExecutionInputDTO getNewExecutionInputDTO(int requestID) {
+        UserRequest userRequest = this.requestsManager.getRequest(requestID);
+        World world = this.worldDefinitionManager.getWorldDefinitionByName(userRequest.getSimulationName());
+        RequestDTO requestDTO = getRequestDTO(userRequest);
         List<PropertyDefinitionDTO> envVariables = getEnvironmentDTO(world);
-        List<EntityDefinitionDTO> entityDefinitionDTOS = getEntitiesDTO(world);
-        return new NewExecutionInputDTO(envVariables, entityDefinitionDTOS);
+        List<EntityPopulationDTO> entityPopulationDTOS = getEntitiesDTO(world)
+                .stream().map(entityDefinitionDTO -> new EntityPopulationDTO(entityDefinitionDTO.getName(), "", false))
+                .collect(Collectors.toList());
+        return new NewExecutionInputDTO(requestDTO, envVariables, entityPopulationDTOS);
     }
 
     @Override
@@ -607,10 +613,9 @@ public class EngineImpl implements Serializable, Engine {
     public EnvVariablesValuesDTO getEnvVariablesValuesDTO(int simulationID) {
         SimulationExecutionDetails simulationExecutionDetails = this.simulationExecutionManager.getSimulationDetailsByID(simulationID);
         List<PropertyInstance> envVariables = simulationExecutionDetails.getActiveEnvironment().getEnvVariables();
-        EnvVariableValueDTO[] envVariableValueDTOS = new EnvVariableValueDTO[envVariables.size()];
-        for (int i = 0; i < envVariables.size(); i++) {
-            PropertyInstance propertyInstance = envVariables.get(i);
-            envVariableValueDTOS[i] = new EnvVariableValueDTO(propertyInstance.getPropertyDefinition().getName(), propertyInstance.getValue().toString(), true);
+        List<EnvVariableValueDTO> envVariableValueDTOS = new ArrayList<>();
+        for (PropertyInstance propertyInstance : envVariables) {
+            envVariableValueDTOS.add(new EnvVariableValueDTO(propertyInstance.getPropertyDefinition().getName(), propertyInstance.getValue().toString(), true));
         }
         return new EnvVariablesValuesDTO(envVariableValueDTOS);
     }
@@ -675,17 +680,23 @@ public class EngineImpl implements Serializable, Engine {
         List<UserRequest> userRequests = this.requestsManager.getRequests(usernameFromSession, typeOfClient);
         List<RequestDTO> requestDTOS = new ArrayList<>();
         for (UserRequest userRequest : userRequests) {
-            String status = userRequest.getRequestStatus().toString();
-            int id = userRequest.getId();
-            String userName = userRequest.getUsername();
-            String worldName = userRequest.getWorldName();
-            int numberOfExecutions = userRequest.getExecutionsCount();
-            TerminationDTO termination = getTerminationDTO(userRequest.getTermination());
-            int runningExecutions = userRequest.getRunningExecutionsCount();
-            int completedExecutions = userRequest.getCompletedExecutionsCount();
-            requestDTOS.add(new RequestDTO(status, id, userName, worldName, numberOfExecutions, termination, runningExecutions, completedExecutions));
+            requestDTOS.add(getRequestDTO(userRequest));
         }
         return new RequestsDTO(requestDTOS);
+    }
+
+    @Override
+    public RequestDTO getRequestDTO(UserRequest userRequest) {
+        String status = userRequest.getRequestStatus().toString();
+        int id = userRequest.getId();
+        String userName = userRequest.getUsername();
+        String worldName = userRequest.getWorldName();
+        int numberOfExecutions = userRequest.getExecutionsCount();
+        TerminationDTO termination = getTerminationDTO(userRequest.getTermination());
+        int pendingExecutions = userRequest.getPendingExecutionsCount();
+        int runningExecutions = userRequest.getRunningExecutionsCount();
+        int completedExecutions = userRequest.getCompletedExecutionsCount();
+        return new RequestDTO(status, id, userName, worldName, numberOfExecutions, termination, pendingExecutions, runningExecutions, completedExecutions);
     }
 
     @Override

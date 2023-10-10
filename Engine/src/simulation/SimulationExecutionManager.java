@@ -24,10 +24,10 @@ public class SimulationExecutionManager implements Serializable {
         this.threadExecutor = Executors.newFixedThreadPool(1);
     }
 
-    public int createSimulation(WorldInstance worldInstance, boolean isBonusActivated) {
+    public int createSimulation(WorldInstance worldInstance) {
         currentSimulationIndex++;
         SimulationExecutionDetails simulationExecutionDetails = new SimulationExecutionDetails(currentSimulationIndex, worldInstance);
-        SimulationRunner simulationRunner = new SimulationRunnerImpl(currentSimulationIndex, simulationExecutionDetails, isBonusActivated);
+        SimulationRunner simulationRunner = new SimulationRunnerImpl(currentSimulationIndex, simulationExecutionDetails);
         simulations.put(currentSimulationIndex, simulationRunner);
         simulationDetails.put(currentSimulationIndex, simulationExecutionDetails);
         return currentSimulationIndex;

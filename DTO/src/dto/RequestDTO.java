@@ -9,6 +9,7 @@ public class RequestDTO {
     private final String worldName;
     private final int numberOfExecutions;
     private final TerminationDTO termination;
+    private final int pendingExecutions;
     private final int runningExecutions;
     private final int completedExecutions;
     public RequestDTO(String userName, String worldName, int numberOfExecutions, TerminationDTO termination) {
@@ -18,17 +19,19 @@ public class RequestDTO {
         this.worldName = worldName;
         this.numberOfExecutions = numberOfExecutions;
         this.termination = termination;
+        this.pendingExecutions = numberOfExecutions;
         this.runningExecutions = 0;
         this.completedExecutions = 0;
     }
 
-    public RequestDTO(String status, int id, String userName, String worldName, int numberOfExecutions, TerminationDTO termination, int runningExecutions, int completedExecutions) {
+    public RequestDTO(String status, int id, String userName, String worldName, int numberOfExecutions, TerminationDTO termination, int pendingExecutions, int runningExecutions, int completedExecutions) {
         this.status = status;
         this.id = id;
         this.userName = userName;
         this.worldName = worldName;
         this.numberOfExecutions = numberOfExecutions;
         this.termination = termination;
+        this.pendingExecutions = pendingExecutions;
         this.runningExecutions = runningExecutions;
         this.completedExecutions = completedExecutions;
     }
@@ -63,5 +66,8 @@ public class RequestDTO {
 
     public int getCompletedExecutions() {
         return completedExecutions;
+    }
+    public int getNumberOfExecutionsLeft() {
+        return numberOfExecutions - completedExecutions - runningExecutions - pendingExecutions;
     }
 }

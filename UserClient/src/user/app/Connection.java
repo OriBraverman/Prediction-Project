@@ -2,16 +2,13 @@ package user.app;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dto.RequestDTO;
-import dto.StatusDTO;
+import dto.*;
 import dto.world.TerminationDTO;
 import http.url.Constants;
 import http.url.URLconst;
 import javafx.application.Platform;
-import javafx.beans.property.StringProperty;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
-import world.factors.termination.Termination;
 
 import java.io.IOException;
 
@@ -86,7 +83,69 @@ public class Connection {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String dtoAsStr = response.body().string();
-                System.out.println("logout response Code: " + response.code() + " " + dtoAsStr);
+                System.out.println("submitRequest response Code: " + response.code() + " " + dtoAsStr);
+
+                if (response.code() != 200) {
+                    Gson gson = new Gson();
+                    StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                    appController.showAlert(loginStatus);
+                }
+            }
+        });
+    }
+
+    public void executeRequest(int requestID) {
+        // a get request with the requestID as a parameter
+        String body = "";
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(URLconst.EXECUTE_REQUEST_URL).newBuilder();
+        urlBuilder.addQueryParameter(Constants.REQUEST_ID, String.valueOf(requestID));
+        Request request = new Request.Builder()
+                .url(urlBuilder.build())
+                .addHeader(CONTENT_TYPE, "text/plain")
+                .get()
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("Oops... something went wrong..." + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String dtoAsStr = response.body().string();
+                System.out.println("executeRequest response Code: " + response.code() + " " + dtoAsStr);
+                NewExecutionInputDTO newExecutionInputDTO = gson.fromJson(dtoAsStr, NewExecutionInputDTO.class);
+                Platform.runLater(() -> appController.getExecutionController().updateExecution(newExecutionInputDTO));
+
+                if (response.code() != 200) {
+                    Gson gson = new Gson();
+                    StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                    appController.showAlert(loginStatus);
+                }
+            }
+        });
+    }
+
+    public void activateSimulation(ActivateSimulationDTO activateSimulationDTO) {
+        // pass the requestID, envVariablesValuesDTO, entityPopulationDTO to the server
+        String jsonRequest = gson.toJson(activateSimulationDTO);
+        Request request = new Request.Builder()
+                .url(URLconst.ACTIVATE_SIMULATION_URL)
+                .addHeader(CONTENT_TYPE, "application/json")
+                .post(RequestBody.create(jsonRequest, MediaType.parse("application/json")))
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("Oops... something went wrong..." + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String dtoAsStr = response.body().string();
+                System.out.println("activateSimulation response Code: " + response.code() + " " + dtoAsStr);
 
                 if (response.code() != 200) {
                     Gson gson = new Gson();

@@ -9,6 +9,7 @@ public class UserRequest {
     private Termination termination;
     private int executionsCount;
     private RequestStatus requestStatus;
+    private int pendingExecutionsCount;
     private int runningExecutionsCount;
     private int completedExecutionsCount;
 
@@ -19,6 +20,7 @@ public class UserRequest {
         this.termination = termination;
         this.executionsCount = executionsCount;
         this.requestStatus = RequestStatus.PENDING;
+        this.pendingExecutionsCount = 0;
         this.runningExecutionsCount = 0;
         this.completedExecutionsCount = 0;
     }
@@ -41,6 +43,9 @@ public class UserRequest {
 
     public RequestStatus getRequestStatus() {
         return requestStatus;
+    }
+    public int getPendingExecutionsCount() {
+        return pendingExecutionsCount;
     }
 
     public int getRunningExecutionsCount() {
