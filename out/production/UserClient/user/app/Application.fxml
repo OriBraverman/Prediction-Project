@@ -15,7 +15,7 @@
 
 <ScrollPane fx:id="applicationScrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@Application.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="user.app.AppController">
    <content>
-      <VBox fx:id="MainVBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1100.0" styleClass="base">
+      <VBox fx:id="MainVBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1300.0" styleClass="base">
          <children>
             <GridPane fx:id="UpperGridPane" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1100.0">
               <columnConstraints>

@@ -24,7 +24,7 @@ public class AllocationsController {
     @FXML private TableColumn<RequestDTO, Integer> requestIdColumn;
     @FXML private TableColumn<RequestDTO, String> userNameColumn;
     @FXML private TableColumn<RequestDTO, String> simulationNameColumn;
-    @FXML private TableColumn<RequestDTO, Integer> threadsRequestedColumn;
+    @FXML private TableColumn<RequestDTO, Integer> amountColumn;
     @FXML private TableColumn<RequestDTO, String> terminationSecondsColumn;
     @FXML private TableColumn<RequestDTO, String> terminationTicksColumn;
     @FXML private TableColumn<RequestDTO, String> terminationUserColumn;
@@ -79,7 +79,7 @@ public class AllocationsController {
             String simulationName = cellData.getValue().getWorldName();
             return Bindings.createObjectBinding(() -> simulationName);
         });
-        threadsRequestedColumn.setCellValueFactory(cellData -> {
+        amountColumn.setCellValueFactory(cellData -> {
             int threadsRequested = cellData.getValue().getNumberOfExecutions();
             return Bindings.createObjectBinding(() -> threadsRequested);
         });
