@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import utils.SessionUtils;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static http.url.URLconst.LOAD_XML_SRC;
@@ -36,7 +37,11 @@ public class LoadXMLServlet extends HttpServlet {
             engine.loadXML(xmlPath);
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().println(gson.toJson(new StatusDTO(true, "XML file loaded successfully.")));
-        } catch (Exception e) {
+        } catch (FileNotFoundException | IllegalArgumentException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().println(gson.toJson(new StatusDTO(false, e.getMessage())));
+        }
+        catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().println(gson.toJson(new StatusDTO(false, e.getMessage())));
         }

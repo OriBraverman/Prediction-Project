@@ -18,8 +18,8 @@ import static http.url.URLconst.LOGIN_URL;
 
 public class Connection {
     private OkHttpClient client;
-    private Gson gson;
-    private AppController appController;
+    private final Gson gson;
+    private final AppController appController;
 
     Connection(AppController appController) {
         gson = new GsonBuilder().create();
@@ -74,30 +74,23 @@ public class Connection {
                 .addHeader(CONTENT_TYPE, "application/json")
                 .post(RequestBody.create(jsonRequest, MediaType.parse("application/json")))
                 .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                System.out.println("Oops... something went wrong..." + e.getMessage());
+        try (Response response = client.newCall(request).execute()) {
+            String dtoAsStr = response.body().string();
+            System.out.println("submitRequest response Code: " + response.code() + " " + dtoAsStr);
+
+            if (response.code() != 200) {
+                Gson gson = new Gson();
+                StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                appController.showAlert(loginStatus);
             }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String dtoAsStr = response.body().string();
-                System.out.println("submitRequest response Code: " + response.code() + " " + dtoAsStr);
-
-                if (response.code() != 200) {
-                    Gson gson = new Gson();
-                    StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
-
-                    appController.showAlert(loginStatus);
-                }
-            }
-        });
+        } catch (IOException e) {
+            System.out.println("Oops... something went wrong..." + e.getMessage());
+        }
     }
 
     public void executeRequest(int requestID) {
         // a get request with the requestID as a parameter
-        String body = "";
         HttpUrl.Builder urlBuilder = HttpUrl.parse(URLconst.EXECUTE_REQUEST_URL).newBuilder();
         urlBuilder.addQueryParameter(Constants.REQUEST_ID, String.valueOf(requestID));
         Request request = new Request.Builder()
@@ -128,7 +121,7 @@ public class Connection {
         });
     }
 
-    public void activateSimulation(ActivateSimulationDTO activateSimulationDTO) {
+    public boolean activateSimulation(ActivateSimulationDTO activateSimulationDTO) {
         // pass the requestID, envVariablesValuesDTO, entityPopulationDTO to the server
         String jsonRequest = gson.toJson(activateSimulationDTO);
         Request request = new Request.Builder()
@@ -136,24 +129,21 @@ public class Connection {
                 .addHeader(CONTENT_TYPE, "application/json")
                 .post(RequestBody.create(jsonRequest, MediaType.parse("application/json")))
                 .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                System.out.println("Oops... something went wrong..." + e.getMessage());
+
+        try (Response response = client.newCall(request).execute()) {
+            String dtoAsStr = response.body().string();
+            System.out.println("activateSimulation response Code: " + response.code() + " " + dtoAsStr);
+
+            if (response.code() != 200) {
+                Gson gson = new Gson();
+                StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
+                appController.showAlert(loginStatus);
+                return false;
             }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String dtoAsStr = response.body().string();
-                System.out.println("activateSimulation response Code: " + response.code() + " " + dtoAsStr);
-
-                if (response.code() != 200) {
-                    Gson gson = new Gson();
-                    StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
-
-                    appController.showAlert(loginStatus);
-                }
-            }
-        });
+        } catch (IOException e) {
+            System.out.println("Oops... something went wrong..." + e.getMessage());
+            return false;
+        }
+        return true;
     }
 }

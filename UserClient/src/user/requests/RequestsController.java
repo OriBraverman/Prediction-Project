@@ -121,16 +121,26 @@ public class RequestsController {
         int amount, terminationByTicks, terminationBySeconds;
         try {
             amount = Integer.parseInt(amountLabel.getText());
-            if (isTerminationByUser) {
-                terminationByTicks = -1;
-                terminationBySeconds = -1;
-            } else {
-                terminationByTicks = Integer.parseInt(terminationByTicksLabel.getText());
-                terminationBySeconds = Integer.parseInt(terminationBySecondsLabel.getText());
-            }
         } catch (NumberFormatException e) {
-            appController.showAlert(new StatusDTO(false, "Please enter a valid number"));
+            appController.showAlert(new StatusDTO(false, "Please enter a valid number of threads"));
             return;
+        }
+        if (isTerminationByUser) {
+            terminationByTicks = -1;
+            terminationBySeconds = -1;
+        } else {
+            try {
+                terminationByTicks = Integer.parseInt(terminationByTicksLabel.getText());
+            } catch (NumberFormatException e) {
+                appController.showAlert(new StatusDTO(false, "Please enter a valid number of ticks"));
+                return;
+            }
+            try {
+                terminationBySeconds = Integer.parseInt(terminationBySecondsLabel.getText());
+            } catch (NumberFormatException e) {
+                appController.showAlert(new StatusDTO(false, "Please enter a valid number of seconds"));
+                return;
+            }
         }
         appController.getConnection().submitRequest(simulationName, amount, terminationByTicks, terminationBySeconds, isTerminationByUser);
     }

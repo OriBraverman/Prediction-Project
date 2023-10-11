@@ -44,4 +44,9 @@ public class WorldDefinitionManagerImpl implements WorldDefinitionManager{
     public List<World> getWorldDefinitions() {
         return new ArrayList<>(worldDefinitions.values());
     }
+
+    @Override
+    public boolean isWorldExists(String worldName) {
+        return worldDefinitions.containsKey(worldName);
+    }
 }

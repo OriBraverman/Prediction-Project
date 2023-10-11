@@ -111,6 +111,8 @@ public class AppController {
                 resultsComponentController.stopExecutorService();
                 engineImpl.stopThreadPool();
                 connection.sendLogOut();
+                // close javaFX application
+                Platform.exit();
             }));
         });
     }
@@ -146,10 +148,6 @@ public class AppController {
         menuItems.add(orangeSkin);
         menuItems.add(greenSkin);
         SkinsMenuButton.getItems().addAll(menuItems);
-    }
-
-    public void validateEnvVariablesValues(String worldName, EnvVariablesValuesDTO envVariablesValuesDTO) throws IllegalArgumentException {
-        engineImpl.validateEnvVariablesValues(worldName, envVariablesValuesDTO);
     }
 
     /*public void activateSimulation(UserRequest userRequest, EnvVariablesValuesDTO envVariablesValuesDTO, EntitiesPopulationDTO entityPopulationDTO, boolean isBonusActivated) {
@@ -217,10 +215,6 @@ public class AppController {
 
     public HistogramDTO getHistogramDTO(int simulationID, String entityName, String propertyName) {
         return engineImpl.getHistogramDTO(simulationID, entityName, propertyName);
-    }
-
-    public void validateEntitiesPopulation(String worldName, EntitiesPopulationDTO entityPopulationDTOS) throws IllegalArgumentException{
-        engineImpl.validateEntitiesPopulation(entityPopulationDTOS, worldName);
     }
 
     public SimulationExecutionDetailsDTO getSimulationExecutionDetailsDTO(int simulationID) {

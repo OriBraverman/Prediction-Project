@@ -94,7 +94,7 @@ public class EngineImpl implements Serializable, Engine {
     }
 
     @Override
-    public void loadXML(String xmlPath) throws FileNotFoundException {
+    public void loadXML(String xmlPath) throws FileNotFoundException, IllegalArgumentException {
         Path path = Paths.get(xmlPath);
         validateFileExists(path);
         validateFileIsXML(path);
@@ -162,9 +162,11 @@ public class EngineImpl implements Serializable, Engine {
     }
 
     @Override
-    public SimulationIDDTO activateSimulation(ActivateSimulationDTO activateSimulationDTO) {
+    public SimulationIDDTO activateSimulation(ActivateSimulationDTO activateSimulationDTO) throws IllegalArgumentException{
         UserRequest userRequest = this.requestsManager.getRequest(activateSimulationDTO.getRequestID());
         World world = this.worldDefinitionManager.getWorldDefinitionByName(userRequest.getSimulationName());
+        validateEntitiesPopulation(activateSimulationDTO.getEntityPopulationDTO(), world.getName());
+        validateEnvVariablesValues(world.getName(), activateSimulationDTO.getEnvVariablesValuesDTO());
         WorldInstance worldInstance = createWorldInstance(userRequest, world, activateSimulationDTO.getEnvVariablesValuesDTO(), activateSimulationDTO.getEntityPopulationDTO());
         int simulationId = this.simulationExecutionManager.createSimulation(worldInstance);
         this.simulationExecutionManager.runSimulation(simulationId);
@@ -330,13 +332,13 @@ public class EngineImpl implements Serializable, Engine {
     }
 
     @Override
-    public void validateEnvVariablesValues(String worldName, EnvVariablesValuesDTO envVariablesValuesDTO) {
+    public void validateEnvVariablesValues(String worldName, EnvVariablesValuesDTO envVariablesValuesDTO) throws IllegalArgumentException{
         World world = this.worldDefinitionManager.getWorldDefinitionByName(worldName);
         for (EnvVariableValueDTO envVariableValueDTO : envVariablesValuesDTO.getEnvVariablesValues()) {
             validateEnvVariableValue(worldName, envVariableValueDTO);
         }
     }
-    public void validateEnvVariableValue(String worldName, EnvVariableValueDTO envVariableValueDTO) {
+    public void validateEnvVariableValue(String worldName, EnvVariableValueDTO envVariableValueDTO) throws IllegalArgumentException{
         World world = this.worldDefinitionManager.getWorldDefinitionByName(worldName);
         PropertyDefinition propertyDefinition = world.getEnvironment().getPropertyDefinitionByName(envVariableValueDTO.getName());
         if (propertyDefinition instanceof IntegerPropertyDefinition) {
@@ -427,7 +429,7 @@ public class EngineImpl implements Serializable, Engine {
     }
 
     @Override
-    public void validateEntitiesPopulation(EntitiesPopulationDTO entitiesPopulationDTO, String worldName) {
+    public void validateEntitiesPopulation(EntitiesPopulationDTO entitiesPopulationDTO, String worldName) throws IllegalArgumentException{
         World world = worldDefinitionManager.getWorldDefinitionByName(worldName);
         int MaxPopulation = world.getGridDefinition().getHeight() * world.getGridDefinition().getWidth();
         int totalPopulation = 0;
@@ -700,12 +702,30 @@ public class EngineImpl implements Serializable, Engine {
     }
 
     @Override
-    public void submitRequest(@NotNull RequestDTO requestDTO) {
+    public void submitRequest(@NotNull RequestDTO requestDTO) throws IllegalArgumentException {
         String username = requestDTO.getUserName();
         String worldName = requestDTO.getWorldName();
         int numberOfExecutions = requestDTO.getNumberOfExecutions();
         Termination termination = new Termination(requestDTO.getTermination().isByUser(), requestDTO.getTermination().getSecondsCount(), requestDTO.getTermination().getTicksCount());
+        verifyRequest(worldName, numberOfExecutions, termination);
         this.requestsManager.addRequest(username, worldName, numberOfExecutions, termination);
+    }
+
+    private void verifyRequest(String worldName, int numberOfExecutions, Termination termination) throws IllegalArgumentException {
+        if (numberOfExecutions < 1) {
+            throw new IllegalArgumentException("Number of executions must be at least 1");
+        }
+        if (!termination.isByUser()) {
+            if (termination.getSecondsCount() < 1) {
+                throw new IllegalArgumentException("Seconds count must be at least 1");
+            }
+            if (termination.getTicksCount() < 1) {
+                throw new IllegalArgumentException("Ticks count must be at least 1");
+            }
+        }
+        if (!this.worldDefinitionManager.isWorldExists(worldName)) {
+            throw new IllegalArgumentException("World " + worldName + " does not exist");
+        }
     }
 
     @Override

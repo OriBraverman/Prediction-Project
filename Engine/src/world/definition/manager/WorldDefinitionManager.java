@@ -14,4 +14,6 @@ public interface WorldDefinitionManager {
     World getWorldDefinitionByName(String name);
 
     List<World> getWorldDefinitions();
+
+    boolean isWorldExists(String worldName);
 }

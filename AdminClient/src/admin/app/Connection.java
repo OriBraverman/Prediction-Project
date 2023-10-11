@@ -7,6 +7,7 @@ import dto.StatusDTO;
 import http.cookie.SimpleCookieManager;
 import http.url.Constants;
 import http.url.URLconst;
+import javafx.application.Platform;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +30,7 @@ public class Connection {
         this.appController = appController;
     }
 
-    public void sendLogIn() {
+    public boolean sendLogIn() {
         String body = "";
         HttpUrl.Builder urlBuilder = HttpUrl.parse(LOGIN_URL).newBuilder();
         urlBuilder.addQueryParameter(Constants.USER_NAME, Constants.ADMIN);
@@ -39,23 +40,25 @@ public class Connection {
                 .addHeader(CONTENT_TYPE, "text/plain")
                 .post(RequestBody.create(body.getBytes()))
                 .build();
-        client.newCall(request).enqueue(new Callback() {
-            public void onResponse(Call call, Response response) throws IOException {
-                String dtoAsStr = response.body().string();
-                System.out.println("login response Code: " + response.code() + " " + dtoAsStr);
 
-                if (response.code() != 200) {
-                    Gson gson = new Gson();
-                    StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
+        try (Response response = client.newCall(request).execute()) {
+            String dtoAsStr = response.body().string();
+            System.out.println("login response Code: " + response.code() + " " + dtoAsStr);
+
+            if (response.code() != 200) {
+                Gson gson = new Gson();
+                StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
+                Platform.runLater(() -> {
                     appController.showAlert(loginStatus);
-                }
+                    appController.closeApp();
+                });
+                return false;
             }
-
-            public void onFailure(Call call, IOException e) {
-                System.out.println("Oops... something went wrong..." + e.getMessage());
-            }
-        });
-
+        } catch (Exception e) {
+            System.out.println("Oops... something went wrong..." + e.getMessage());
+            return false;
+        }
+        return true;
     }
 
     public void loadXML(String xmlPath) throws Exception {
@@ -64,20 +67,21 @@ public class Connection {
         RequestBody body = RequestBody.create(jsonRequest,
                 MediaType.parse("application/json"));
 
-        // Create the request
         Request request = new Request.Builder()
                 .url(URLconst.LOAD_XML_URL)
                 .post(body)
                 .build();
 
-        // Send the request
         try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new Exception("Error loading XML file");
-            }
+            String dtoAsStr = response.body().string();
+            System.out.println("loadXML response Code: " + response.code() + " " + dtoAsStr);
 
-            // Handle the response as needed
-            String responseBody = response.body().string();
+            if (response.code() != 200) {
+                Gson gson = new Gson();
+                StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                Platform.runLater(() -> appController.showAlert(loginStatus));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -138,7 +142,7 @@ public class Connection {
                     Gson gson = new Gson();
                     StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
 
-                    appController.showAlert(loginStatus);
+                    Platform.runLater(() -> appController.showAlert(loginStatus));
                 }
             }
         });
@@ -172,7 +176,7 @@ public class Connection {
                     Gson gson = new Gson();
                     StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
 
-                    appController.showAlert(loginStatus);
+                    Platform.runLater(() -> appController.showAlert(loginStatus));
                 }
             }
         });

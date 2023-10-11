@@ -58,7 +58,7 @@ public class AppController {
     }
 
     @FXML public void initialize(){
-        connection.sendLogIn();
+        boolean loginSucceeded = connection.sendLogIn();
         setColorThemeComponents();
         if (managementComponentController != null && allocationsComponentController != null
                 && executionsHistoryComponentController != null) {
@@ -74,9 +74,11 @@ public class AppController {
             applicationScrollPane.setFitToHeight(true);
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                engineImpl.deleteInDepthMemoryFolder();
-                engineImpl.stopThreadPool();
-                connection.sendLogOut();
+                if (loginSucceeded) {
+                    connection.sendLogOut();
+                }
+                // close javaFX application
+                Platform.exit();
             }));
         });
     }
