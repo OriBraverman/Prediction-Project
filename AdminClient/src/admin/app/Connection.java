@@ -14,13 +14,12 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 import static http.url.Client.ADMIN;
-import static http.url.Client.USER;
 import static http.url.Constants.CONTENT_TYPE;
 import static http.url.URLconst.*;
 
 public class Connection {
-    private OkHttpClient client;
-    private Gson gson;
+    private final OkHttpClient client;
+    private final Gson gson;
     private AppController appController;
 
 
@@ -35,8 +34,9 @@ public class Connection {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(LOGIN_URL).newBuilder();
         urlBuilder.addQueryParameter(Constants.USER_NAME, Constants.ADMIN);
         urlBuilder.addQueryParameter(Constants.CLIENT_TYPE, ADMIN.getClientType());
+        String url = urlBuilder.build().toString();
         Request request = new Request.Builder()
-                .url(urlBuilder.build())
+                .url(url)
                 .addHeader(CONTENT_TYPE, "text/plain")
                 .post(RequestBody.create(body.getBytes()))
                 .build();
@@ -92,25 +92,25 @@ public class Connection {
     }
 
     public void setThreadsCount(String threadsCount) {
-        // Create a JSON request body containing the Path object
         String jsonRequest = gson.toJson(threadsCount);
         RequestBody body = RequestBody.create(jsonRequest,
                 MediaType.parse("application/json"));
 
-        // Create the request
         Request request = new Request.Builder()
                 .url(URLconst.SET_THREADS_COUNT_URL)
                 .post(body)
                 .build();
 
-        // Send the request
         try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new Exception("Error setting threads count");
-            }
+            String dtoAsStr = response.body().string();
+            System.out.println("setThreadsCount response Code: " + response.code() + " " + dtoAsStr);
 
-            // Handle the response as needed
-            String responseBody = response.body().string();
+            if (response.code() != 200) {
+                Gson gson = new Gson();
+                StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                Platform.runLater(() -> appController.showAlert(loginStatus));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -122,8 +122,9 @@ public class Connection {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(LOGOUT_URL).newBuilder();
         urlBuilder.addQueryParameter(Constants.USER_NAME, Constants.ADMIN);
         urlBuilder.addQueryParameter(Constants.CLIENT_TYPE, ADMIN.getClientType());
+        String url = urlBuilder.build().toString();
         Request request = new Request.Builder()
-                .url(urlBuilder.build())
+                .url(url)
                 .addHeader(CONTENT_TYPE, "text/plain")
                 .post(RequestBody.create(body.getBytes()))
                 .build();
@@ -156,8 +157,9 @@ public class Connection {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(UPDATE_REQUEST_STATUS_URL).newBuilder();
         urlBuilder.addQueryParameter(Constants.REQUEST_ID, String.valueOf(requestID));
         urlBuilder.addQueryParameter(Constants.STATUS, status);
+        String url = urlBuilder.build().toString();
         Request request = new Request.Builder()
-                .url(urlBuilder.build())
+                .url(url)
                 .addHeader(CONTENT_TYPE, "text/plain")
                 .post(RequestBody.create(body.getBytes()))
                 .build();
