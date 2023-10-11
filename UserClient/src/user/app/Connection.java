@@ -58,7 +58,10 @@ public class Connection {
                     Gson gson = new Gson();
                     StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
 
-                    appController.showAlert(loginStatus);
+                    Platform.runLater(() -> {
+                        appController.showAlert(loginStatus);
+                        Platform.exit();
+                    });
                 }
             }
         });
