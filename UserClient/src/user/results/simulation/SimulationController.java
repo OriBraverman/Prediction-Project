@@ -125,7 +125,7 @@ public class SimulationController {
 
     @FXML
     void resumeSimulationButtonAction(ActionEvent event) {
-        appController.getConnection().setSimulationState(new SimulationStateDTO(currentSimulationID.get(), Constants.RESUME)
+        appController.getConnection().setSimulationState(new SimulationStateDTO(currentSimulationID.get(), Constants.RESUME));
     }
 
     @FXML

@@ -31,4 +31,8 @@ public class ExecutionListManager {
     public int getMaxExecutionID() {
         return executionList.stream().max(Integer::compareTo).orElse(0);
     }
+
+    public boolean isEmpty() {
+        return executionList.isEmpty();
+    }
 }

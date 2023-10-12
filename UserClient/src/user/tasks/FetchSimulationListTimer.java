@@ -2,15 +2,12 @@ package user.tasks;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sun.javafx.fxml.builder.URLBuilder;
-import dto.RequestsDTO;
 import dto.SimulationIDListDTO;
 import dto.StatusDTO;
 import http.url.Constants;
 import javafx.application.Platform;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
-import user.requests.RequestsController;
 import user.results.scene.ResultsController;
 
 import java.io.IOException;

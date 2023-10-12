@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import user.tasks.FetchRequestsTimer;
 import user.tasks.FetchSimulationListTimer;
+import user.tasks.FetchSimulationTimer;
 
 import java.util.Timer;
 import java.util.concurrent.Executors;
@@ -34,7 +35,8 @@ public class ResultsController {
     public final static int REFRESH_RATE = 1000;
     private Timer fetchSimulationListTimer;
     private FetchSimulationListTimer fetchSimulationListTimerTask;
-    private SimulationIDListDTO savedSimulationIDListDTO;
+    private Timer fetchSimulationTimer;
+    private FetchSimulationTimer fetchSimulationTimerTask;
     private boolean setActive = false;
     public void initialize(){
         executionListManager = new ExecutionListManager();
@@ -47,6 +49,9 @@ public class ResultsController {
             fetchSimulationListTimer = new Timer();
             fetchSimulationListTimerTask = new FetchSimulationListTimer(appController.getConnection().getClient(), this);
             fetchSimulationListTimer.schedule(fetchSimulationListTimerTask, 0, REFRESH_RATE);
+            fetchSimulationTimer = new Timer();
+            fetchSimulationTimerTask = new FetchSimulationTimer(this);
+            fetchSimulationTimer.schedule(fetchSimulationTimerTask, 0, 200);
         });
     }
 
@@ -56,17 +61,26 @@ public class ResultsController {
 
     @FXML
     public void onExecutionListClicked(MouseEvent event) {
+        updateSimulation();
+    }
+
+    public void updateSimulation() {
+        if (!setActive) {
+            return;
+        }
+        if (executionListManager.isEmpty() || executionList.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
         Integer selectedID = executionList.getSelectionModel().getSelectedItem();
         if (selectedID != null) {
             appController.getConnection().getSimulationExecutionDetails(selectedID);
         }
-
     }
 
     public void updateSimulationComponent(SimulationExecutionDetailsDTO sedDTO) {
         simulationComponentController.updateSimulationComponent(sedDTO);
         if (sedDTO.isCompleted()) {
-            simulationComponentController.getInformationComponentController().updateInformationComponent(sedDTO.getId());
+            //simulationComponentController.getInformationComponentController().updateInformationComponent(sedDTO.getId());
         }
     }
     public SimulationController getSimulationComponentController() {
@@ -82,7 +96,13 @@ public class ResultsController {
     }
 
     public void updateSimulationList(SimulationIDListDTO simulationIDListDTO) {
+        if (executionListManager.isEmpty()) {
+            setActive = true;
+        }
         ObservableList<Integer> items = executionListManager.addAll(simulationIDListDTO.getSimulationsID());
         executionList.getItems().addAll(items);
+        if (executionList.getSelectionModel().getSelectedItem() == null) {
+            executionList.getSelectionModel().selectFirst();
+        }
     }
 }

@@ -1,7 +1,7 @@
 package servlets.user;
 
 import com.google.gson.Gson;
-import dto.ActivateSimulationDTO;
+import dto.SimulationStateDTO;
 import dto.StatusDTO;
 import engine.Engine;
 import jakarta.servlet.ServletContext;
@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import utils.SessionUtils;
 
+import static http.url.Constants.*;
 import static http.url.URLconst.SET_SIMULATION_STATE_SRC;
 import static utils.ServletUtils.getEngine;
 
@@ -27,14 +28,21 @@ public class SetSimulationStateServlet extends HttpServlet {
             return;
         }
         Engine engine = getEngine(servletContext);
-        ActivateSimulationDTO activateSimulationDTO = gson.fromJson(request.getReader(), ActivateSimulationDTO.class);
+        SimulationStateDTO simulationStateDTO = gson.fromJson(request.getReader(), SimulationStateDTO.class);
         try {
-            engine.activateSimulation(activateSimulationDTO);
+            switch (simulationStateDTO.getSimulationState()) {
+                case PAUSE:
+                    engine.pauseSimulation(simulationStateDTO.getSimulationID());
+                    break;
+                case RESUME:
+                    engine.resumeSimulation(simulationStateDTO.getSimulationID());
+                    break;
+                case STOP:
+                    engine.stopSimulation(simulationStateDTO.getSimulationID());
+                    break;
+            }
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().println(gson.toJson(new StatusDTO(true, "Request submitted successfully.")));
-        } catch (IllegalArgumentException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().println(gson.toJson(new StatusDTO(false, e.getMessage())));
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().println(gson.toJson(new StatusDTO(false, e.getMessage())));

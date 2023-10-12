@@ -1,6 +1,7 @@
 package simulation;
 
 import dto.SimulationIDListDTO;
+import http.url.Client;
 import world.execution.WorldInstance;
 
 import java.io.Serializable;
@@ -8,6 +9,7 @@ import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class SimulationExecutionManager implements Serializable {
     private Map<Integer, SimulationRunner> simulations;
@@ -31,13 +33,6 @@ public class SimulationExecutionManager implements Serializable {
         simulations.put(currentSimulationIndex, simulationRunner);
         simulationDetails.put(currentSimulationIndex, simulationExecutionDetails);
         return currentSimulationIndex;
-    }
-
-
-    public SimulationIDListDTO getSimulationIDListDTO() {
-        List<Integer> simulationIDs = new ArrayList<>();
-        simulationIDs.addAll(simulationDetails.keySet());
-        return new SimulationIDListDTO(simulationIDs);
     }
 
     public boolean isSimulationIDExists(int userChoice) {
@@ -169,5 +164,20 @@ public class SimulationExecutionManager implements Serializable {
 
     public int getThreadsCount(){
         return this.threadsCount;
+    }
+
+    public SimulationIDListDTO getSimulationIDListDTO(Client typeOfClient, String usernameFromSession) {
+        List<Integer> simulationIDs = new ArrayList<>();
+        if (typeOfClient == Client.ADMIN) {
+            simulationIDs.addAll(simulationDetails.keySet());
+        } else if (typeOfClient == Client.USER) {
+            simulationIDs.addAll(simulationDetails.entrySet().stream()
+                    .filter(simulationExecutionDetails -> simulationExecutionDetails.getValue().getWorldInstance().getUserRequest().getUsername().equals(usernameFromSession))
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList()));
+        } else {
+            throw new IllegalArgumentException("Unauthorized client type");
+        }
+        return new SimulationIDListDTO(simulationIDs);
     }
 }

@@ -5,10 +5,7 @@ import convertor.Convertor;
 import dto.*;
 import dto.gridView.EntityInstanceDTO;
 import dto.gridView.GridViewDTO;
-import dto.result.EntityPopulationByTicksDTO;
-import dto.result.HistogramDTO;
-import dto.result.PropertyAvaregeValueDTO;
-import dto.result.PropertyConstistencyDTO;
+import dto.result.*;
 import dto.world.*;
 import dto.world.action.*;
 import http.url.Client;
@@ -339,7 +336,7 @@ public class EngineImpl implements Serializable, Engine {
         }
     }
     public void validateEnvVariableValue(String worldName, EnvVariableValueDTO envVariableValueDTO) throws IllegalArgumentException {
-        if (!envVariableValueDTO.hasValue()) {
+        if (envVariableValueDTO.hasValue() == false) {
             return;
         }
         World world = this.worldDefinitionManager.getWorldDefinitionByName(worldName);
@@ -358,11 +355,6 @@ public class EngineImpl implements Serializable, Engine {
         if (!propertyDefinition.getType().isMyType(envVariableValueDTO.getValue())) {
             throw new IllegalArgumentException("Invalid value for env variable: " + envVariableValueDTO.getName());
         }
-    }
-
-    @Override
-    public SimulationIDListDTO getSimulationListDTO() {
-        return this.simulationExecutionManager.getSimulationIDListDTO();
     }
 
     @Override
@@ -740,8 +732,23 @@ public class EngineImpl implements Serializable, Engine {
     }
 
     @Override
-    public SimulationIDListDTO getSimulationIDListDTO(){
-        return this.simulationExecutionManager.getSimulationIDListDTO();
+    public SimulationIDListDTO getSimulationIDListDTO(Client typeOfClient, String usernameFromSession) {
+        return this.simulationExecutionManager.getSimulationIDListDTO(typeOfClient, usernameFromSession);
+    }
+
+    @Override
+    public PropertyStatisticsDTO getPropertyStatisticsDTO(int simulationID, String entityName, String propertyName) {
+        PropertyConstistencyDTO propertyConsistencyDTO = getPropertyConsistencyDTO(simulationID, entityName, propertyName);
+        PropertyAvaregeValueDTO propertyAvaregeValueDTO = getPropertyAvaregeValueDTO(simulationID, entityName, propertyName);
+        HistogramDTO histogramDTO = getHistogramDTO(simulationID, entityName, propertyName);
+        return new PropertyStatisticsDTO(propertyConsistencyDTO, propertyAvaregeValueDTO, histogramDTO);
+    }
+
+    @Override
+    public NewExecutionValuesDTO getNewExecutionValuesDTO(int simulationID) {
+        EnvVariablesValuesDTO envVariablesValuesDTO = getEnvVariablesValuesDTO(simulationID);
+        EntitiesPopulationDTO entityPopulationDTO = getEntityPopulationDTO(simulationID);
+        return new NewExecutionValuesDTO(envVariablesValuesDTO, entityPopulationDTO);
     }
 }
 

@@ -31,4 +31,8 @@ public class URLconst {
 
     public static final String SET_SIMULATION_STATE_SRC = "/setSimulationState";
     public static final String SET_SIMULATION_STATE_URL = BASE_URL + SET_SIMULATION_STATE_SRC;
+    public static final String FETCH_NEW_EXECUTION_VALUES_SRC = "/fetchNewExecutionValues";
+    public static final String FETCH_NEW_EXECUTION_VALUES_URL = BASE_URL + FETCH_NEW_EXECUTION_VALUES_SRC;
+    public static final String FETCH_PROPERTY_STATISTICS_SRC = "/fetchPropertyStatistics";
+    public static final String FETCH_PROPERTY_STATISTICS_URL = BASE_URL + FETCH_PROPERTY_STATISTICS_SRC;
 }

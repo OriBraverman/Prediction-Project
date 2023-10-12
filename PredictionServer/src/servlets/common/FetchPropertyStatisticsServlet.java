@@ -2,14 +2,11 @@ package servlets.common;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dto.SimulationExecutionDetailsDTO;
 import dto.SimulationIDListDTO;
 import dto.StatusDTO;
-import dto.world.action.AbstructActionDTO;
-import dto.world.action.AbstructActionDTOSerializer;
+import dto.result.PropertyStatisticsDTO;
 import engine.Engine;
 import http.url.Client;
-import http.url.Constants;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,16 +17,18 @@ import utils.SessionUtils;
 
 import java.io.IOException;
 
-import static http.url.URLconst.FETCH_SIMULATION_ID_LIST_SRC;
+import static http.url.URLconst.FETCH_PROPERTY_STATISTICS_SRC;
 import static utils.ServletUtils.getEngine;
 
-@WebServlet(name="fetchSimulationIDListServlet", urlPatterns = FETCH_SIMULATION_ID_LIST_SRC)
-public class FetchSimulationIDListServlet extends HttpServlet {
+@WebServlet(name="fetchPropertyStatisticsServlet", urlPatterns = FETCH_PROPERTY_STATISTICS_SRC)
+public class FetchPropertyStatisticsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Gson gson = new GsonBuilder().create();
         String usernameFromSession = SessionUtils.getUsername(request);
-        Client clientType = SessionUtils.getTypeOfClient(request);
+        int simulationID = Integer.parseInt(request.getParameter("simulationID"));
+        String entityName = request.getParameter("entityName");
+        String propertyName = request.getParameter("propertyName");
         ServletContext servletContext = getServletContext();
         if (SessionUtils.getTypeOfClient(request).equals(Client.UNAUTHORIZED)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -38,9 +37,9 @@ public class FetchSimulationIDListServlet extends HttpServlet {
         }
         Engine engine = getEngine(servletContext);
         try {
-            SimulationIDListDTO simulationIDList = engine.getSimulationIDListDTO(clientType, usernameFromSession);
+            PropertyStatisticsDTO propertyStatisticsDTO = engine.getPropertyStatisticsDTO(simulationID, entityName, propertyName);
             response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().println(gson.toJson(simulationIDList));
+            response.getWriter().println(gson.toJson(propertyStatisticsDTO));
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().println(gson.toJson(new StatusDTO(false, e.getMessage())));

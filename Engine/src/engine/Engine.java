@@ -2,10 +2,7 @@ package engine;
 
 import dto.*;
 import dto.gridView.GridViewDTO;
-import dto.result.EntityPopulationByTicksDTO;
-import dto.result.HistogramDTO;
-import dto.result.PropertyAvaregeValueDTO;
-import dto.result.PropertyConstistencyDTO;
+import dto.result.*;
 import dto.world.WorldDTO;
 import dto.world.WorldsDTO;
 import http.url.Client;
@@ -30,7 +27,6 @@ public interface Engine {
 
     void validateEnvVariablesValues(String worldName, EnvVariablesValuesDTO envVariablesValuesDTO);
 
-    SimulationIDListDTO getSimulationListDTO();
 
     boolean validateSimulationID(int userChoice);
 
@@ -90,5 +86,9 @@ public interface Engine {
 
     void updateRequestStatus(int requestIDInt, String status);
 
-    SimulationIDListDTO getSimulationIDListDTO();
+    SimulationIDListDTO getSimulationIDListDTO(Client typeOfClient, String usernameFromSession);
+
+    PropertyStatisticsDTO getPropertyStatisticsDTO(int simulationID, String entityName, String propertyName);
+
+    NewExecutionValuesDTO getNewExecutionValuesDTO(int simulationID);
 }

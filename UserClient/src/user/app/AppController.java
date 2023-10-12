@@ -186,10 +186,11 @@ public class AppController {
     }
 
     public void updateNewExecutionByPrevSimulation(int simulationID) {
-        EnvVariablesValuesDTO envVariablesValuesDTO = engineImpl.getEnvVariablesValuesDTO(simulationID);
-        EntitiesPopulationDTO entityPopulationDTO = engineImpl.getEntityPopulationDTO(simulationID);
-        //newExecutionComponentController.fillEnvVariablesInputVBox(envVariablesValuesDTO);
-        //newExecutionComponentController.fillEntityPopulationInputVBox(entityPopulationDTO);
+        NewExecutionValuesDTO newExecutionValuesDTO = connection.getNewExecutionValuesDTO(simulationID);
+        EnvVariablesValuesDTO envVariablesValuesDTO = newExecutionValuesDTO.getEnvVariablesValuesDTO();
+        EntitiesPopulationDTO entityPopulationDTO = newExecutionValuesDTO.getEntityPopulationDTO();
+        executionComponentController.fillEnvVariablesInputVBox(envVariablesValuesDTO);
+        executionComponentController.fillEntityPopulationInputVBox(entityPopulationDTO);
     }
 
     public TabPane getTabPane(){ return tabPane; }
@@ -202,36 +203,12 @@ public class AppController {
         return engineImpl.getWorldDTO(simulationID);
     }
 
-    public HistogramDTO getHistogramDTO(int simulationID, String entityName, String propertyName) {
-        return engineImpl.getHistogramDTO(simulationID, entityName, propertyName);
-    }
-
-    public GridViewDTO getGridViewDTO(int simulationID) {
-        return engineImpl.getGridViewDTO(simulationID);
-    }
-
     public boolean isSimulationCompleted(int simulationID) {
         return engineImpl.isSimulationCompleted(simulationID);
     }
 
-    public PropertyConstistencyDTO getPropertyConsistencyDTO(int currentSimulationID, String entityName, String propertyName) {
-        return engineImpl.getPropertyConsistencyDTO(currentSimulationID, entityName, propertyName);
-    }
-
-    public PropertyAvaregeValueDTO getPropertyAvaregeValueDTO(int currentSimulationID, String entityName, String propertyName) {
-        return engineImpl.getPropertyAvaregeValueDTO(currentSimulationID, entityName, propertyName);
-    }
-
     public EntityPopulationByTicksDTO getEntityPopulationByTicksDTO(int simulationID) {
         return engineImpl.getEntityPopulationByTicksDTO(simulationID);
-    }
-
-    public void setPreviousTick(int simulationID) {
-        engineImpl.setPreviousTick(simulationID);
-    }
-
-    public void getToNextTick(int simulationID) {
-        engineImpl.getToNextTick(simulationID);
     }
 
     private void applyDesign(String cssPath){

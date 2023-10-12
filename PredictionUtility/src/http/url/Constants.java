@@ -14,4 +14,6 @@ public class Constants {
     public static final String PAUSE = "PAUSE";
     public static final String RESUME = "RESUME";
     public static final String STOP = "STOP";
+    public static final String ENTITY_NAME = "entityName";
+    public static final String PROPERTY_NAME = "propertyName";
 }

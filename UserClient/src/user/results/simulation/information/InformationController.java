@@ -1,12 +1,11 @@
 package user.results.simulation.information;
 
-import dto.EntitiesPopulationDTO;
 import dto.EntityPopulationDTO;
+import dto.result.PropertyStatisticsDTO;
 import dto.result.EntityPopulationByTicksDTO;
 import dto.result.HistogramDTO;
 import dto.result.PropertyAvaregeValueDTO;
 import dto.result.PropertyConstistencyDTO;
-import dto.SimulationExecutionDetailsDTO;
 import dto.world.EntityDefinitionDTO;
 import dto.world.PropertyDefinitionDTO;
 import dto.world.WorldDTO;
@@ -84,34 +83,31 @@ public class InformationController {
         int id = simulationController.getCurrentSimulationID();
         String entityName = entityChoiceBox.getSelectionModel().getSelectedItem();
         String propertyName = propertyChoiceBox.getSelectionModel().getSelectedItem();
-        if (id == 0 || entityName == null || propertyName == null || !appController.isSimulationCompleted(id)) {
+        if (id == 0 || entityName == null || propertyName == null || !appController.getConnection().isSimulationCompleted(id)) {
             return;
         }
-        updatePropertyConsistency(id, entityName, propertyName);
-        updatePropertyAvarageValue(id, entityName, propertyName);
-        updatePropertyHistogram(id, entityName, propertyName);
+        PropertyStatisticsDTO propertyStatistics = appController.getConnection().getPropertyStatisticsDTO(id, entityName, propertyName);
+        updatePropertyConsistency(propertyStatistics.getPropertyConsistencyDTO());
+        updatePropertyAvarageValue(propertyStatistics.getPropertyAvaregeValueDTO());
+        updatePropertyHistogram(propertyStatistics.getHistogramDTO(), entityName, propertyName);
     }
 
-    private void updatePropertyAvarageValue(int id, String entityName, String propertyName) {
-        PropertyAvaregeValueDTO propertyAvaregeValueDTO = appController.getPropertyAvaregeValueDTO(id, entityName, propertyName);
+    private void updatePropertyAvarageValue(PropertyAvaregeValueDTO propertyAvaregeValueDTO) {
         if (propertyAvaregeValueDTO != null) {
             avarageValueDisplay.setText(propertyAvaregeValueDTO.getAvarageValue());
         }
     }
 
-    private void updatePropertyConsistency(int id, String entityName, String propertyName) {
-        PropertyConstistencyDTO propertyConsistencyDTO = appController.getPropertyConsistencyDTO(id, entityName, propertyName);
+    private void updatePropertyConsistency(PropertyConstistencyDTO propertyConsistencyDTO) {
         if (propertyConsistencyDTO != null) {
             consistencyDisplay.setText(propertyConsistencyDTO.getConsistency());
         }
     }
 
-    private void updatePropertyHistogram(int id, String entityName, String propertyName) {
+    private void updatePropertyHistogram(HistogramDTO histogramDTO, String entityName, String propertyName) {
         if (executionResult.getChildren() != null) {
             executionResult.getChildren().clear();
         }
-
-        HistogramDTO histogramDTO = appController.getHistogramDTO(id, entityName, propertyName);
         // histogramDTO is a map of <Object, Integer> where the object can be:
         // 1. String
         // 2. Integer
