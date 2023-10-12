@@ -1,7 +1,9 @@
 package user.results.simulation;
 
+import dto.SimulationStateDTO;
 import dto.SimulationExecutionDetailsDTO;
 import dto.gridView.GridViewDTO;
+import http.url.Constants;
 import user.UserApplication;
 import user.app.AppController;
 import user.results.simulation.grid.GridController;
@@ -112,7 +114,7 @@ public class SimulationController {
     }
     @FXML
     void pauseSimulationButtonAction(ActionEvent event) {
-        appController.pauseSimulation(currentSimulationID.get());
+        appController.getConnection().setSimulationState(new SimulationStateDTO(currentSimulationID.get(), Constants.PAUSE));
     }
 
     @FXML
@@ -123,12 +125,12 @@ public class SimulationController {
 
     @FXML
     void resumeSimulationButtonAction(ActionEvent event) {
-        appController.resumeSimulation(currentSimulationID.get());
+        appController.getConnection().setSimulationState(new SimulationStateDTO(currentSimulationID.get(), Constants.RESUME)
     }
 
     @FXML
     void stopSimulationButtonAction(ActionEvent event) {
-        appController.stopSimulation(currentSimulationID.get());
+        appController.getConnection().setSimulationState(new SimulationStateDTO(currentSimulationID.get(), Constants.STOP));
     }
 
     @FXML

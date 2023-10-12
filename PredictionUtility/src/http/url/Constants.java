@@ -10,4 +10,8 @@ public class Constants {
     public static final String ADMIN = "admin";
     public static final String REQUEST_ID = "requestID";
     public static final String STATUS = "status";
+    public static final String LAST_ITEM = "lastItem";
+    public static final String PAUSE = "PAUSE";
+    public static final String RESUME = "RESUME";
+    public static final String STOP = "STOP";
 }

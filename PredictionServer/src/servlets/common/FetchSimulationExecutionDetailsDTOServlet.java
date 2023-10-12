@@ -19,9 +19,10 @@ import utils.SessionUtils;
 import java.io.IOException;
 
 import static http.url.URLconst.FETCH_QUEUE_MANAGEMENT_SRC;
+import static http.url.URLconst.FETCH_SIMULATION_EXECUTION_DETAILS_SRC;
 import static utils.ServletUtils.getEngine;
 
-@WebServlet(name="fetchQueueManagementServlet", urlPatterns = FETCH_QUEUE_MANAGEMENT_SRC)
+@WebServlet(name="fetchSimulationExecutionDetailsDTOServlet", urlPatterns = FETCH_SIMULATION_EXECUTION_DETAILS_SRC)
 public class FetchSimulationExecutionDetailsDTOServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

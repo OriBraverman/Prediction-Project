@@ -24,5 +24,11 @@ public class URLconst {
     public static final String EXECUTE_REQUEST_URL = BASE_URL + EXECUTE_REQUEST_SRC;
     public static final String ACTIVATE_SIMULATION_SRC = "/activateSimulation";
     public static final String ACTIVATE_SIMULATION_URL = BASE_URL + ACTIVATE_SIMULATION_SRC;
+    public static final String FETCH_SIMULATION_ID_LIST_SRC = "/fetchSimulationIDList";
+    public static final String FETCH_SIMULATION_ID_LIST_URL = BASE_URL + FETCH_SIMULATION_ID_LIST_SRC;
+    public static final String FETCH_SIMULATION_EXECUTION_DETAILS_SRC = "/fetchSimulationExecutionDetails";
+    public static final String FETCH_SIMULATION_EXECUTION_DETAILS_URL = BASE_URL + FETCH_SIMULATION_EXECUTION_DETAILS_SRC;
 
+    public static final String SET_SIMULATION_STATE_SRC = "/setSimulationState";
+    public static final String SET_SIMULATION_STATE_URL = BASE_URL + SET_SIMULATION_STATE_SRC;
 }

@@ -13,7 +13,7 @@ import utils.SessionUtils;
 import static http.url.URLconst.ACTIVATE_SIMULATION_SRC;
 import static utils.ServletUtils.getEngine;
 
-@WebServlet(name = "ActivateSimulationServer", value = ACTIVATE_SIMULATION_SRC)
+@WebServlet(name = "ActivateSimulationServlet", value = ACTIVATE_SIMULATION_SRC)
 public class ActivateSimulationServlet extends HttpServlet {
     @Override
     protected void doPost(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response) throws jakarta.servlet.ServletException, java.io.IOException {

@@ -89,4 +89,6 @@ public interface Engine {
     void submitRequest(RequestDTO requestDTO);
 
     void updateRequestStatus(int requestIDInt, String status);
+
+    SimulationIDListDTO getSimulationIDListDTO();
 }

@@ -38,8 +38,9 @@ public class Connection {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(LOGIN_URL).newBuilder();
         urlBuilder.addQueryParameter(Constants.USER_NAME, appController.getUsername());
         urlBuilder.addQueryParameter(Constants.CLIENT_TYPE, USER.getClientType());
+        String url = urlBuilder.build().toString();
         Request request = new Request.Builder()
-                .url(urlBuilder.build())
+                .url(url)
                 .addHeader(CONTENT_TYPE, "text/plain")
                 .post(RequestBody.create(body.getBytes()))
                 .build();
@@ -85,43 +86,42 @@ public class Connection {
                 Gson gson = new Gson();
                 StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
 
-                appController.showAlert(loginStatus);
+                Platform.runLater(() -> appController.showAlert(loginStatus));
             }
         } catch (IOException e) {
             System.out.println("Oops... something went wrong..." + e.getMessage());
         }
     }
 
-    public void executeRequest(int requestID) {
+    public boolean executeRequest(int requestID) {
         // a get request with the requestID as a parameter
         HttpUrl.Builder urlBuilder = HttpUrl.parse(URLconst.EXECUTE_REQUEST_URL).newBuilder();
         urlBuilder.addQueryParameter(Constants.REQUEST_ID, String.valueOf(requestID));
+        String url = urlBuilder.build().toString();
         Request request = new Request.Builder()
-                .url(urlBuilder.build())
+                .url(url)
                 .addHeader(CONTENT_TYPE, "text/plain")
                 .get()
                 .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                System.out.println("Oops... something went wrong..." + e.getMessage());
-            }
+        try (Response response = client.newCall(request).execute()) {
+            String dtoAsStr = response.body().string();
+            System.out.println("executeRequest response Code: " + response.code() + " " + dtoAsStr);
 
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String dtoAsStr = response.body().string();
-                System.out.println("executeRequest response Code: " + response.code() + " " + dtoAsStr);
+            if (response.code() != 200) {
+                Gson gson = new Gson();
+                StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                Platform.runLater(() -> appController.showAlert(loginStatus));
+                return false;
+            } else {
                 NewExecutionInputDTO newExecutionInputDTO = gson.fromJson(dtoAsStr, NewExecutionInputDTO.class);
                 Platform.runLater(() -> appController.getExecutionController().updateExecution(newExecutionInputDTO));
-
-                if (response.code() != 200) {
-                    Gson gson = new Gson();
-                    StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
-
-                    appController.showAlert(loginStatus);
-                }
             }
-        });
+        } catch (IOException e) {
+            System.out.println("Oops... something went wrong..." + e.getMessage());
+            return false;
+        }
+        return true;
     }
 
     public boolean activateSimulation(ActivateSimulationDTO activateSimulationDTO) {
@@ -140,7 +140,7 @@ public class Connection {
             if (response.code() != 200) {
                 Gson gson = new Gson();
                 StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
-                appController.showAlert(loginStatus);
+                Platform.runLater(() -> appController.showAlert(loginStatus));
                 return false;
             }
         } catch (IOException e) {
@@ -148,5 +148,58 @@ public class Connection {
             return false;
         }
         return true;
+    }
+
+
+    public void getSimulationExecutionDetails(int simulationID) {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(URLconst.FETCH_SIMULATION_EXECUTION_DETAILS_URL).newBuilder();
+        urlBuilder.addQueryParameter(Constants.SIMULATION_ID, String.valueOf(simulationID));
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader(CONTENT_TYPE, "text/plain")
+                .get()
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            String dtoAsStr = response.body().string();
+            System.out.println("getSimulationExecutionDetails response Code: " + response.code() + " " + dtoAsStr);
+
+            if (response.code() != 200) {
+                Gson gson = new Gson();
+                StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                Platform.runLater(() -> appController.showAlert(loginStatus));
+            } else {
+                SimulationExecutionDetailsDTO simulationExecutionDetailsDTO = gson.fromJson(dtoAsStr, SimulationExecutionDetailsDTO.class);
+                Platform.runLater(() -> appController.getResultsController().updateSimulationComponent(simulationExecutionDetailsDTO));
+            }
+        } catch (IOException e) {
+            System.out.println("Oops... something went wrong..." + e.getMessage());
+        }
+    }
+
+    public void setSimulationState(SimulationStateDTO simulationState) {
+        String jsonRequest = gson.toJson(simulationState);
+        Request request = new Request.Builder()
+                .url(URLconst.SET_SIMULATION_STATE_URL)
+                .addHeader(CONTENT_TYPE, "application/json")
+                .put(RequestBody.create(jsonRequest, MediaType.parse("application/json")))
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            String dtoAsStr = response.body().string();
+            System.out.println("getSimulationExecutionDetails response Code: " + response.code() + " " + dtoAsStr);
+
+            if (response.code() != 200) {
+                Gson gson = new Gson();
+                StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                Platform.runLater(() -> appController.showAlert(loginStatus));
+            } else {
+                SimulationExecutionDetailsDTO simulationExecutionDetailsDTO = gson.fromJson(dtoAsStr, SimulationExecutionDetailsDTO.class);
+                Platform.runLater(() -> appController.getResultsController().updateSimulationComponent(simulationExecutionDetailsDTO));
+            }
+        } catch (IOException e) {
+            System.out.println("Oops... something went wrong..." + e.getMessage());
+        }
     }
 }

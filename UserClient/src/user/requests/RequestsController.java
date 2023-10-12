@@ -109,8 +109,9 @@ public class RequestsController {
             appController.showAlert(new StatusDTO(false, "Please select a request"));
             return;
         }
-        appController.getConnection().executeRequest(requestDTO.getId());
-        appController.selectTab(AppController.Tab.EXECUTION);
+        if (appController.getConnection().executeRequest(requestDTO.getId())) {
+            appController.selectTab(AppController.Tab.EXECUTION);
+        }
     }
 
     @FXML

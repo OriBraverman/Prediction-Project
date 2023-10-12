@@ -338,7 +338,10 @@ public class EngineImpl implements Serializable, Engine {
             validateEnvVariableValue(worldName, envVariableValueDTO);
         }
     }
-    public void validateEnvVariableValue(String worldName, EnvVariableValueDTO envVariableValueDTO) throws IllegalArgumentException{
+    public void validateEnvVariableValue(String worldName, EnvVariableValueDTO envVariableValueDTO) throws IllegalArgumentException {
+        if (!envVariableValueDTO.hasValue()) {
+            return;
+        }
         World world = this.worldDefinitionManager.getWorldDefinitionByName(worldName);
         PropertyDefinition propertyDefinition = world.getEnvironment().getPropertyDefinitionByName(envVariableValueDTO.getName());
         if (propertyDefinition instanceof IntegerPropertyDefinition) {
@@ -419,6 +422,9 @@ public class EngineImpl implements Serializable, Engine {
     @Override
     public NewExecutionInputDTO getNewExecutionInputDTO(int requestID) {
         UserRequest userRequest = this.requestsManager.getRequest(requestID);
+        if (userRequest.isApproved() == false) {
+            throw new IllegalArgumentException("Request is not approved by admin");
+        }
         World world = this.worldDefinitionManager.getWorldDefinitionByName(userRequest.getSimulationName());
         RequestDTO requestDTO = getRequestDTO(userRequest);
         List<PropertyDefinitionDTO> envVariables = getEnvironmentDTO(world);
@@ -731,6 +737,11 @@ public class EngineImpl implements Serializable, Engine {
     @Override
     public void updateRequestStatus(int requestID, String status) {
         this.requestsManager.updateRequestStatus(requestID, status);
+    }
+
+    @Override
+    public SimulationIDListDTO getSimulationIDListDTO(){
+        return this.simulationExecutionManager.getSimulationIDListDTO();
     }
 }
 

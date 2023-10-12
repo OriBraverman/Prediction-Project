@@ -14,7 +14,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import user.tasks.FetchRequestsTimer;
+import user.tasks.FetchSimulationListTimer;
 
+import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -22,36 +25,28 @@ import java.util.concurrent.TimeUnit;
 
 public class ResultsController {
     @FXML private AnchorPane resultsAnchorPane;
-    @FXML private ListView<String> executionList;
+    @FXML private ListView<Integer> executionList;
     @FXML private SimulationController simulationComponentController;
     @FXML private AnchorPane simulationComponent;
-    private ScheduledExecutorService executorService;
+
     private AppController appController;
+    private ExecutionListManager executionListManager;
+    public final static int REFRESH_RATE = 1000;
+    private Timer fetchSimulationListTimer;
+    private FetchSimulationListTimer fetchSimulationListTimerTask;
+    private SimulationIDListDTO savedSimulationIDListDTO;
     private boolean setActive = false;
     public void initialize(){
-        ObservableList<String> items = FXCollections.observableArrayList();
+        executionListManager = new ExecutionListManager();
+        executionList.setCellFactory(param -> new ExecutionListCell());
+        ObservableList<Integer> items = FXCollections.observableArrayList();
         executionList.setItems(items);
         executionList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        // Initialize and schedule the executor service
-        executorService = Executors.newScheduledThreadPool(1);
-        executorService.scheduleAtFixedRate(this::updateUI, 0, 200, TimeUnit.MILLISECONDS);
-    }
-    public void stopExecutorService() {
-        if (executorService != null && !executorService.isShutdown()) {
-            executorService.shutdown();
-        }
-    }
-
-    private void updateUI() {
-        if (!setActive) {
-            return;
-        }
-        if (appController.getSimulationListDTO() == null || appController.getSimulationListDTO().getSimulationsID().isEmpty()) {
-            return;
-        }
         Platform.runLater(() -> {
-            updateSimulationComponent(false);
+            fetchSimulationListTimer = new Timer();
+            fetchSimulationListTimerTask = new FetchSimulationListTimer(appController.getConnection().getClient(), this);
+            fetchSimulationListTimer.schedule(fetchSimulationListTimerTask, 0, REFRESH_RATE);
         });
     }
 
@@ -59,38 +54,35 @@ public class ResultsController {
         this.appController = appController;
     }
 
-    public void resetExecutionList() {
-        if (executionList.getItems() != null) {
-            executionList.getItems().clear();
-        }
-    }
     @FXML
     public void onExecutionListClicked(MouseEvent event) {
-        updateSimulationComponent(true);
+        Integer selectedID = executionList.getSelectionModel().getSelectedItem();
+        if (selectedID != null) {
+            appController.getConnection().getSimulationExecutionDetails(selectedID);
+        }
+
     }
 
-    public void updateSimulationComponent(Boolean isClicked) {
-        String selectedItem = executionList.getSelectionModel().getSelectedItem();
-        if (selectedItem != null) {
-            String[] split = selectedItem.split(" ");
-            int id = Integer.parseInt(split[1]);
-            SimulationExecutionDetailsDTO simulationExecutionDetailsDTO = appController.getSimulationExecutionDetailsDTO(id);
-            simulationComponentController.updateSimulationComponent(simulationExecutionDetailsDTO);
-            if (appController.isSimulationCompleted(id) && isClicked) {
-                simulationComponentController.getInformationComponentController().updateInformationComponent(id);
-            }
+    public void updateSimulationComponent(SimulationExecutionDetailsDTO sedDTO) {
+        simulationComponentController.updateSimulationComponent(sedDTO);
+        if (sedDTO.isCompleted()) {
+            simulationComponentController.getInformationComponentController().updateInformationComponent(sedDTO.getId());
         }
     }
     public SimulationController getSimulationComponentController() {
         return simulationComponentController;
     }
 
-    public void addSimulationToExecutionList(SimulationIDDTO simulationIDDTO) {
-        executionList.getItems().add("Simulation " + simulationIDDTO.getSimulationId());
-        executionList.getSelectionModel().selectLast();
+    public int getMaxExecutionID() {
+        return executionListManager.getMaxExecutionID();
     }
 
-    public void setIsActive(boolean setActive) {
-        this.setActive = setActive;
+    public void showAlert(StatusDTO statusDTO) {
+        appController.showAlert(statusDTO);
+    }
+
+    public void updateSimulationList(SimulationIDListDTO simulationIDListDTO) {
+        ObservableList<Integer> items = executionListManager.addAll(simulationIDListDTO.getSimulationsID());
+        executionList.getItems().addAll(items);
     }
 }

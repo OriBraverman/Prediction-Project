@@ -107,9 +107,10 @@ public class AppController {
             this.fetchWorldsDetailsTimer.scheduleAtFixedRate(fetchWorldsDetailsTimerTask, 0, REFRESH_RATE);
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                engineImpl.deleteInDepthMemoryFolder();
-                resultsComponentController.stopExecutorService();
-                engineImpl.stopThreadPool();
+                //engineImpl.deleteInDepthMemoryFolder();
+                //resultsComponentController.stopExecutorService();
+                //engineImpl.stopThreadPool();
+                //todo: in the logout if needed, use a function that will stop all the threads and the executor service
                 connection.sendLogOut();
                 // close javaFX application
                 Platform.exit();
@@ -149,14 +150,6 @@ public class AppController {
         menuItems.add(greenSkin);
         SkinsMenuButton.getItems().addAll(menuItems);
     }
-
-    /*public void activateSimulation(UserRequest userRequest, EnvVariablesValuesDTO envVariablesValuesDTO, EntitiesPopulationDTO entityPopulationDTO, boolean isBonusActivated) {
-        isSimulationExecuted.set(true);
-        SimulationIDDTO simulationIDDTO = engineImpl.activateSimulation(isBonusActivated, worldID, envVariablesValuesDTO, entityPopulationDTO);
-        resultsComponentController.addSimulationToExecutionList(simulationIDDTO);
-        resultsComponentController.setIsActive(true);
-
-    }*/
 
     public void selectTab(Tab tab) {
         switch (tab) {
@@ -201,10 +194,6 @@ public class AppController {
 
     public TabPane getTabPane(){ return tabPane; }
 
-    public SimulationIDListDTO getSimulationListDTO() {
-        return engineImpl.getSimulationListDTO();
-    }
-
     public SimulationResultByAmountDTO getSimulationResultByAmountDTO(int simulationID) {
         return engineImpl.getSimulationResultByAmountDTO(simulationID);
     }
@@ -215,22 +204,6 @@ public class AppController {
 
     public HistogramDTO getHistogramDTO(int simulationID, String entityName, String propertyName) {
         return engineImpl.getHistogramDTO(simulationID, entityName, propertyName);
-    }
-
-    public SimulationExecutionDetailsDTO getSimulationExecutionDetailsDTO(int simulationID) {
-        return engineImpl.getSimulationExecutionDetailsDTO(simulationID);
-    }
-
-    public void stopSimulation(int simulationID) {
-        engineImpl.stopSimulation(simulationID);
-    }
-
-    public void pauseSimulation(int simulationID) {
-        engineImpl.pauseSimulation(simulationID);
-    }
-
-    public void resumeSimulation(int simulationID) {
-        engineImpl.resumeSimulation(simulationID);
     }
 
     public GridViewDTO getGridViewDTO(int simulationID) {
@@ -251,10 +224,6 @@ public class AppController {
 
     public EntityPopulationByTicksDTO getEntityPopulationByTicksDTO(int simulationID) {
         return engineImpl.getEntityPopulationByTicksDTO(simulationID);
-    }
-
-    public  EntitiesPopulationDTO getEntitiesPopulationDTO(int simulationID){
-        return this.engineImpl.getEntityPopulationDTO(simulationID);
     }
 
     public void setPreviousTick(int simulationID) {
@@ -326,5 +295,9 @@ public class AppController {
 
     public NewExecutionController getExecutionController() {
         return executionComponentController;
+    }
+
+    public ResultsController getResultsController() {
+        return resultsComponentController;
     }
 }

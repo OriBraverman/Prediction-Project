@@ -36,6 +36,9 @@ public class FetchExecuteRequestServlet extends HttpServlet {
             NewExecutionInputDTO newExecutionInputDTO = engine.getNewExecutionInputDTO(requestID);
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().println(gson.toJson(newExecutionInputDTO));
+        } catch (IllegalArgumentException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().println(gson.toJson(new StatusDTO(false, e.getMessage())));
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().println(gson.toJson(new StatusDTO(false, e.getMessage())));
