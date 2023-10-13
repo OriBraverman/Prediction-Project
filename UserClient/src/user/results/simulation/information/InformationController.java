@@ -139,7 +139,7 @@ public class InformationController {
     public void defineEntityChoiceBox() {
         entityChoiceBox.getItems().clear();
         int simulationID = simulationController.getCurrentSimulationID();
-        WorldDTO worldDTO = appController.getWorldDTO(simulationID);
+        WorldDTO worldDTO = appController.getConnection().getWorldDTO(simulationID);
         for (EntityDefinitionDTO entityDefinitionDTO : worldDTO.getEntities()) {
             entityChoiceBox.getItems().add(entityDefinitionDTO.getName());
         }
@@ -148,7 +148,7 @@ public class InformationController {
     public void definePropertyChoiceBox(String entityName) {
         propertyChoiceBox.getItems().clear();
         int simulationID = simulationController.getCurrentSimulationID();
-        WorldDTO worldDTO = appController.getWorldDTO(simulationID);
+        WorldDTO worldDTO = appController.getConnection().getWorldDTO(simulationID);
         for (EntityDefinitionDTO entityDefinitionDTO : worldDTO.getEntities()) {
             if (entityDefinitionDTO.getName().equals(entityName)) {
                 for (PropertyDefinitionDTO propertyDefinitionDTO : entityDefinitionDTO.getProperties()) {
@@ -168,7 +168,7 @@ public class InformationController {
             executionResult.getChildren().clear();
         }
 
-        EntityPopulationByTicksDTO entityPopulationByTicksDTO = appController.getEntityPopulationByTicksDTO(simulationID);
+        EntityPopulationByTicksDTO entityPopulationByTicksDTO = appController.getConnection().getEntityPopulationByTicksDTO(simulationID);
         Map<Integer, List<EntityPopulationDTO>> entityPopulationByTicks = entityPopulationByTicksDTO.getEntityPopulationByTicks();
         List<String> entityNames = entityPopulationByTicksDTO.getEntityNames();
 

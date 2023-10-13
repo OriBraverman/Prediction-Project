@@ -31,7 +31,7 @@ public class NewExecutionController {
     private EnvVariableTitledManager envVariableTitledManager;
     private SimpleIntegerProperty requestID;
     private SimpleStringProperty worldName;
-    private SimpleStringProperty numberOfExecutionsLeft;
+    private SimpleIntegerProperty numberOfExecutionsLeft;
 
     public NewExecutionController() {
         entityPopulationListManager = new EntityPopulationListManager();
@@ -45,16 +45,19 @@ public class NewExecutionController {
     @FXML public void initialize(){
         requestID = new SimpleIntegerProperty();
         worldName = new SimpleStringProperty();
-        numberOfExecutionsLeft = new SimpleStringProperty();
+        numberOfExecutionsLeft = new SimpleIntegerProperty();
         entityPopulationListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         requestIDLabel.textProperty().bind(requestID.asString());
         worldNameLabel.textProperty().bind(worldName);
-        numberOfExecutionsLeftLabel.textProperty().bind(numberOfExecutionsLeft);
+        numberOfExecutionsLeftLabel.textProperty().bind(numberOfExecutionsLeft.asString());
     }
 
     public void updateEnvVariablesInputVBox(List<PropertyDefinitionDTO> envVariables) {
         envVariableTitledManager.updateEnvVariableTitledCells(envVariables);
         ObservableList<TitledPane> envVariableTitledPaneList = envVariableTitledManager.getEnvVariableTitledPaneList();
+        if (!envVariablesAccordion.getPanes().isEmpty()) {
+            envVariablesAccordion.getPanes().clear();
+        }
         envVariablesAccordion.getPanes().addAll(envVariableTitledPaneList);
     }
 
@@ -66,6 +69,14 @@ public class NewExecutionController {
 
     @FXML
     void startSimulationButtonAction(ActionEvent event) {
+        if (this.numberOfExecutionsLeft.get() == 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No more executions left");
+            alert.setContentText("You have no more executions left for this simulation");
+            alert.showAndWait();
+            return;
+        }
         int requestID = this.requestID.get();
         EnvVariablesValuesDTO envVariablesValuesDTO = new EnvVariablesValuesDTO(envVariableTitledManager.getEnvVariablesDTOList());
         EntitiesPopulationDTO entityPopulationDTO = new EntitiesPopulationDTO(entityPopulationListManager.getEntityPopulationDTOList());
@@ -74,6 +85,7 @@ public class NewExecutionController {
         if (!appController.getConnection().activateSimulation(activateSimulationDTO)) {
             return;
         }
+        this.numberOfExecutionsLeft.set(this.numberOfExecutionsLeft.get() - 1);
         appController.tabActivation(AppController.Tab.RESULTS, true);
         appController.selectTab(AppController.Tab.RESULTS);
     }
@@ -96,7 +108,7 @@ public class NewExecutionController {
     public void updateExecution(NewExecutionInputDTO newExecutionInputDTO) {
         requestID.set(newExecutionInputDTO.getRequestDTO().getId());
         worldName.set(newExecutionInputDTO.getRequestDTO().getWorldName());
-        numberOfExecutionsLeft.set(String.valueOf(newExecutionInputDTO.getRequestDTO().getNumberOfExecutionsLeft()));
+        numberOfExecutionsLeft.set(newExecutionInputDTO.getRequestDTO().getNumberOfExecutionsLeft());
         updateEnvVariablesInputVBox(newExecutionInputDTO.getEnvVariables());
         updateEntityPopulationInputVBox(newExecutionInputDTO.getEntityPopulations());
     }

@@ -82,7 +82,9 @@ public class SimulationExecutionDetails implements Serializable {
         return worldInstance.getEntityInstanceManager();
     }
 
-    public void setStatus(String status) {this.status = status; }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public void setTerminationReason(String terminationReason) {this.terminationReason = terminationReason; }
 

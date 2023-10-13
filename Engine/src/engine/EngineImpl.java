@@ -166,6 +166,7 @@ public class EngineImpl implements Serializable, Engine {
         validateEnvVariablesValues(world.getName(), activateSimulationDTO.getEnvVariablesValuesDTO());
         WorldInstance worldInstance = createWorldInstance(userRequest, world, activateSimulationDTO.getEnvVariablesValuesDTO(), activateSimulationDTO.getEntityPopulationDTO());
         int simulationId = this.simulationExecutionManager.createSimulation(worldInstance);
+        userRequest.addSimulationExecutionDetails(this.simulationExecutionManager.getSimulationDetailsByID(simulationId));
         this.simulationExecutionManager.runSimulation(simulationId);
         return new SimulationIDDTO(simulationId);
     }

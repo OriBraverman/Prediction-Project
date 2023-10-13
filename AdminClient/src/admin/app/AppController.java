@@ -37,8 +37,6 @@ public class AppController {
     @FXML private ExecutionsHistoryController executionsHistoryComponentController;
 
 
-
-    private final EngineImpl engineImpl = new EngineImpl();
     private final Connection connection = new Connection(this);
     private final SimpleBooleanProperty isXMLLoaded;
     private final SimpleBooleanProperty isSimulationExecuted;
@@ -131,30 +129,6 @@ public class AppController {
     }
 
     public TabPane getTabPane(){ return tabPane; }
-
-    public void stopSimulation(int simulationID) {
-        engineImpl.stopSimulation(simulationID);
-    }
-
-    public void pauseSimulation(int simulationID) {
-        engineImpl.pauseSimulation(simulationID);
-    }
-
-    public void resumeSimulation(int simulationID) {
-        engineImpl.resumeSimulation(simulationID);
-    }
-
-    public boolean isSimulationCompleted(int simulationID) {
-        return engineImpl.isSimulationCompleted(simulationID);
-    }
-
-    public void setPreviousTick(int simulationID) {
-        engineImpl.setPreviousTick(simulationID);
-    }
-
-    public void getToNextTick(int simulationID) {
-        engineImpl.getToNextTick(simulationID);
-    }
 
     private void applyDesign(String cssPath){
         if (getClass().getResource(cssPath) != null) {

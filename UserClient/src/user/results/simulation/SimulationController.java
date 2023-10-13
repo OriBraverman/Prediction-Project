@@ -6,7 +6,6 @@ import dto.gridView.GridViewDTO;
 import http.url.Constants;
 import user.UserApplication;
 import user.app.AppController;
-import user.results.simulation.grid.GridController;
 import user.results.simulation.information.InformationController;
 import gui.components.main.results.simulation.tableView.EntityPopulationTableView;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -37,7 +36,6 @@ public class SimulationController {
     @FXML private Button resumeSimulationButton;
     @FXML private Button stopSimulationButton;
     @FXML private ScrollPane entityPopulationScrollPane;
-    @FXML private Button gridViewButton;
     @FXML private Label statusDisplay;
     @FXML private Button terminationReasonButton;
 
@@ -82,7 +80,6 @@ public class SimulationController {
         stopSimulationButton.disableProperty().bind(isRunning.not());
         informationComponent.visibleProperty().bind(isCompleted);
         // See resume when running and paused --> Disable resume when not running or not paused
-        gridViewButton.disableProperty().bind(isRunning.not().or(isPaused.not()));
         terminationReasonButton.disableProperty().bind(isCompleted.not());
         statusDisplay.textProperty().bind(status);
     }
@@ -131,45 +128,6 @@ public class SimulationController {
     @FXML
     void stopSimulationButtonAction(ActionEvent event) {
         appController.getConnection().setSimulationState(new SimulationStateDTO(currentSimulationID.get(), Constants.STOP));
-    }
-
-    @FXML
-    void gridViewButtonAction(ActionEvent event) {
-        try {
-            // Load the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("grid/grid.fxml"));
-            Parent root = loader.load();
-
-            // Get the controller instance from the loader
-            GridController gridController = loader.getController();
-
-            // Set the appController
-            gridController.setAppController(appController);
-
-            // Set the current simulation ID
-            gridController.setCurrentSimulationID(currentSimulationID.get());
-
-            // Create a new scene using the loaded FXML
-            Scene scene = new Scene(root);
-
-            // Create a new stage (window) and set the scene
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.setTitle("Grid View");
-            stage.getIcons().add(new Image(SimulationController.class.getResourceAsStream("grid/prediction-icon-2.png")));
-
-            // Make the stage modal (blocks interaction with the main window)
-            stage.initModality(Modality.WINDOW_MODAL);
-
-            // Set the main stage as the owner of the new stage (adjust the reference as needed)
-            stage.initOwner(UserApplication.getStage());
-
-            // Show the stage
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            // Handle any potential exceptions that may occur during loading
-        }
     }
 
     @FXML

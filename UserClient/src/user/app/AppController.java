@@ -59,7 +59,6 @@ public class AppController {
     private Timer fetchWorldsDetailsTimer;
     private FetchWorldsDetailsTimer fetchWorldsDetailsTimerTask;
 
-    private final EngineImpl engineImpl = new EngineImpl();
     private final Connection connection = new Connection(this);
     private final SimpleBooleanProperty isXMLLoaded;
     private final SimpleBooleanProperty isSimulationExecuted;
@@ -194,22 +193,6 @@ public class AppController {
     }
 
     public TabPane getTabPane(){ return tabPane; }
-
-    public SimulationResultByAmountDTO getSimulationResultByAmountDTO(int simulationID) {
-        return engineImpl.getSimulationResultByAmountDTO(simulationID);
-    }
-
-    public WorldDTO getWorldDTO(int simulationID) {
-        return engineImpl.getWorldDTO(simulationID);
-    }
-
-    public boolean isSimulationCompleted(int simulationID) {
-        return engineImpl.isSimulationCompleted(simulationID);
-    }
-
-    public EntityPopulationByTicksDTO getEntityPopulationByTicksDTO(int simulationID) {
-        return engineImpl.getEntityPopulationByTicksDTO(simulationID);
-    }
 
     private void applyDesign(String cssPath){
         if (getClass().getResource(cssPath) != null) {

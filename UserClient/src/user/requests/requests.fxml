@@ -61,7 +61,7 @@
                     <TableColumn fx:id="requestIdColumn" prefWidth="85.0" text="Request ID" />
                     <TableColumn fx:id="userNameColumn" prefWidth="85.0" text="User Name" />
                     <TableColumn fx:id="simulationNameColumn" prefWidth="130.0" text="Simulation Name" />
-                    <TableColumn fx:id="threadsRequestedColumn" prefWidth="140.0" text="Threads Requested" />
+                    <TableColumn fx:id="amountColumn" prefWidth="80.0" text="Amount" />
                     <TableColumn fx:id="terminationSecondsColumn" prefWidth="160.0" text="Termination Seconds" />
                     <TableColumn fx:id="terminationTicksColumn" prefWidth="140.0" text="Termination Ticks" />
                     <TableColumn fx:id="terminationUserColumn" prefWidth="130.0" text="Termination User" />

@@ -28,11 +28,16 @@ public class URLconst {
     public static final String FETCH_SIMULATION_ID_LIST_URL = BASE_URL + FETCH_SIMULATION_ID_LIST_SRC;
     public static final String FETCH_SIMULATION_EXECUTION_DETAILS_SRC = "/fetchSimulationExecutionDetails";
     public static final String FETCH_SIMULATION_EXECUTION_DETAILS_URL = BASE_URL + FETCH_SIMULATION_EXECUTION_DETAILS_SRC;
-
     public static final String SET_SIMULATION_STATE_SRC = "/setSimulationState";
     public static final String SET_SIMULATION_STATE_URL = BASE_URL + SET_SIMULATION_STATE_SRC;
     public static final String FETCH_NEW_EXECUTION_VALUES_SRC = "/fetchNewExecutionValues";
     public static final String FETCH_NEW_EXECUTION_VALUES_URL = BASE_URL + FETCH_NEW_EXECUTION_VALUES_SRC;
     public static final String FETCH_PROPERTY_STATISTICS_SRC = "/fetchPropertyStatistics";
     public static final String FETCH_PROPERTY_STATISTICS_URL = BASE_URL + FETCH_PROPERTY_STATISTICS_SRC;
+    public static final String IS_SIMULATION_COMPLETED_SRC = "/isSimulationCompleted";
+    public static final String IS_SIMULATION_COMPLETED_URL = BASE_URL + IS_SIMULATION_COMPLETED_SRC;
+    public static final String FETCH_ENTITY_POPULATION_BY_TICKS_SRC = "/fetchEntityPopulationByTicks";
+    public static final String FETCH_ENTITY_POPULATION_BY_TICKS_URL = BASE_URL + FETCH_ENTITY_POPULATION_BY_TICKS_SRC;
+    public static final String FETCH_WORLD_DETAILS_SRC = "/fetchWorldDetails";
+    public static final String FETCH_WORLD_DETAILS_URL = BASE_URL + FETCH_WORLD_DETAILS_SRC;
 }

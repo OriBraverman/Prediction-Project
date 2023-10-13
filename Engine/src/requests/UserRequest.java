@@ -1,6 +1,10 @@
 package requests;
 
+import simulation.SimulationExecutionDetails;
 import world.factors.termination.Termination;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserRequest {
     private int id;
@@ -9,9 +13,7 @@ public class UserRequest {
     private Termination termination;
     private int executionsCount;
     private RequestStatus requestStatus;
-    private int pendingExecutionsCount;
-    private int runningExecutionsCount;
-    private int completedExecutionsCount;
+    private List<SimulationExecutionDetails> simulationExecutionDetailsList;
 
     public UserRequest(int id,String username, String worldName, Termination termination, int executionsCount) {
         this.id = id;
@@ -20,9 +22,7 @@ public class UserRequest {
         this.termination = termination;
         this.executionsCount = executionsCount;
         this.requestStatus = RequestStatus.PENDING;
-        this.pendingExecutionsCount = 0;
-        this.runningExecutionsCount = 0;
-        this.completedExecutionsCount = 0;
+        simulationExecutionDetailsList = new ArrayList<>();
     }
 
     public int getId() {
@@ -45,35 +45,34 @@ public class UserRequest {
         return requestStatus;
     }
     public int getPendingExecutionsCount() {
-        return pendingExecutionsCount;
+        if (simulationExecutionDetailsList == null) {
+            return 0;
+        }
+        return simulationExecutionDetailsList.stream()
+                .mapToInt(simulationExecutionDetails -> simulationExecutionDetails.isPending() ? 1 : 0)
+                .sum();
     }
 
     public int getRunningExecutionsCount() {
-        return runningExecutionsCount;
+        if (simulationExecutionDetailsList == null) {
+            return 0;
+        }
+        return simulationExecutionDetailsList.stream()
+                .mapToInt(simulationExecutionDetails -> simulationExecutionDetails.isRunning() ? 1 : 0)
+                .sum();
     }
 
     public int getCompletedExecutionsCount() {
-        return completedExecutionsCount;
-    }
-
-    public void setSimulationName(String worldName) {
-        this.worldName = worldName;
-    }
-
-    public void setExecutionsCount(int executionsCount) {
-        this.executionsCount = executionsCount;
+        if (simulationExecutionDetailsList == null) {
+            return 0;
+        }
+        return simulationExecutionDetailsList.stream()
+                .mapToInt(simulationExecutionDetails -> simulationExecutionDetails.isCompleted() ? 1 : 0)
+                .sum();
     }
 
     public void setRequestStatus(RequestStatus requestStatus) {
         this.requestStatus = requestStatus;
-    }
-
-    public void setRunningExecutionsCount(int runningExecutionsCount) {
-        this.runningExecutionsCount = runningExecutionsCount;
-    }
-
-    public void setCompletedExecutionsCount(int completedExecutionsCount) {
-        this.completedExecutionsCount = completedExecutionsCount;
     }
 
     public boolean isApproved() {
@@ -86,5 +85,9 @@ public class UserRequest {
 
     public Termination getTermination() {
         return termination;
+    }
+
+    public void addSimulationExecutionDetails(SimulationExecutionDetails simulationExecutionDetails) {
+        simulationExecutionDetailsList.add(simulationExecutionDetails);
     }
 }

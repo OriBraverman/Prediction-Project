@@ -3,8 +3,10 @@ package user.app;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.*;
+import dto.result.EntityPopulationByTicksDTO;
 import dto.result.PropertyStatisticsDTO;
 import dto.world.TerminationDTO;
+import dto.world.WorldDTO;
 import http.url.Constants;
 import http.url.URLconst;
 import javafx.application.Platform;
@@ -260,5 +262,92 @@ public class Connection {
             System.out.println("Oops... something went wrong..." + e.getMessage());
         }
         return null;
+    }
+
+    public boolean isSimulationCompleted(int id) {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(URLconst.IS_SIMULATION_COMPLETED_URL).newBuilder();
+        urlBuilder.addQueryParameter(Constants.SIMULATION_ID, String.valueOf(id));
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader(CONTENT_TYPE, "text/plain")
+                .get()
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            String dtoAsStr = response.body().string();
+            System.out.println("isSimulationCompleted response Code: " + response.code() + " " + dtoAsStr);
+
+            if (response.code() != 200) {
+                Gson gson = new Gson();
+                StatusDTO statusDTO = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                Platform.runLater(() -> appController.showAlert(statusDTO));
+                return false;
+            } else {
+                StatusDTO statusDTO = gson.fromJson(dtoAsStr, StatusDTO.class);
+                return statusDTO.isSuccessful();
+            }
+        } catch (IOException e) {
+            System.out.println("Oops... something went wrong..." + e.getMessage());
+            return false;
+        }
+    }
+
+    public EntityPopulationByTicksDTO getEntityPopulationByTicksDTO(int simulationID) {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(URLconst.FETCH_ENTITY_POPULATION_BY_TICKS_URL).newBuilder();
+        urlBuilder.addQueryParameter(Constants.SIMULATION_ID, String.valueOf(simulationID));
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader(CONTENT_TYPE, "text/plain")
+                .get()
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            String dtoAsStr = response.body().string();
+            System.out.println("getEntityPopulationByTicksDTO response Code: " + response.code() + " " + dtoAsStr);
+
+            if (response.code() != 200) {
+                Gson gson = new Gson();
+                StatusDTO statusDTO = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                Platform.runLater(() -> appController.showAlert(statusDTO));
+                return null;
+            } else {
+                EntityPopulationByTicksDTO entityPopulationByTicksDTO = gson.fromJson(dtoAsStr, EntityPopulationByTicksDTO.class);
+                return entityPopulationByTicksDTO;
+            }
+        } catch (IOException e) {
+            System.out.println("Oops... something went wrong..." + e.getMessage());
+            return null;
+        }
+    }
+
+    public WorldDTO getWorldDTO(int simulationID) {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(URLconst.FETCH_WORLD_DETAILS_URL).newBuilder();
+        urlBuilder.addQueryParameter(Constants.SIMULATION_ID, String.valueOf(simulationID));
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader(CONTENT_TYPE, "text/plain")
+                .get()
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            String dtoAsStr = response.body().string();
+            System.out.println("getWorldDTO response Code: " + response.code() + " " + dtoAsStr);
+
+            if (response.code() != 200) {
+                Gson gson = new Gson();
+                StatusDTO statusDTO = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                Platform.runLater(() -> appController.showAlert(statusDTO));
+                return null;
+            } else {
+                WorldDTO worldDTO = gson.fromJson(dtoAsStr, WorldDTO.class);
+                return worldDTO;
+            }
+        } catch (IOException e) {
+            System.out.println("Oops... something went wrong..." + e.getMessage());
+            return null;
+        }
     }
 }

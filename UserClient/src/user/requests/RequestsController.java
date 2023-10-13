@@ -23,7 +23,7 @@ public class RequestsController {
     @FXML private TableColumn<RequestDTO, Integer> requestIdColumn;
     @FXML private TableColumn<RequestDTO, String> userNameColumn;
     @FXML private TableColumn<RequestDTO, String> simulationNameColumn;
-    @FXML private TableColumn<RequestDTO, Integer> threadsRequestedColumn;
+    @FXML private TableColumn<RequestDTO, Integer> amountColumn;
     @FXML private TableColumn<RequestDTO, String> terminationSecondsColumn;
     @FXML private TableColumn<RequestDTO, String> terminationTicksColumn;
     @FXML private TableColumn<RequestDTO, String> terminationUserColumn;
@@ -68,9 +68,9 @@ public class RequestsController {
             String simulationName = cellData.getValue().getWorldName();
             return Bindings.createObjectBinding(() -> simulationName);
         });
-        threadsRequestedColumn.setCellValueFactory(cellData -> {
-            int threadsRequested = cellData.getValue().getNumberOfExecutions();
-            return Bindings.createObjectBinding(() -> threadsRequested);
+        amountColumn.setCellValueFactory(cellData -> {
+            int amount = cellData.getValue().getNumberOfExecutions();
+            return Bindings.createObjectBinding(() -> amount);
         });
         terminationSecondsColumn.setCellValueFactory(cellData -> {
             String terminationSeconds = cellData.getValue().getTermination().getSecondsCount() == -1 ? "N/E" : String.valueOf(cellData.getValue().getTermination().getSecondsCount());
