@@ -1,8 +1,12 @@
-package user.results.scene;
+package admin.executionHistory.scene;
 
-import dto.*;
-import user.app.AppController;
-import user.results.simulation.SimulationController;
+import admin.app.AppController;
+import admin.executionHistory.simulation.SimulationController;
+import admin.tasks.FetchSimulationListTimer;
+import admin.tasks.FetchSimulationTimer;
+import dto.SimulationExecutionDetailsDTO;
+import dto.SimulationIDListDTO;
+import dto.StatusDTO;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,35 +15,50 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import user.tasks.FetchSimulationTimer;
 
 import java.util.Timer;
 
-
-public class ResultsController {
+public class ExecutionsHistoryController {
     @FXML private AnchorPane resultsAnchorPane;
     @FXML private ListView<Integer> executionList;
     @FXML private SimulationController simulationComponentController;
     @FXML private AnchorPane simulationComponent;
-
     private AppController appController;
     private ExecutionListManager executionListManager;
+
     public final static int REFRESH_RATE = 1000;
+    private Timer fetchSimulationListTimer;
+    private FetchSimulationListTimer fetchSimulationListTimerTask;
     private Timer fetchSimulationTimer;
     private FetchSimulationTimer fetchSimulationTimerTask;
     private boolean setActive = false;
-    public void initialize(){
+
+    @FXML
+    public void initialize() {
         executionListManager = new ExecutionListManager();
         executionList.setCellFactory(param -> new ExecutionListCell());
         ObservableList<Integer> items = FXCollections.observableArrayList();
         executionList.setItems(items);
         executionList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
         Platform.runLater(() -> {
+            fetchSimulationListTimer = new Timer();
+            fetchSimulationListTimerTask = new FetchSimulationListTimer(appController.getConnection().getClient(), this);
+            fetchSimulationListTimer.schedule(fetchSimulationListTimerTask, 0, REFRESH_RATE);
             fetchSimulationTimer = new Timer();
             fetchSimulationTimerTask = new FetchSimulationTimer(this);
-            fetchSimulationTimer.schedule(fetchSimulationTimerTask, 0, 200);
+            fetchSimulationTimer.schedule(fetchSimulationTimerTask, 0, REFRESH_RATE);
         });
+    }
+
+    public void updateSimulationList(SimulationIDListDTO simulationIDListDTO) {
+        if (executionListManager.isEmpty()) {
+            setActive = true;
+        }
+        ObservableList<Integer> items = executionListManager.addAll(simulationIDListDTO.getSimulationsID());
+        executionList.getItems().addAll(items);
+        if (executionList.getSelectionModel().getSelectedItem() == null) {
+            executionList.getSelectionModel().selectFirst();
+        }
     }
 
     public void setAppController(AppController appController) {
@@ -80,16 +99,5 @@ public class ResultsController {
 
     public void showAlert(StatusDTO statusDTO) {
         appController.showAlert(statusDTO);
-    }
-
-    public void addAndSelectToSimulationList(int simulationId) {
-        if (executionListManager.isEmpty()) {
-            setActive = true;
-        }
-        Integer item = executionListManager.add(simulationId);
-        if (item != null) {
-            executionList.getItems().add(item);
-        }
-        executionList.getSelectionModel().select(simulationId);
     }
 }

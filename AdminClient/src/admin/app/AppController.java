@@ -2,11 +2,9 @@ package admin.app;
 
 import admin.AdminApplication;
 import admin.allocations.AllocationsController;
-import admin.executionHistory.ExecutionsHistoryController;
+import admin.executionHistory.scene.ExecutionsHistoryController;
 import admin.management.scene.ManagementController;
-import dto.RequestDTO;
 import dto.StatusDTO;
-import engine.EngineImpl;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -183,5 +181,9 @@ public class AppController {
 
     public void updateRequestStatus(int requestID, String status) {
         connection.updateRequestStatus(requestID, status);
+    }
+
+    public Connection getConnection() {
+        return connection;
     }
 }

@@ -7,6 +7,9 @@ import dto.result.EntityPopulationByTicksDTO;
 import dto.result.PropertyStatisticsDTO;
 import dto.world.TerminationDTO;
 import dto.world.WorldDTO;
+import dto.world.action.AbstructActionDTO;
+import dto.world.action.AbstructActionDTODeserializer;
+import dto.world.action.AbstructActionDTOSerializer;
 import http.url.Constants;
 import http.url.URLconst;
 import javafx.application.Platform;
@@ -25,7 +28,9 @@ public class Connection {
     private final AppController appController;
 
     Connection(AppController appController) {
-        gson = new GsonBuilder().create();
+        gson = new GsonBuilder()
+                .registerTypeAdapter(AbstructActionDTO.class, new AbstructActionDTODeserializer())
+                .create();
         this.appController = appController;
     }
 
@@ -127,7 +132,7 @@ public class Connection {
         return true;
     }
 
-    public boolean activateSimulation(ActivateSimulationDTO activateSimulationDTO) {
+    public SimulationIDDTO activateSimulation(ActivateSimulationDTO activateSimulationDTO) {
         // pass the requestID, envVariablesValuesDTO, entityPopulationDTO to the server
         String jsonRequest = gson.toJson(activateSimulationDTO);
         Request request = new Request.Builder()
@@ -144,13 +149,14 @@ public class Connection {
                 Gson gson = new Gson();
                 StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
                 Platform.runLater(() -> appController.showAlert(loginStatus));
-                return false;
+                return null;
+            } else {
+                return gson.fromJson(dtoAsStr, SimulationIDDTO.class);
             }
         } catch (IOException e) {
             System.out.println("Oops... something went wrong..." + e.getMessage());
-            return false;
+            return null;
         }
-        return true;
     }
 
 
@@ -284,8 +290,8 @@ public class Connection {
                 Platform.runLater(() -> appController.showAlert(statusDTO));
                 return false;
             } else {
-                StatusDTO statusDTO = gson.fromJson(dtoAsStr, StatusDTO.class);
-                return statusDTO.isSuccessful();
+                Boolean isSimulationCompleted = gson.fromJson(dtoAsStr, Boolean.class);
+                return isSimulationCompleted;
             }
         } catch (IOException e) {
             System.out.println("Oops... something went wrong..." + e.getMessage());

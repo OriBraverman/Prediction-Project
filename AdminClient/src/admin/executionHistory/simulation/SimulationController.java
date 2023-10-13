@@ -1,30 +1,23 @@
-package user.results.simulation;
+package admin.executionHistory.simulation;
 
-import dto.SimulationStateDTO;
 import dto.SimulationExecutionDetailsDTO;
-import dto.gridView.GridViewDTO;
+import dto.SimulationStateDTO;
 import http.url.Constants;
-import user.UserApplication;
-import user.app.AppController;
-import user.results.simulation.information.InformationController;
-import user.results.simulation.tableView.EntityPopulationTableView;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
-import java.io.IOException;
+import admin.app.AppController;
+import admin.executionHistory.simulation.information.InformationController;
+import admin.executionHistory.simulation.tableView.EntityPopulationTableView;
 
 
 public class SimulationController {

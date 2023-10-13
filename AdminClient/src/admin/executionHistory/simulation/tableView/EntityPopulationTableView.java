@@ -1,4 +1,4 @@
-package user.results.simulation.tableView;
+package admin.executionHistory.simulation.tableView;
 
 import dto.EntityPopulationDTO;
 import dto.SimulationExecutionDetailsDTO;

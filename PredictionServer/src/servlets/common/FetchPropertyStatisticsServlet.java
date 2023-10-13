@@ -7,6 +7,7 @@ import dto.StatusDTO;
 import dto.result.PropertyStatisticsDTO;
 import engine.Engine;
 import http.url.Client;
+import http.url.Constants;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,9 +27,9 @@ public class FetchPropertyStatisticsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Gson gson = new GsonBuilder().create();
         String usernameFromSession = SessionUtils.getUsername(request);
-        int simulationID = Integer.parseInt(request.getParameter("simulationID"));
-        String entityName = request.getParameter("entityName");
-        String propertyName = request.getParameter("propertyName");
+        int simulationID = Integer.parseInt(request.getParameter(Constants.SIMULATION_ID));
+        String entityName = request.getParameter(Constants.ENTITY_NAME);
+        String propertyName = request.getParameter(Constants.PROPERTY_NAME);
         ServletContext servletContext = getServletContext();
         if (SessionUtils.getTypeOfClient(request).equals(Client.UNAUTHORIZED)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

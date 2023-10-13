@@ -82,9 +82,8 @@ public class NewExecutionController {
         EntitiesPopulationDTO entityPopulationDTO = new EntitiesPopulationDTO(entityPopulationListManager.getEntityPopulationDTOList());
         ActivateSimulationDTO activateSimulationDTO = new ActivateSimulationDTO(requestID, envVariablesValuesDTO, entityPopulationDTO);
         // The validation of the input is done in activateSimulation function
-        if (!appController.getConnection().activateSimulation(activateSimulationDTO)) {
-            return;
-        }
+        SimulationIDDTO simulationIDDTO = appController.getConnection().activateSimulation(activateSimulationDTO);
+        appController.getResultsController().addAndSelectToSimulationList(simulationIDDTO.getSimulationId());
         this.numberOfExecutionsLeft.set(this.numberOfExecutionsLeft.get() - 1);
         appController.tabActivation(AppController.Tab.RESULTS, true);
         appController.selectTab(AppController.Tab.RESULTS);

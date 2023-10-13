@@ -1,21 +1,19 @@
-package user.results.simulation.information;
+package admin.executionHistory.simulation.information;
 
 import dto.EntityPopulationDTO;
-import dto.result.PropertyStatisticsDTO;
-import dto.result.EntityPopulationByTicksDTO;
-import dto.result.HistogramDTO;
-import dto.result.PropertyAvaregeValueDTO;
-import dto.result.PropertyConstistencyDTO;
+import dto.result.*;
 import dto.world.EntityDefinitionDTO;
 import dto.world.PropertyDefinitionDTO;
 import dto.world.WorldDTO;
-import user.app.AppController;
-import user.results.simulation.SimulationController;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
-import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.layout.FlowPane;
+import user.app.AppController;
+import user.results.simulation.SimulationController;
 
 import java.util.ArrayList;
 import java.util.Collections;

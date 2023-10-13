@@ -1,4 +1,4 @@
-package user.results.scene;
+package admin.executionHistory.scene;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
