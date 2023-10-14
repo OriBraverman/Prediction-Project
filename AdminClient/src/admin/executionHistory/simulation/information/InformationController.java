@@ -12,8 +12,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.FlowPane;
-import user.app.AppController;
-import user.results.simulation.SimulationController;
+import admin.app.AppController;
+import admin.executionHistory.simulation.SimulationController;
 
 import java.util.ArrayList;
 import java.util.Collections;

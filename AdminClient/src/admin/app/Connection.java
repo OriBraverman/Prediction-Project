@@ -3,7 +3,13 @@ package admin.app;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.RequestDTO;
+import dto.SimulationExecutionDetailsDTO;
 import dto.StatusDTO;
+import dto.result.EntityPopulationByTicksDTO;
+import dto.result.PropertyStatisticsDTO;
+import dto.world.WorldDTO;
+import dto.world.action.AbstructActionDTO;
+import dto.world.action.AbstructActionDTODeserializer;
 import http.cookie.SimpleCookieManager;
 import http.url.Constants;
 import http.url.URLconst;
@@ -25,7 +31,9 @@ public class Connection {
 
     Connection(AppController appController) {
         this.client = new OkHttpClient().newBuilder().cookieJar(new SimpleCookieManager()).build();
-        this.gson = new GsonBuilder().create();
+        this.gson = new GsonBuilder()
+                .registerTypeAdapter(AbstructActionDTO.class, new AbstructActionDTODeserializer())
+                .create();
         this.appController = appController;
     }
 
@@ -182,5 +190,148 @@ public class Connection {
                 }
             }
         });
+    }
+
+    public boolean isSimulationCompleted(int id) {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(URLconst.IS_SIMULATION_COMPLETED_URL).newBuilder();
+        urlBuilder.addQueryParameter(Constants.SIMULATION_ID, String.valueOf(id));
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader(CONTENT_TYPE, "text/plain")
+                .get()
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            String dtoAsStr = response.body().string();
+            System.out.println("isSimulationCompleted response Code: " + response.code() + " " + dtoAsStr);
+
+            if (response.code() != 200) {
+                Gson gson = new Gson();
+                StatusDTO statusDTO = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                Platform.runLater(() -> appController.showAlert(statusDTO));
+                return false;
+            } else {
+                Boolean isSimulationCompleted = gson.fromJson(dtoAsStr, Boolean.class);
+                return isSimulationCompleted;
+            }
+        } catch (IOException e) {
+            System.out.println("Oops... something went wrong..." + e.getMessage());
+            return false;
+        }
+    }
+
+    public EntityPopulationByTicksDTO getEntityPopulationByTicksDTO(int simulationID) {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(URLconst.FETCH_ENTITY_POPULATION_BY_TICKS_URL).newBuilder();
+        urlBuilder.addQueryParameter(Constants.SIMULATION_ID, String.valueOf(simulationID));
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader(CONTENT_TYPE, "text/plain")
+                .get()
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            String dtoAsStr = response.body().string();
+            System.out.println("getEntityPopulationByTicksDTO response Code: " + response.code() + " " + dtoAsStr);
+
+            if (response.code() != 200) {
+                Gson gson = new Gson();
+                StatusDTO statusDTO = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                Platform.runLater(() -> appController.showAlert(statusDTO));
+                return null;
+            } else {
+                EntityPopulationByTicksDTO entityPopulationByTicksDTO = gson.fromJson(dtoAsStr, EntityPopulationByTicksDTO.class);
+                return entityPopulationByTicksDTO;
+            }
+        } catch (IOException e) {
+            System.out.println("Oops... something went wrong..." + e.getMessage());
+            return null;
+        }
+    }
+
+    public WorldDTO getWorldDTO(int simulationID) {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(URLconst.FETCH_WORLD_DETAILS_URL).newBuilder();
+        urlBuilder.addQueryParameter(Constants.SIMULATION_ID, String.valueOf(simulationID));
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader(CONTENT_TYPE, "text/plain")
+                .get()
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            String dtoAsStr = response.body().string();
+            System.out.println("getWorldDTO response Code: " + response.code() + " " + dtoAsStr);
+
+            if (response.code() != 200) {
+                Gson gson = new Gson();
+                StatusDTO statusDTO = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                Platform.runLater(() -> appController.showAlert(statusDTO));
+                return null;
+            } else {
+                WorldDTO worldDTO = gson.fromJson(dtoAsStr, WorldDTO.class);
+                return worldDTO;
+            }
+        } catch (IOException e) {
+            System.out.println("Oops... something went wrong..." + e.getMessage());
+            return null;
+        }
+    }
+
+    public PropertyStatisticsDTO getPropertyStatisticsDTO(int simulationID, String entityName, String propertyName) {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(URLconst.FETCH_PROPERTY_STATISTICS_URL).newBuilder();
+        urlBuilder.addQueryParameter(Constants.SIMULATION_ID, String.valueOf(simulationID));
+        urlBuilder.addQueryParameter(Constants.ENTITY_NAME, entityName);
+        urlBuilder.addQueryParameter(Constants.PROPERTY_NAME, propertyName);
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader(CONTENT_TYPE, "text/plain")
+                .get()
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            String dtoAsStr = response.body().string();
+            System.out.println("getPropertyStatisticsDTO response Code: " + response.code() + " " + dtoAsStr);
+
+            if (response.code() != 200) {
+                Gson gson = new Gson();
+                StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                Platform.runLater(() -> appController.showAlert(loginStatus));
+            } else {
+                PropertyStatisticsDTO propertyStatisticsDTO = gson.fromJson(dtoAsStr, PropertyStatisticsDTO.class);
+                return propertyStatisticsDTO;
+            }
+        } catch (IOException e) {
+            System.out.println("Oops... something went wrong..." + e.getMessage());
+        }
+        return null;
+    }
+    public void getSimulationExecutionDetails(int simulationID) {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(URLconst.FETCH_SIMULATION_EXECUTION_DETAILS_URL).newBuilder();
+        urlBuilder.addQueryParameter(Constants.SIMULATION_ID, String.valueOf(simulationID));
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader(CONTENT_TYPE, "text/plain")
+                .get()
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            String dtoAsStr = response.body().string();
+            System.out.println("getSimulationExecutionDetails response Code: " + response.code() + " " + dtoAsStr);
+
+            if (response.code() != 200) {
+                Gson gson = new Gson();
+                StatusDTO loginStatus = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                Platform.runLater(() -> appController.showAlert(loginStatus));
+            } else {
+                SimulationExecutionDetailsDTO simulationExecutionDetailsDTO = gson.fromJson(dtoAsStr, SimulationExecutionDetailsDTO.class);
+                Platform.runLater(() -> appController.getExecutionsHistoryController().updateSimulationComponent(simulationExecutionDetailsDTO));
+            }
+        } catch (IOException e) {
+            System.out.println("Oops... something went wrong..." + e.getMessage());
+        }
     }
 }

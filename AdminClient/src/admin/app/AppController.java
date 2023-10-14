@@ -186,4 +186,8 @@ public class AppController {
     public Connection getConnection() {
         return connection;
     }
+
+    public ExecutionsHistoryController getExecutionsHistoryController() {
+        return executionsHistoryComponentController;
+    }
 }

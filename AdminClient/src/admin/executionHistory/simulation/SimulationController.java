@@ -24,10 +24,6 @@ public class SimulationController {
     @FXML private Label entitiesCountDisplay;
     @FXML private Label currentTickDisplay;
     @FXML private Label timeSinceSimulationStartedDisplay;
-    @FXML private Button rerunSimulationButton;
-    @FXML private Button pauseSimulationButton;
-    @FXML private Button resumeSimulationButton;
-    @FXML private Button stopSimulationButton;
     @FXML private ScrollPane entityPopulationScrollPane;
     @FXML private Label statusDisplay;
     @FXML private Button terminationReasonButton;
@@ -65,12 +61,6 @@ public class SimulationController {
         timeSinceSimulationStartedDisplay.textProperty().bind(timeSinceSimulationStarted.asString());
 
         // Simulation control buttons
-        rerunSimulationButton.visibleProperty().bind(isCompleted);
-        // See pause when running and not paused --> Disable pause when not running or paused
-        pauseSimulationButton.disableProperty().bind(isRunning.not().or(isPaused));
-        // See resume when running and paused --> Disable resume when not running or not paused
-        resumeSimulationButton.disableProperty().bind(isRunning.not().or(isPaused.not()));
-        stopSimulationButton.disableProperty().bind(isRunning.not());
         informationComponent.visibleProperty().bind(isCompleted);
         // See resume when running and paused --> Disable resume when not running or not paused
         terminationReasonButton.disableProperty().bind(isCompleted.not());
@@ -101,26 +91,6 @@ public class SimulationController {
         if (isRunning.get() && informationComponentController.getExecutionResult().getChildren() != null) {
             informationComponentController.getExecutionResult().getChildren().clear();
         }
-    }
-    @FXML
-    void pauseSimulationButtonAction(ActionEvent event) {
-        appController.getConnection().setSimulationState(new SimulationStateDTO(currentSimulationID.get(), Constants.PAUSE));
-    }
-
-    @FXML
-    void rerunSimulationButtonAction(ActionEvent event) {
-        appController.selectTab(AppController.Tab.EXECUTION);
-        appController.updateNewExecutionByPrevSimulation(currentSimulationID.get());
-    }
-
-    @FXML
-    void resumeSimulationButtonAction(ActionEvent event) {
-        appController.getConnection().setSimulationState(new SimulationStateDTO(currentSimulationID.get(), Constants.RESUME));
-    }
-
-    @FXML
-    void stopSimulationButtonAction(ActionEvent event) {
-        appController.getConnection().setSimulationState(new SimulationStateDTO(currentSimulationID.get(), Constants.STOP));
     }
 
     @FXML

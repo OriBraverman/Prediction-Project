@@ -65,7 +65,7 @@
                 </Tab>
                   <Tab text="Execution History">
                      <content>
-                            <fx:include fx:id="executionsHistoryComponent" source="../executionHistory/ExecutionsHistory.fxml" />
+                            <fx:include fx:id="executionsHistoryComponent" source="../executionHistory/scene/ExecutionsHistory.fxml" />
                      </content>
                   </Tab>
               </tabs>
