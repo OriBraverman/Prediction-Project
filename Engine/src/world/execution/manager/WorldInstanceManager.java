@@ -12,4 +12,6 @@ public interface WorldInstanceManager {
     WorldInstance create(UserRequest userRequest, World world, ActiveEnvironment activeEnvironment, EntityInstanceManager entityInstanceManager);
 
     WorldInstance getWorldInstanceById(int id);
+
+    UserRequest deleteWorldInstance(int simulationID);
 }

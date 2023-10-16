@@ -1,4 +1,4 @@
-package servlets.user;
+package servlets.common;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,7 +28,7 @@ public class FetchEntityPopulationByTicksServlet extends HttpServlet {
         Gson gson = new GsonBuilder().create();
         int simulationID = Integer.parseInt(request.getParameter(Constants.SIMULATION_ID));
         ServletContext servletContext = getServletContext();
-        if (SessionUtils.getTypeOfClient(request) != Client.USER) {
+        if (SessionUtils.getTypeOfClient(request).equals(Client.UNAUTHORIZED)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().println(gson.toJson(new StatusDTO(false, "unauthorized client type")));
             return;

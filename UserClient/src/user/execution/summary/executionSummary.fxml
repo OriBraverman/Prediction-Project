@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="368.0" stylesheets="@../../app/Application.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="user.execution.summary.ExecutionSummaryController">
+   <children>
+      <TreeView fx:id="summaryTreeView" layoutX="84.0" layoutY="68.0" prefHeight="200.0" prefWidth="200.0" />
+      <Label fx:id="ExecutionSummaryTitle" layoutX="80.0" layoutY="14.0" text="Execution Summary" />
+      <Button fx:id="confirmAndRunButton" layoutX="112.0" layoutY="285.0" mnemonicParsing="false" onAction="#confirmAndRunButtonButtonAction" prefHeight="30.0" text="Confirm and Run" />
+      <Button fx:id="cancelButton" layoutX="112.0" layoutY="340.0" maxWidth="152.0" mnemonicParsing="false" onAction="#CancelButtonAction" prefHeight="30.0" prefWidth="152.0" text="Cancel" />
+   </children>
+</AnchorPane>

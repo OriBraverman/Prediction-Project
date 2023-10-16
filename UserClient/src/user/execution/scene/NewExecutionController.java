@@ -6,14 +6,22 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import user.UserApplication;
 import user.app.AppController;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import user.execution.entity.EntityPopulationListManager;
 import user.execution.envVarible.EnvVariableTitledManager;
+import user.execution.summary.ExecutionSummaryController;
 
+import java.io.IOException;
 import java.util.List;
 
 public class NewExecutionController {
@@ -67,7 +75,7 @@ public class NewExecutionController {
         entityPopulationListView.setItems(entityPopulationListCellList);
     }
 
-    @FXML
+    /*@FXML
     void startSimulationButtonAction(ActionEvent event) {
         if (this.numberOfExecutionsLeft.get() == 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -87,7 +95,66 @@ public class NewExecutionController {
         this.numberOfExecutionsLeft.set(this.numberOfExecutionsLeft.get() - 1);
         appController.tabActivation(AppController.Tab.RESULTS, true);
         appController.selectTab(AppController.Tab.RESULTS);
+    }*/
+
+    //shachar
+    @FXML
+    void startSimulationButtonAction(ActionEvent event) {
+        if (this.numberOfExecutionsLeft.get() == 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No more executions left");
+            alert.setContentText("You have no more executions left for this simulation");
+            alert.showAndWait();
+            return;
+        }
+        int requestID = this.requestID.get();
+        EnvVariablesValuesDTO envVariablesValuesDTO = new EnvVariablesValuesDTO(envVariableTitledManager.getEnvVariablesDTOList());
+        EntitiesPopulationDTO entityPopulationDTO = new EntitiesPopulationDTO(entityPopulationListManager.getEntityPopulationDTOList());
+        ActivateSimulationDTO activateSimulationDTO = new ActivateSimulationDTO(requestID, envVariablesValuesDTO, entityPopulationDTO);
+        // The validation of the input is done in activateSimulation function
+        //ExecutionSummaryDTO executionSummaryDTO = appController.getConnection().getExecutionSummaryDTO(activateSimulationDTO);
+        executionSummaryComponentLuncher(executionSummaryDTO);
     }
+
+    public void executionSummaryComponentLuncher(ExecutionSummaryDTO executionSummaryDTO){
+        try {
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("summary/executionSummary.fxml"));
+            Parent root = loader.load();
+
+            // Get the controller instance from the loader
+            ExecutionSummaryController executionSummaryController = loader.getController();
+
+            // Set the appController
+            executionSummaryController.setAppController(appController);
+
+            // Set the current simulation ID
+            executionSummary.setCurrentSimulationID(currentSimulationID.get());
+
+            // Create a new scene using the loaded FXML
+            Scene scene = new Scene(root);
+
+            // Create a new stage (window) and set the scene
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Execution Summary View");
+            stage.getIcons().add(new Image(NewExecutionController.class.getResourceAsStream("summary/prediction-icon-2.png")));
+
+            // Make the stage modal (blocks interaction with the main window)
+            stage.initModality(Modality.WINDOW_MODAL);
+
+            // Set the main stage as the owner of the new stage (adjust the reference as needed)
+            stage.initOwner(UserApplication.getStage());
+
+            // Show the stage
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle any potential exceptions that may occur during loading
+        }
+    }
+
 
     @FXML
     void clearSimulationButtonAction(ActionEvent event) {

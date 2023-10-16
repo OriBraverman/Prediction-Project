@@ -356,4 +356,32 @@ public class Connection {
             return null;
         }
     }
+
+    public ExecutionSummaryDTO getExecutionSummaryDTO(){
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(URLconst.FETCH_EXECUTION_SUMMARY_URL).newBuilder();
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader(CONTENT_TYPE, "text/plain")
+                .get()
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            String dtoAsStr = response.body().string();
+            System.out.println("getExecutionSummaryDTO response Code: " + response.code() + " " + dtoAsStr);
+
+            if (response.code() != 200) {
+                Gson gson = new Gson();
+                StatusDTO statusDTO = gson.fromJson(dtoAsStr, StatusDTO.class);
+
+                Platform.runLater(() -> appController.showAlert(statusDTO));
+                return null;
+            } else {
+                ExecutionSummaryDTO executionSummaryDTO = gson.fromJson(dtoAsStr, ExecutionSummaryDTO.class);
+                return executionSummaryDTO;
+            }
+        } catch (IOException e) {
+            System.out.println("Oops... something went wrong..." + e.getMessage());
+            return null;
+        }
+    }
 }

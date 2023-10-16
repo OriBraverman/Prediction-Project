@@ -40,4 +40,6 @@ public class URLconst {
     public static final String FETCH_ENTITY_POPULATION_BY_TICKS_URL = BASE_URL + FETCH_ENTITY_POPULATION_BY_TICKS_SRC;
     public static final String FETCH_WORLD_DETAILS_SRC = "/fetchWorldDetails";
     public static final String FETCH_WORLD_DETAILS_URL = BASE_URL + FETCH_WORLD_DETAILS_SRC;
+    public static final String FETCH_EXECUTION_SUMMARY_SRC = "/fetchExecutionSummaryServlet";
+    public static final String FETCH_EXECUTION_SUMMARY_URL = BASE_URL + FETCH_EXECUTION_SUMMARY_SRC;
 }

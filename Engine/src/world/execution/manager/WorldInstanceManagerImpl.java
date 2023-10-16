@@ -31,4 +31,11 @@ public class WorldInstanceManagerImpl implements WorldInstanceManager {
     public WorldInstance getWorldInstanceById(int id) {
         return worldInstances.get(id);
     }
+
+    @Override
+    public UserRequest deleteWorldInstance(int simulationID) {
+        UserRequest userRequest = worldInstances.get(simulationID).getUserRequest();
+        worldInstances.remove(simulationID);
+        return userRequest;
+    }
 }

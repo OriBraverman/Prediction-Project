@@ -27,7 +27,6 @@ public class FetchSimulationExecutionDetailsDTOServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Gson gson = new GsonBuilder().create();
-        String usernameFromSession = SessionUtils.getUsername(request);
         ServletContext servletContext = getServletContext();
         if (SessionUtils.getTypeOfClient(request).equals(Client.UNAUTHORIZED)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

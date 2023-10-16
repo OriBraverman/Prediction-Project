@@ -50,4 +50,9 @@ public class RequestsManagerImpl implements RequestsManager {
     public void updateRequestStatus(int requestID, String status) {
         requests.get(requestID).setRequestStatus(RequestStatus.valueOf(status));
     }
+
+    @Override
+    public void deleteRequest(int id) {
+        requests.remove(id);
+    }
 }

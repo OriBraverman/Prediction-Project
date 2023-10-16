@@ -62,10 +62,10 @@ import java.util.stream.Collectors;
 
 
 public class EngineImpl implements Serializable, Engine {
-    private WorldDefinitionManager worldDefinitionManager;
-    private WorldInstanceManager worldInstanceManager;
-    private SimulationExecutionManager simulationExecutionManager;
-    private RequestsManager requestsManager;
+    private final WorldDefinitionManager worldDefinitionManager;
+    private final WorldInstanceManager worldInstanceManager;
+    private final SimulationExecutionManager simulationExecutionManager;
+    private final RequestsManager requestsManager;
 
     public EngineImpl() {
         this.worldDefinitionManager = new WorldDefinitionManagerImpl();
@@ -120,7 +120,7 @@ public class EngineImpl implements Serializable, Engine {
             String value = envVariableValueDTO.getValue();
             PropertyDefinition propertyDefinition = world.getEnvironment().getPropertyDefinitionByName(envVariableValueDTO.getName());
             PropertyInstance propertyInstance;
-            if (value.equals("")) {
+            if (value.isEmpty()) {
                 Object generatedValue = world.getEnvironment().getPropertyDefinitionByName(envVariableValueDTO.getName()).generateValue();
                 propertyInstance = new PropertyInstanceImpl(propertyDefinition, generatedValue);
             } else {
@@ -159,7 +159,7 @@ public class EngineImpl implements Serializable, Engine {
     }
 
     @Override
-    public SimulationIDDTO activateSimulation(ActivateSimulationDTO activateSimulationDTO) throws IllegalArgumentException{
+    public ExecutionSummaryDTO initSimulation(ActivateSimulationDTO activateSimulationDTO) throws IllegalArgumentException {
         UserRequest userRequest = this.requestsManager.getRequest(activateSimulationDTO.getRequestID());
         World world = this.worldDefinitionManager.getWorldDefinitionByName(userRequest.getSimulationName());
         validateEntitiesPopulation(activateSimulationDTO.getEntityPopulationDTO(), world.getName());
@@ -167,8 +167,34 @@ public class EngineImpl implements Serializable, Engine {
         WorldInstance worldInstance = createWorldInstance(userRequest, world, activateSimulationDTO.getEnvVariablesValuesDTO(), activateSimulationDTO.getEntityPopulationDTO());
         int simulationId = this.simulationExecutionManager.createSimulation(worldInstance);
         userRequest.addSimulationExecutionDetails(this.simulationExecutionManager.getSimulationDetailsByID(simulationId));
-        this.simulationExecutionManager.runSimulation(simulationId);
-        return new SimulationIDDTO(simulationId);
+        return getExecutionSummaryDTO(simulationId, worldInstance);
+    }
+
+    @Override
+    public ExecutionSummaryDTO getExecutionSummaryDTO(int simulationID, WorldInstance worldInstance) {
+        Map<String, Integer> entitiesPopulation = new HashMap<>();
+        for (EntityDefinition entityDefinition : worldInstance.getWorld().getEntities()) {
+            entitiesPopulation.put(entityDefinition.getName(), worldInstance.getEntityInstanceManager().getPopulationByEntityDefinition(entityDefinition));
+        }
+        Map<PropertyDefinitionDTO, String> envVariables = new HashMap<>();
+        for (PropertyInstance propertyInstance : worldInstance.getActiveEnvironment().getEnvVariables()) {
+            PropertyDefinitionDTO propertyDefinitionDTO = getPropertyDefinitionDTO(propertyInstance.getPropertyDefinition());
+            envVariables.put(propertyDefinitionDTO , propertyInstance.getValue().toString());
+        }
+        return new ExecutionSummaryDTO(simulationID, entitiesPopulation, envVariables);
+    }
+
+    @Override
+    public void abortSimulation(int simulationID) {
+        WorldInstance worldInstance = this.simulationExecutionManager.deleteSimulation(simulationID);
+        UserRequest userRequest = this.worldInstanceManager.deleteWorldInstance(worldInstance.getId());
+        this.requestsManager.deleteRequest(userRequest.getId());
+    }
+
+    @Override
+    public SimulationIDDTO activateSimulation(int simulationID) throws IllegalArgumentException {
+        this.simulationExecutionManager.runSimulation(simulationID);
+        return new SimulationIDDTO(simulationID);
     }
 
     @Override

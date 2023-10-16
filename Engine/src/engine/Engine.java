@@ -10,6 +10,7 @@ import requests.UserRequest;
 import simulation.SimulationExecutionDetails;
 import user.manager.UsersManager;
 import world.definition.World;
+import world.execution.WorldInstance;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
@@ -18,8 +19,6 @@ import java.util.List;
 public interface Engine {
 
     void loadXML(String xmlPath) throws FileNotFoundException;
-
-    SimulationIDDTO activateSimulation(ActivateSimulationDTO activateSimulationDTO);
 
     WorldDTO getWorldDTO(int simulationID);
 
@@ -91,4 +90,13 @@ public interface Engine {
     PropertyStatisticsDTO getPropertyStatisticsDTO(int simulationID, String entityName, String propertyName);
 
     NewExecutionValuesDTO getNewExecutionValuesDTO(int simulationID);
+
+    SimulationIDDTO activateSimulation(int simulationID) throws IllegalArgumentException;
+
+    void abortSimulation(int simulationID);
+
+    ExecutionSummaryDTO getExecutionSummaryDTO(int simulationID, WorldInstance worldInstance);
+
+    ExecutionSummaryDTO initSimulation(ActivateSimulationDTO activateSimulationDTO) throws IllegalArgumentException;
+
 }

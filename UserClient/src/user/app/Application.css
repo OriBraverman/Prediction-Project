@@ -153,6 +153,14 @@
     -fx-background-color: transparent; /* Transparent background for the arrow icon when pressed */
 }
 
+#ExecutionSummaryTitle{
+    -fx-text-fill: #004080; /* White text color */
+    -fx-padding: 5px 10px; /* Padding around the text */
+    -fx-background-radius: 5px; /* Rounded corners */
+    -fx-font-size: 20px; /* Font size */
+    -fx-font-weight: bold; /* Font weight */
+}
+
 
 
 

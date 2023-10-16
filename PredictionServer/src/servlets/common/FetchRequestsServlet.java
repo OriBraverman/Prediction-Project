@@ -41,7 +41,6 @@ public class FetchRequestsServlet extends HttpServlet {
         }
         Engine engine = getEngine(servletContext);
         try {
-            UsersManager usersManager = ServletUtils.getUsersManager(servletContext);
             RequestsDTO requests = engine.getRequestsDTO(usernameFromSession, SessionUtils.getTypeOfClient(request));
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().println(gson.toJson(requests));

@@ -26,7 +26,6 @@ public class FetchPropertyStatisticsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Gson gson = new GsonBuilder().create();
-        String usernameFromSession = SessionUtils.getUsername(request);
         int simulationID = Integer.parseInt(request.getParameter(Constants.SIMULATION_ID));
         String entityName = request.getParameter(Constants.ENTITY_NAME);
         String propertyName = request.getParameter(Constants.PROPERTY_NAME);

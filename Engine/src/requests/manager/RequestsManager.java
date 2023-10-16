@@ -18,4 +18,6 @@ public interface RequestsManager {
     List<UserRequest> getRequests(String usernameFromSession, Client typeOfClient);
 
     void updateRequestStatus(int requestID, String status);
+
+    void deleteRequest(int id);
 }

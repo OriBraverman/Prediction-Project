@@ -30,7 +30,6 @@ public class FetchWorldsDetailsServlet extends HttpServlet {
                 .setPrettyPrinting()
                 .registerTypeAdapter(AbstructActionDTO.class, new AbstructActionDTOSerializer())
                 .create();
-        String usernameFromSession = SessionUtils.getUsername(request);
         ServletContext servletContext = getServletContext();
         if (SessionUtils.getTypeOfClient(request).equals(Client.UNAUTHORIZED)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

@@ -180,4 +180,10 @@ public class SimulationExecutionManager implements Serializable {
         }
         return new SimulationIDListDTO(simulationIDs);
     }
+
+    public WorldInstance deleteSimulation(int simulationID) {
+        WorldInstance worldInstance = simulationDetails.get(simulationID).getWorldInstance();
+        this.simulations.remove(simulationID);
+        return worldInstance;
+    }
 }
