@@ -11,10 +11,33 @@ The project consists of three major parts, each adding new functionalities:
 1. **Console-based Core System** - An initial, text-based interface to run basic simulations.
 2. **Graphical Interface (JavaFX)** - A more interactive, visual approach with JavaFX for simulation controls.
 3. **Remote Access (Server)** - An extension to enable remote access for multiple users to interact with the simulation in real-time.
-In this project there were client and server:
+
+In this project, there is a **client-server architecture**:
 ![image](https://github.com/user-attachments/assets/388a4754-b8e3-488f-a003-33db0e1714ed)
 
-1. **Server - Manages diffrent simulations by the users** 
+---
+
+### Server Components
+
+1. **Server - Manages Different Simulations for Users**
+   - The server is the central hub that coordinates simulations and facilitates user interactions with the system.
+
+   #### Administrator
+   The **Administrator** (Admin) is the sole system manager with special access permissions. Admin capabilities include:
+   - **Uploading Simulation Files**: The admin can upload multiple simulation configuration files (XML) to enrich the system with diverse simulations.
+   - **Managing Simulation Runs**: Grants users access to run specific simulations multiple times.
+   - **Viewing All Runs**: The admin has access to monitor all active and past simulation runs and their results.
+   - **Internal System Status**: Provides system-wide insights, showing which simulations are currently active and by whom.
+
+   #### User
+   **Regular Users** connect to the system to utilize its simulation features. At any moment, multiple users can connect and interact with the platform. User capabilities include:
+   - **Viewing Available Simulations**: Users can browse through available simulations uploaded by the admin.
+   - **Requesting Simulation Runs**: Users can request to run a specific simulation multiple times.
+   - **Executing Simulations**: Just like in the standalone application, users can initiate simulations via the remote server.
+   - **Viewing Own Results**: Users can view the results of their own simulation runs (but not those of other users).
+
+This structured design allows both administrators and users to interact with the platform smoothly, enabling robust and customizable simulations for diverse policy impact analyses.
+
 
 ### System Components
 
