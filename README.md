@@ -68,25 +68,25 @@ Simulations progress through discrete time steps (ticks), where each rule is eva
 The system supports various utilities, such as average property tracking over time, consistency checks, and error handling for common issues (e.g., missing entities or undefined properties).
 
 ### Ending Conditions
-
-## Used Concepts
-Java Servlets and Server-Engine Architecture
-Java Servlets handle web requests and responses, while an Engine component performs core business logic, isolating complex processing from the servlets for modular, efficient interactions.
-
-DTOs and Data Transfer
-DTOs (Data Transfer Objects) define client-server data exchange, with fields tailored to transmitted data, supporting clear, dependency-free serialization.
-
-Context Class
-The Context Class stores shared server data, giving servlets unified access to configurations and Engine instances, reducing redundancy.
-
-Input Validation
-A Validator checks inputs for null values, formatting, and constraints, ensuring data integrity before Engine processing.
-
-XML Serialization and Conversion
-XML Serialization handles XML-based data transfer, with a Converter translating XML-generated classes to custom DTOs, aligning data for efficient use.
 A simulation can be set to stop based on:
 1. **Time-based**: Defined run duration
 2. **Tick count**: Defined number of ticks
 3. **User-directed**: User manually ends the simulation
+
+## Used Concepts
+### Java Servlets and Server-Engine Architecture
+Java Servlets handle web requests and responses, while an Engine component performs core business logic, isolating complex processing from the servlets for modular, efficient interactions.
+
+### DTOs and Data Transfer
+DTOs (Data Transfer Objects) define client-server data exchange, with fields tailored to transmitted data, supporting clear, dependency-free serialization.
+
+### Context Class
+The Context Class stores shared server data, giving servlets unified access to configurations and Engine instances, reducing redundancy.
+
+### Input Validation
+A Validator checks inputs for null values, formatting, and constraints, ensuring data integrity before Engine processing.
+
+### XML Serialization and Conversion
+XML Serialization handles XML-based data transfer, with a Converter translating XML-generated classes to custom DTOs, aligning data for efficient use.
 
 ---
