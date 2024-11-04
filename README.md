@@ -28,6 +28,7 @@ In this project, there is a **client-server architecture**:
    - ![image](https://github.com/user-attachments/assets/5b213c88-fb5a-4e16-ab96-d5b91547cb9f)
    - ![image](https://github.com/user-attachments/assets/321b0545-c701-484b-b88d-349270e2e1a9)
    - **Managing Simulation Runs**: Grants users access to run specific simulations multiple times.
+   - ![image](https://github.com/user-attachments/assets/4d1c532d-ff07-441d-a6da-fe3aa78bc2c0)
    - **Viewing All Runs**: The admin has access to monitor all active and past simulation runs and their results.
    - **Internal System Status**: Provides system-wide insights, showing which simulations are currently active and by whom.
 
