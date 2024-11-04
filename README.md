@@ -11,6 +11,10 @@ The project consists of three major parts, each adding new functionalities:
 1. **Console-based Core System** - An initial, text-based interface to run basic simulations.
 2. **Graphical Interface (JavaFX)** - A more interactive, visual approach with JavaFX for simulation controls.
 3. **Remote Access (Server)** - An extension to enable remote access for multiple users to interact with the simulation in real-time.
+In this project there were client and server:
+![image](https://github.com/user-attachments/assets/388a4754-b8e3-488f-a003-33db0e1714ed)
+
+1. **Server - Manages diffrent simulations by the users** 
 
 ### System Components
 
